@@ -6,7 +6,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import ro.mybuddy.server.user.exceptions.NotMatchingPassword;
 import ro.mybuddy.server.user.exceptions.UsernameOrEmailNotFound;
+import ro.mybuddy.server.user.model.User;
 import ro.mybuddy.server.user.service.UserService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @CrossOrigin
 @RestController("/mybuddy/user")
