@@ -23,7 +23,7 @@ public class MyUserDetailsService implements UserDetailsService {
         }
         org.springframework.security.core.userdetails.User.UserBuilder builder = org.springframework.security.core.userdetails.User.withUsername(username);
         builder.password(new BCryptPasswordEncoder().encode(user.getPassword()));
-        builder.roles("USER");
+        builder.roles(user.getRole());
         return builder.build();
     }
 }

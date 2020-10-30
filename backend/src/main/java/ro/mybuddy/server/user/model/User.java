@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor
-@Table(name = "user")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,5 +31,6 @@ public class User {
     @NonNull
     private LocalDateTime birthday;
     private String token;
-    private Integer permissions;
+    @NonNull
+    private String role;
 }
