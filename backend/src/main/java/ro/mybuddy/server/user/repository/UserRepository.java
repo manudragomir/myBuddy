@@ -8,8 +8,5 @@ import ro.mybuddy.server.user.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     @Nullable
-    User findByUsername(String username);
-
-    @Nullable
-    User findByEmail(String email);
+    User findByUsernameOrEmail(String username, String email);
 }
