@@ -75,7 +75,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         });
         const { username, password } = state;
         const { token } = await loginApi(username, password);
-        alert("merge");
         if (canceled) {
           return;
         }
@@ -91,7 +90,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         if (canceled) {
           return;
         }
-        alert("catch");
         log('authenticate failed');
         setState({
           ...state,

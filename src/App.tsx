@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ItemEdit, ItemList } from './todo';
+
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -22,8 +22,9 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import { ItemProvider } from './todo/ItemProvider';
+import { UserPage, UserEdit } from './profile';
 import { AuthProvider, Login, PrivateRoute } from './auth';
+import SignUp from './auth/SignUp';
 
 const App: React.FC = () => (
   <IonApp>
@@ -31,12 +32,10 @@ const App: React.FC = () => (
       <IonRouterOutlet>
         <AuthProvider>
           <Route path="/login" component={Login} exact={true}/>
-          <ItemProvider>
-            <PrivateRoute path="/items" component={ItemList} exact={true}/>
-            <PrivateRoute path="/item" component={ItemEdit} exact={true}/>
-            <PrivateRoute path="/item/:id" component={ItemEdit} exact={true}/>
-          </ItemProvider>
-          <Route exact path="/" render={() => <Redirect to="/items"/>}/>
+            <PrivateRoute path="/user" component={UserPage}/>
+            <PrivateRoute path="/user/edit" component={UserEdit}/>
+          <Route path="/signup" component={SignUp}/>
+          <Route exact path="/" render={() => <Redirect to="/user"/>}/>
         </AuthProvider>
       </IonRouterOutlet>
     </IonReactRouter>

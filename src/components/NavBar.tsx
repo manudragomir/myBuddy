@@ -14,10 +14,7 @@ export default function NavBar() {
                 <Nav.Link href="#pricing">Help</Nav.Link>
                 </Nav>
                 <Nav>
-                <Nav.Link href="#deets">Sign Up</Nav.Link>
-                <Nav.Link eventKey={2} href="#memes">
-                    Donate
-                </Nav.Link>
+                <Nav.Link href="#deets">Contact</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
             </Navbar>

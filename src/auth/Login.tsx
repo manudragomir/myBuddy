@@ -14,6 +14,7 @@ import Card from 'react-bootstrap/Card'
 import NavBar from '../components/NavBar';
 import Image from 'react-bootstrap/Image'
 import color from '../images/logo_full.png';
+import { Alert, Nav } from 'react-bootstrap';
 
 const log = getLogger('Login');
 
@@ -38,24 +39,24 @@ export const Login: React.FC<RouteComponentProps> = ({ history }) => {
     <IonPage>
       <IonContent>
         <NavBar/>
-        <Container>
+        <Container >
           <Row style={{marginTop:'40px'}}>
-            <Col>
+            <Col >
             <Card style={{border:"none", marginTop:"40px"}}>
             <Card.Body style={{height:"610px",margin:"70px"}}>
               <Card.Text style={{fontSize:"70px",fontFamily:"Josefin Slab"}}>Log in</Card.Text>
               <Form >
                 <Form.Group >
-                  <IonInput style={{height:"60px",width:"350px", fontSize:"25px"}}
+                  <IonInput id="username_input" style={{height:"60px",width:"350px", fontSize:"25px"}}
                     placeholder="enter username"
                     value={username}
                     onIonChange={e => setState({
                       ...state,
-                      username: e.detail.value || ''
+                      username: e.detail.value || '' 
                     })}/>
                 </Form.Group>
                 <Form.Group controlId="formBasicPassword">
-                <IonInput type="password" style={{height:"60px",width:"350px", fontSize:"25px"}}
+                <IonInput id="password_input" type="password" style={{height:"60px",width:"350px", fontSize:"25px"}}
                   placeholder="enter password"
                   value={password}
                   onIonChange={e => setState({
@@ -65,11 +66,19 @@ export const Login: React.FC<RouteComponentProps> = ({ history }) => {
               </Form.Group>
               </Form>     
               <IonLoading isOpen={isAuthenticating}/>
+
               {authenticationError && (
-                <div>{authenticationError.message || 'Failed to authenticate'}</div>
+                 <Alert variant='light' style={{color:"#ff8080"}}>
+                 Invalid username and password combination.
+                 </Alert>
+                
               )}
-              <Button onClick={handleLogin} style={{backgroundColor: "white",border:"3px solid",
+
+              <Button variant="outline-warning" onClick={handleLogin} style={{backgroundColor: "white",border:"3px solid",
               borderColor:'#aba421',width:"180px",height:"60px",color:"#383a3e",fontWeight:"bold",fontSize:"30px",fontFamily:"Josefin Slab"}}>Login</Button>
+              <Nav >
+                <Nav.Link href="/signup" style={{color:"#565210",fontSize:"20px",fontFamily:"Josefin Slab"}}>Don't have an account? Sign up now!</Nav.Link>
+              </Nav>
             </Card.Body>
             </Card>
           </Col>
