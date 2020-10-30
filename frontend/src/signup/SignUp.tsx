@@ -1,7 +1,7 @@
 import React from 'react'
 import {IonButton, IonContent, IonDatetime, IonInput, IonItem, IonLabel, IonPage, IonText} from '@ionic/react';
 import './signup.css'
-import {Col, Row} from "react-bootstrap";
+import {Col, Row, Card} from "react-bootstrap";
 
 class SignUp extends React.Component<any, any> {
 
@@ -147,10 +147,7 @@ class SignUp extends React.Component<any, any> {
                                 />
                                 {!this.state.validPassword &&
                                 <IonText color={"danger"}> Password should contain at least one upper case, one lower
-                                    case,
-                                    one
-                                    digit
-                                    and one special character. Length should be at least 8.
+                                    case, one digit and one special character. Length should be at least 8.
                                 </IonText>
                                 }
                             </IonItem>
@@ -172,7 +169,11 @@ class SignUp extends React.Component<any, any> {
                                                                     disabled>Submit</IonButton>}
                         </Col>
                         <Col id={"logoCol"}>
-                            <img src={"assets/resources/logo.jpg"} alt={"logo"}/>
+                            <Card id={"logoCardParrent"}>
+                                <Card id={"logoCardChild"}>
+                                    <Card.Img id={"logoCardImg"} src={"assets/resources/logo.jpg"}/>
+                                </Card>
+                            </Card>
                         </Col>
                     </Row>
                 </IonContent>
