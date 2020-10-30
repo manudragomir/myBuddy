@@ -7,7 +7,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -29,7 +29,7 @@ public class User {
     @NonNull
     private String lastName;
     @NonNull
-    private LocalDateTime birthday;
+    private LocalDate birthday;
     private String token;
     @NonNull
     private String role;
