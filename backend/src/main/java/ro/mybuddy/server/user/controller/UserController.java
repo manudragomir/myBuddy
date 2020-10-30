@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ro.mybuddy.server.user.service.UserService;
 
 @CrossOrigin
-@RestController("/mybuddy/user")
+@RestController
 public class UserController {
 
     @Autowired
