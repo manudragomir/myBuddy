@@ -26,7 +26,7 @@ public class UserDto {
     @NotNull(message = "Password must not be null\n")
     private String matchingPassword;
     @NotNull(message = "Email must not be null\n")
-    @Email(message="Invalid email\n")
+    @Email(message = "Invalid email\n")
     private String email;
     @NotNull(message = "Birthday must not be null\n")
     @JsonDeserialize(using = LocalDateDeserializer.class)
