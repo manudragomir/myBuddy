@@ -24,6 +24,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         super.configure(http);
         http.csrf().disable();
         http.cors().configurationSource(corsConfigurationSource());
+        http.exceptionHandling().authenticationEntryPoint(new MyBasicAuthenticationEntryPoint());
     }
 
     @Autowired
