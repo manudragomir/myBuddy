@@ -1,6 +1,6 @@
 package ro.mybuddy.server.user.exceptions;
 
-public class UnverifiedUser extends LoginException {
+public class UnverifiedUser extends UserException {
     public UnverifiedUser() {
     }
 
