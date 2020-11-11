@@ -34,6 +34,8 @@ dependencies {
 
 	testCompileOnly 'org.projectlombok:lombok:1.18.16'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
+
+	compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
 }
 
 test {

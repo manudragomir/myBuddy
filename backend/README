@@ -1,1 +1,22 @@
+Request used for login (using authentication header and returning a cookie) :
+axios({
+        method: 'post',
+        url: anyURL,
+        withCredentials: true,
+        auth:{
+            username: "gigel",
+            password: "gigel"
+        },
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        data : requestBody
+    })
+        .then(function (response) {
+            console.log(JSON.stringify(response.data));
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
 
+After this request the cookie is automatically saved in the browser and added to the future requests e.g. you can remove the authentication header.
