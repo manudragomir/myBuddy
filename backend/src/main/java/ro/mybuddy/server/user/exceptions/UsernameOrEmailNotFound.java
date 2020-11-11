@@ -1,6 +1,6 @@
 package ro.mybuddy.server.user.exceptions;
 
-public class UsernameOrEmailNotFound extends LoginException {
+public class UsernameOrEmailNotFound extends SignUpException {
     public UsernameOrEmailNotFound() {
     }
 

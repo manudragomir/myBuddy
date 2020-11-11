@@ -24,7 +24,7 @@ public class UserDto {
     @NotNull(message = "Password must not be null\n")
     private String password;
     @NotNull(message = "Password must not be null\n")
-    private String matchingPassword;
+    private String confirmPassword;
     @NotNull(message = "Email must not be null\n")
     @Email(message = "Invalid email\n")
     private String email;
@@ -32,7 +32,6 @@ public class UserDto {
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate dateOfBirth;
-    private LocalDate birthday;
     @NotNull(message = "User must not be null\n")
     private String username;
 
