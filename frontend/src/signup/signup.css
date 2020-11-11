@@ -1,0 +1,48 @@
+ion-item {
+    --ion-text-color: #404040;
+    --border-color: #dbd55b;
+}
+
+#inputCol {
+    width: 55%;
+    float: left;
+    padding: 3.85vh;
+    border-radius: 25px;
+    border-color: #dbd55b;
+    border-style: solid double;
+    border-width: 5px;
+    margin: 3vh;
+}
+
+#logoCol {
+    width: 45%;
+    float: left;
+    padding: 3.85vh;
+    align-content: center;
+}
+
+img {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+#logoCardParrent {
+    border-radius: 3.46vh;
+    border: 0.27vh solid;
+    border-color: #565210;
+    width: 39.71vw;
+}
+
+#logoCardChild {
+    border-radius: 3.46vh;
+    margin: 2.77vh;
+    background-color: #aba421;
+    width: 37.10vw;
+}
+
+#logoCardImg {
+    width: 32.55vw;
+    height: 69.25vh;
+    margin: 4.84vh;
+}
