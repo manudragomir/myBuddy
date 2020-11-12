@@ -1,4 +1,4 @@
-export const baseUrl = 'localhost:3000';
+export const baseUrl = 'localhost:8080';
 
 export const getLogger: (tag: string) => (...args: any) => void =
     tag => (...args) => console.log(tag, ...args);
