@@ -28,8 +28,8 @@ const UserPage: React.FC<RouteComponentProps> = ({history}) => {
                                 onSelect={k => k && setKey(k)}
                             >
                                 <Tab eventKey="posts" title="Posts">
-                                    <NewsFeed>
-                                    </NewsFeed>
+                                    {/* <NewsFeed>
+                                    </NewsFeed> */}
                                 </Tab>
                                 <Tab eventKey="contact" title="Contact">
                                     Contact content

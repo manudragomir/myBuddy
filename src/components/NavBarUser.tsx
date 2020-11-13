@@ -6,7 +6,7 @@ export default function NavBarUser() {
     return (
         <div>
         <Navbar bg="dark" variant="dark">
-            <Navbar.Brand href="#home">
+            <Navbar.Brand href="/home">
             <img
                 alt=""
                 src={color}

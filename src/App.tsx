@@ -25,6 +25,7 @@ import './theme/variables.css';
 import { UserPage, UserEdit } from './profile';
 import { AuthProvider, Login, PrivateRoute } from './auth';
 import SignUp from './auth/SignUp';
+import NewsFeed from './newsfeed/NewsFeed';
 
 const App: React.FC = () => (
   <IonApp>
@@ -35,6 +36,7 @@ const App: React.FC = () => (
             <PrivateRoute path="/user" component={UserPage}/>
             <PrivateRoute path="/user/edit" component={UserEdit}/>
           <Route path="/signup" component={SignUp}/>
+          <Route path="/home" component={NewsFeed}/>
           <Route exact path="/" render={() => <Redirect to="/user"/>}/>
         </AuthProvider>
       </IonRouterOutlet>

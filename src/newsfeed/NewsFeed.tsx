@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import {IonContent, IonInfiniteScroll, IonInfiniteScrollContent, useIonViewWillEnter} from '@ionic/react';
+import {IonContent, IonInfiniteScroll, IonInfiniteScrollContent, IonPage, useIonViewWillEnter} from '@ionic/react';
 import {Post} from "./Post";
+import NavBar from '../components/NavBar';
 
 const NewsFeed: React.FC = () => {
     const [items, setItems] = useState<string[]>([]);
@@ -33,7 +34,9 @@ const NewsFeed: React.FC = () => {
     }
 
     return (
-        <IonContent fullscreen>
+        <IonPage>
+            <IonContent fullscreen>
+            <NavBar/>
             {items.map((item: string, i: number) => {
                 return <Post key={`${i}`} image={item}></Post>
             })}
@@ -42,7 +45,9 @@ const NewsFeed: React.FC = () => {
                     loadingText="loading...">
                 </IonInfiniteScrollContent>
             </IonInfiniteScroll>
-        </IonContent>
+            </IonContent>
+        </IonPage>
+        
     );
 };
 
