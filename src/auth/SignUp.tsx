@@ -1,189 +1,253 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {IonButton, IonContent, IonDatetime, IonInput, IonItem, IonLabel, IonPage, IonText} from '@ionic/react';
 import './signup.css'
-import {Col, Row, Card} from "react-bootstrap";
+import {Card, Col, Nav, Row} from "react-bootstrap";
 import logo from '../images/logo_full.png';
 import NavBar from '../components/NavBar';
+import {signup} from "./authApi";
+import Moment from 'moment';
+import PropTypes from "prop-types";
 
-class SignUp extends React.Component<any, any> {
+interface SignUpState {
+    firstName: string,
+    lastName: string,
+    dateOfBirth: string,
+    username: string,
+    email: string,
+    password: string,
+    confirmPassword: string,
+    validFirstName: boolean,
+    validLastName: boolean,
+    validEmail: boolean,
+    validPassword: boolean,
+    validConfirmedPassword: boolean,
+    redirect: boolean,
+    messageError: string,
+    pendingSignup: boolean,
+}
 
-    constructor(props: {}) {
-        super(props);
-        this.state = {
-            firstName: null,
-            lastName: null,
-            dateOfBirth: null,
-            username: null,
-            email: null,
-            password: null,
-            confirmPassword: null,
-            validFirstName: true,
-            validLastName: true,
-            validEmail: true,
-            validPassword: true,
-            validConfirmedPassword: true,
+const initialState: SignUpState = {
+    firstName: '',
+    lastName: '',
+    dateOfBirth: '',
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    validFirstName: true,
+    validLastName: true,
+    validEmail: true,
+    validPassword: true,
+    validConfirmedPassword: true,
+    redirect: false,
+    messageError: '',
+    pendingSignup: false,
+};
+
+interface SignUpProviderProps {
+    children: PropTypes.ReactNodeLike,
+}
+
+
+export const SignUp: React.FC<SignUpProviderProps> = ({children}) => {
+
+    const [state, setState] = useState<SignUpState>(initialState);
+
+    useEffect(handleSubmitEffect, [state.pendingSignup]);
+
+    function handleSubmitEffect() {
+
+        if (!state.pendingSignup) {
+            return;
+        }
+
+        setState({...state, messageError: ''});
+        let canceled = false;
+        if (checkIfAllFilled())
+            signUp();
+        return () => {
+            canceled = true;
+        }
+
+        async function signUp() {
+            try {
+                await signup(state.firstName, state.lastName, Moment(state.dateOfBirth).format("YYYY-MM-DD"), state.username, state.email, state.password, state.confirmPassword);
+                setState({...state, redirect: true, pendingSignup: false})
+            } catch (error) {
+                if (canceled) {
+                    return;
+                }
+                setState({...state, messageError: error.toString(), pendingSignup: false})
+            }
         }
     }
 
-    handleInputChange = (event: any) => {
-        event.preventDefault();
-        console.log(event.target.name);
-        console.log(event.target.value);
-        this.setState({[event.target.name]: event.target.value});
-    }
-
-    handleSubmit = (event: any) => {
-        event.preventDefault()
-        if (this.checkIfAllFilled()) {
-            console.log("post will be implemented soon");
-        } else {
-            console.log("check error messages");
-        }
-    }
-
-    checkFirstName = (name: string) => {
+    function checkFirstName(name: string) {
         let regex = new RegExp("^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$")
         if (!regex.test(name)) {
-            this.setState({validFirstName: false});
+            setState({...state, validFirstName: false});
         } else {
-            this.setState({validFirstName: true});
+            setState({...state, validFirstName: true});
         }
     }
 
-    checkLastName = (name: string) => {
+    function checkLastName(name: string) {
         let regex = new RegExp("^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$")
         if (!regex.test(name)) {
-            this.setState({validLastName: false});
+            setState({...state, validLastName: false});
         } else {
-            this.setState({validLastName: true});
+            setState({...state, validLastName: true});
         }
     }
 
-    checkEmail = (email: string) => {
-        if (email === null)
+    function checkEmail(email: string) {
+        if (email === '')
             return
         let regex = new RegExp("^\\w+([\.-]?\\w+)*@\\w+([\.-]?\\w+)*(\\.\\w{2,3})+$")
         if (!regex.test(email)) {
-            this.setState({validEmail: false})
+            setState({...state, validEmail: false})
         } else {
-            this.setState({validEmail: true})
+            setState({...state, validEmail: true})
         }
     }
 
-    checkPassword = (password: string) => {
-        if (password === null)
+    function checkPassword(password: string) {
+        if (password === '')
             return;
         let regex = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")
         if (!regex.test(password)) {
-            this.setState({validPassword: false})
+            setState({...state, validPassword: false})
         } else {
-            this.setState({validPassword: true})
+            setState({...state, validPassword: true})
         }
     }
 
-    checkConfirmedPass = (confirmedPass: string) => {
-        if (confirmedPass !== this.state.password)
-            this.setState({validConfirmedPassword: false})
+    function checkConfirmedPass(confirmedPass: string) {
+        if (confirmedPass !== state.password)
+            setState({...state, validConfirmedPassword: false})
         else
-            this.setState({validConfirmedPassword: true})
+            setState({...state, validConfirmedPassword: true})
     }
 
-    checkIfAllFilled = () => {
+    function checkIfAllFilled() {
         const {
             firstName, lastName, dateOfBirth, username, email, password, confirmPassword,
             validFirstName, validLastName, validEmail, validPassword, validConfirmedPassword
-        } = this.state;
+        } = state;
 
         return !(!validFirstName || !validLastName || !validEmail || !validPassword || !validConfirmedPassword ||
-            firstName === null || lastName === null || dateOfBirth === null || username === null ||
-            email === null || password === null || confirmPassword === null);
+            firstName === '' || lastName === '' || dateOfBirth === '' || username === '' ||
+            email === '' || password === '' || confirmPassword === '');
     }
 
-    render() {
-        return (
-            <IonPage>
-                <IonContent>
-                    <NavBar/>
-                    <Row style={{marginTop: '40px'}}>
-                        <Col id={"inputCol"}>
-                            <IonItem>
-                                <IonLabel position={"floating"}>First Name</IonLabel>
-                                <IonInput name={"firstName"} onIonChange={this.handleInputChange}
-                                          onMouseLeave={() => this.checkFirstName(this.state.firstName)}/>
-                                {!this.state.validFirstName && <IonText color={"danger"}> Name is not valid! </IonText>
-                                }
-                            </IonItem>
-                            <IonItem>
-                                <IonLabel position={"floating"}>Last Name</IonLabel>
-                                <IonInput name={"lastName"} onIonChange={this.handleInputChange}
-                                          onMouseLeave={() => this.checkLastName(this.state.lastName)}/>
-                                {!this.state.validLastName &&
-                                <IonText color={"danger"}> Last Name is not valid! </IonText>
-                                }
-                            </IonItem>
+    return (
+        <IonPage>
+            <IonContent>
+                <NavBar/>
+                <Row style={{marginTop: '40px'}}>
+                    <Col id={"inputCol"}>
+                        <IonItem>
+                            <IonLabel position={"floating"}>First Name</IonLabel>
+                            <IonInput name={"firstName"} onIonChange={e => setState({
+                                ...state,
+                                firstName: e.detail.value || ''
+                            })} onMouseLeave={() => checkFirstName(state.firstName)}/>
+                            {!state.validFirstName && <IonText color={"danger"}> Name is not valid! </IonText>
+                            }
+                        </IonItem>
+                        <IonItem>
+                            <IonLabel position={"floating"}>Last Name</IonLabel>
+                            <IonInput name={"lastName"} onIonChange={e => setState({
+                                ...state,
+                                lastName: e.detail.value || ''
+                            })} onMouseLeave={() => checkLastName(state.lastName)}/>
+                            {!state.validLastName &&
+                            <IonText color={"danger"}> Last Name is not valid! </IonText>
+                            }
+                        </IonItem>
 
-                            <IonItem>
-                                <IonLabel position={"floating"}>Date of birth</IonLabel>
-                                <IonDatetime name={"dateOfBirth"} onIonChange={this.handleInputChange}/>
-                            </IonItem>
+                        <IonItem>
+                            <IonLabel position={"floating"}>Date of birth</IonLabel>
+                            <IonDatetime name={"dateOfBirth"} onIonChange={e => setState({
+                                ...state,
+                                dateOfBirth: e.detail.value || ''
+                            })}/>
+                        </IonItem>
 
-                            <IonItem>
-                                <IonLabel position={"floating"}>Username</IonLabel>
-                                <IonInput name={"username"} onIonChange={this.handleInputChange}/>
-                            </IonItem>
+                        <IonItem>
+                            <IonLabel position={"floating"}>Username</IonLabel>
+                            <IonInput name={"username"} onIonChange={e => setState({
+                                ...state,
+                                username: e.detail.value || ''
+                            })}/>
+                        </IonItem>
 
-                            <IonItem>
-                                <IonLabel position={"floating"}>Email</IonLabel>
-                                <IonInput name={"email"} onIonChange={this.handleInputChange}
-                                          onMouseLeave={() => this.checkEmail(this.state.email)}
-                                />
-                                {!this.state.validEmail &&
-                                <IonText color={"danger"}> Email is not valid. (e.g petlovers@ubbcluj.ro) </IonText>
-                                }
+                        <IonItem>
+                            <IonLabel position={"floating"}>Email</IonLabel>
+                            <IonInput name={"email"} onIonChange={e => setState({
+                                ...state,
+                                email: e.detail.value || ''
+                            })} onMouseLeave={() => checkEmail(state.email)}
+                            />
+                            {!state.validEmail &&
+                            <IonText color={"danger"}> Email is not valid. (e.g petlovers@ubbcluj.ro) </IonText>
+                            }
 
-                            </IonItem>
+                        </IonItem>
 
-                            <IonItem>
-                                <IonLabel position={"floating"}>Password</IonLabel>
-                                <IonInput name={"password"} type={"password"} onIonChange={this.handleInputChange}
-                                          onMouseLeave={() => this.checkPassword(this.state.password)}
-                                />
-                                {!this.state.validPassword &&
-                                <IonText color={"danger"}> Password should contain at least one upper case, one lower
-                                    case, one digit and one special character. Length should be at least 8.
-                                </IonText>
-                                }
-                            </IonItem>
+                        <IonItem>
+                            <IonLabel position={"floating"}>Password</IonLabel>
+                            <IonInput name={"password"} type={"password"} onIonChange={e => setState({
+                                ...state,
+                                password: e.detail.value || ''
+                            })} onMouseLeave={() => checkPassword(state.password)}/>
+                            {!state.validPassword &&
+                            <IonText color={"danger"}> Password should contain at least one upper case, one lower
+                                case, one digit and one special character. Length should be at least 8.
+                            </IonText>
+                            }
+                        </IonItem>
 
-                            <IonItem>
-                                <IonLabel position={"floating"}>Confirm password</IonLabel>
-                                <IonInput name={"confirmPassword"} type={"password"}
-                                          onIonChange={this.handleInputChange}
-                                          onMouseLeave={() => this.checkConfirmedPass(this.state.confirmPassword)}
-                                />
-                                {!this.state.validConfirmedPassword &&
-                                <IonText color={"danger"}> Confirmed Password is not valid! </IonText>
-                                }
-                            </IonItem>
-                            {this.checkIfAllFilled() && <IonButton type={"submit"} color={"warning"} expand={"block"}
-                                                                   onClick={this.handleSubmit}>Submit</IonButton>}
-                            {!this.checkIfAllFilled() && <IonButton type={"submit"} color={"warning"} expand={"block"}
-                                                                    onClick={this.handleSubmit}
-                                                                    disabled>Submit</IonButton>}
-                        </Col>
-                        <Col id={"logoCol"}>
-                            <Card id={"logoCardParrent"}>
-                                <Card id={"logoCardChild"}>
-                                    <Card.Img id={"logoCardImg"} src={logo}/>
-                                </Card>
+                        <IonItem>
+                            <IonLabel position={"floating"}>Confirm password</IonLabel>
+                            <IonInput name={"confirmPassword"} type={"password"}
+                                      onIonChange={e => setState({
+                                          ...state,
+                                          confirmPassword: e.detail.value || ''
+                                      })} onMouseLeave={() => checkConfirmedPass(state.confirmPassword)}/>
+                            {!state.validConfirmedPassword &&
+                            <IonText color={"danger"}> Confirmed Password is not valid! </IonText>
+                            }
+                        </IonItem>
+                        {checkIfAllFilled() && <IonButton type={"submit"} color={"warning"} expand={"block"}
+                                                          onClick={() => setState({
+                                                              ...state,
+                                                              pendingSignup: true
+                                                          })}>Submit</IonButton>}
+
+                        {!checkIfAllFilled() && <IonButton type={"submit"} color={"warning"} expand={"block"}
+
+                                                           disabled>Submit</IonButton>}
+                        {state.messageError != '' && <IonText color={"danger"}> {state.messageError} </IonText>}
+                        {state.redirect &&
+                        <Nav>
+                            <Nav.Link href="/login"
+                                      style={{color: "#565210", fontSize: "20px", fontFamily: "Josefin Slab"}}>Successfully
+                                signed up! Go back to login.</Nav.Link>
+                        </Nav>
+                        }
+                    </Col>
+                    <Col id={"logoCol"}>
+                        <Card id={"logoCardParrent"}>
+                            <Card id={"logoCardChild"}>
+                                <Card.Img id={"logoCardImg"} src={logo}/>
                             </Card>
-                        </Col>
-                    </Row>
-                </IonContent>
-            </IonPage>
-        )
-    }
-
+                        </Card>
+                    </Col>
+                </Row>
+            </IonContent>
+        </IonPage>
+    )
 }
 
 export default SignUp;
