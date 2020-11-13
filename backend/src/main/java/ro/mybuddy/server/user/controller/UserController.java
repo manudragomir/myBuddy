@@ -23,12 +23,12 @@ public class UserController {
     private UserService userService;
 
     @PostMapping(value = "/user/login")
-    public ResponseEntity<?> login() {
+    public ResponseEntity<String> login() {
         return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 
     @PostMapping(value = "/user/registration")
-    public ResponseEntity<?> signUp(@Valid @RequestBody UserDto newUser, BindingResult bindingResult) {
+    public ResponseEntity<String> signUp(@Valid @RequestBody UserDto newUser, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<String> errors = bindingResult.getAllErrors().stream()
                     .map(x -> x.getDefaultMessage())
