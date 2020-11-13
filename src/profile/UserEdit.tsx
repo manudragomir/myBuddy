@@ -8,12 +8,13 @@ import FileUpload from './FileUpload';
 
 
 
+
 const UserEdit: React.FC<RouteComponentProps> = ({ history }) => {
     const [key, setKey] = useState('posts');
     return (
         <IonPage>
         <IonContent>
-            <FileUpload/>
+            <FileUpload />
         </IonContent>
         </IonPage>
     );

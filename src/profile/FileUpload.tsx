@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-
+axios.defaults.timeout=100000000;
 const FileUpload=() => {
   const [file, setFile] = useState<FileList | null>(null);
 
@@ -11,12 +11,12 @@ const FileUpload=() => {
       }
       const formData = new FormData();
       formData.append('file', file[0]);
-      alert(formData.get('file'))
       // await axios.post(`http://localhost:9000/test-upload`, formData, {
       //   headers: {
       //     'Content-Type': 'multipart/form-data',
       //   },
-      await axios({
+    
+      axios({
         method: 'post',
         url:`http://localhost:9000/test-upload`  ,
        
@@ -24,11 +24,12 @@ const FileUpload=() => {
             'Content-Type': 'multipart/form-data',
         },
         data : formData
-       });
+      });
   
       // handle success
     } catch (error) {
       // handle error
+      alert(error.message)
     }
   };
 

@@ -22,7 +22,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import { UserPage, UserEdit } from './profile';
+import { UserPage, UserEdit, AddPost } from './profile';
 import { AuthProvider, Login, PrivateRoute } from './auth';
 import SignUp from './auth/SignUp';
 import NewsFeed from './newsfeed/NewsFeed';
@@ -35,9 +35,11 @@ const App: React.FC = () => (
           <Route path="/login" component={Login} exact={true}/>
             <PrivateRoute path="/user" component={UserPage}/>
             <PrivateRoute path="/user/edit" component={UserEdit}/>
+            <PrivateRoute path="/user/add" component={AddPost}/>
+            <PrivateRoute path="/feed" component={NewsFeed}/>
           <Route path="/signup" component={SignUp}/>
           <Route path="/home" component={NewsFeed}/>
-          <Route exact path="/" render={() => <Redirect to="/user"/>}/>
+          <Route exact path="/" render={() => <Redirect to="/login"/>}/>
         </AuthProvider>
       </IonRouterOutlet>
     </IonReactRouter>

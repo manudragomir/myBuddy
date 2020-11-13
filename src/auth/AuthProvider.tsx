@@ -15,7 +15,7 @@ export interface AuthState {
   pendingAuthentication?: boolean;
   username?: string;
   password?: string;
-  token: string;
+
 }
 
 const initialState: AuthState = {
@@ -23,7 +23,7 @@ const initialState: AuthState = {
   isAuthenticating: false,
   authenticationError: null,
   pendingAuthentication: false,
-  token: '',
+
 };
 
 export const AuthContext = React.createContext<AuthState>(initialState);
@@ -34,10 +34,10 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [state, setState] = useState<AuthState>(initialState);
-  const { isAuthenticated, isAuthenticating, authenticationError, pendingAuthentication, token } = state;
+  const { isAuthenticated, isAuthenticating, authenticationError, pendingAuthentication } = state;
   const login = useCallback<LoginFn>(loginCallback, []);
   useEffect(authenticationEffect, [pendingAuthentication]);
-  const value = { isAuthenticated, login, isAuthenticating, authenticationError, token };
+  const value = { isAuthenticated, login, isAuthenticating, authenticationError };
   log('render');
   return (
     <AuthContext.Provider value={value}>
@@ -74,14 +74,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           isAuthenticating: true,
         });
         const { username, password } = state;
-        const { token } = await loginApi(username, password);
+        await loginApi(username, password);
         if (canceled) {
           return;
         }
         log('authenticate succeeded');
         setState({
           ...state,
-          token,
           pendingAuthentication: false,
           isAuthenticated: true,
           isAuthenticating: false,

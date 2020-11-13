@@ -32,8 +32,9 @@ export const Login: React.FC<RouteComponentProps> = ({ history }) => {
     login?.(username, password);
   };
   log('render');
+  console.log(isAuthenticated);
   if (isAuthenticated) {
-    return <Redirect to={{ pathname: '/' }} />
+    return <Redirect to={{ pathname: '/user' }} />
   }
   return (
     <IonPage>

@@ -28,11 +28,6 @@ const UserPage: React.FC<RouteComponentProps> = ({history}) => {
                                 onSelect={k => k && setKey(k)}
                             >
                                 <Tab eventKey="posts" title="Posts">
-                                    {/* <NewsFeed>
-                                    </NewsFeed> */}
-                                </Tab>
-                                <Tab eventKey="contact" title="Contact">
-                                    Contact content
                                 </Tab>
                             </Tabs>
                         </Col>
@@ -55,6 +50,9 @@ const UserPage: React.FC<RouteComponentProps> = ({history}) => {
                                     <Button onClick={() => {
                                         return history.push("/user/edit")
                                     }} variant="secondary">Edit Profile</Button>
+                                    <Button onClick={() => {
+                                        return history.push("/user/add")
+                                    }} variant="secondary">Add Post</Button>
                                 </Col>
                             </Row>
                         </Col>
