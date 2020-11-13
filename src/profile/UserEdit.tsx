@@ -4,8 +4,7 @@ import { RouteComponentProps } from 'react-router';
 import { IonButton, IonContent, IonHeader, IonInput, IonLoading, IonPage, IonTitle, IonToolbar, IonItem, IonLabel, IonImg } from '@ionic/react';
 import { getLogger } from '../core'; 
 import {Container, Row, Col, Media, Image, Tabs, Tab, Button} from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-
+import FileUpload from './FileUpload';
 
 
 
@@ -14,10 +13,11 @@ const UserEdit: React.FC<RouteComponentProps> = ({ history }) => {
     return (
         <IonPage>
         <IonContent>
-            <div>Here you can edit your profile!</div>
+            <FileUpload/>
         </IonContent>
         </IonPage>
     );
 };
+
 
 export default UserEdit;
