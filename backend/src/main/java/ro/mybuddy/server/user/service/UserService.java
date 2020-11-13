@@ -57,7 +57,7 @@ public class UserService {
         return "Account confirmed successfully.";
     }
 
-    public void emailNewTokenToUser(User user) {
+    private void emailNewTokenToUser(User user) {
         ConfirmationToken token = new ConfirmationToken(user);
         System.out.println("[DEBUG] token: " + token.getConfirmationToken());
         System.out.println("[DEBUG] user id: " + token.getUser().getId());
