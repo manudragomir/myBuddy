@@ -22,11 +22,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping(value = "/user/login")
-    public ResponseEntity<String> login() {
-        return new ResponseEntity<>("ok", HttpStatus.OK);
-    }
-
     @PostMapping(value = "/user/registration")
     public ResponseEntity<String> signUp(@Valid @RequestBody UserDto newUser, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
