@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import ro.mybuddy.server.user.exceptions.*;
 import ro.mybuddy.server.user.model.ConfirmationToken;
 import ro.mybuddy.server.user.model.User;
-import ro.mybuddy.server.user.model.UserDto;
 import ro.mybuddy.server.user.repository.ConfirmationTokenRepository;
 import ro.mybuddy.server.user.repository.UserRepository;
 import ro.mybuddy.server.user.utils.ConfirmationEmailBuilder;

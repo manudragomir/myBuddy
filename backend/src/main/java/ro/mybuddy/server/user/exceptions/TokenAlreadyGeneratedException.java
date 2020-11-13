@@ -1,4 +1,4 @@
-package ro.mybuddy.server.user.service;
+package ro.mybuddy.server.user.exceptions;
 
 import ro.mybuddy.server.user.exceptions.TokenException;
 
