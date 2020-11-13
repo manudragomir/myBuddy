@@ -27,6 +27,10 @@ public class UserService {
     private JavaMailSender javaMailSender;
 
     public void addNewUser(User newUser){
+        User userOnRepo = userRepository.findByUsernameOrEmail(newUser.getUsername(), newUser.getEmail());
+        if (userOnRepo != null) {
+            throw new SignUpException("User already signed up. Please check your email to confirm the account.");
+        }
         User returnedUser = userRepository.save(newUser);
         if(returnedUser == null){
             throw new SignUpException("Error when added to database");

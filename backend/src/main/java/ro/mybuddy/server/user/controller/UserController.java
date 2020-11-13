@@ -40,8 +40,12 @@ public class UserController {
             return new ResponseEntity<String>("Passwords do not match", HttpStatus.BAD_REQUEST);
         }
         User newCheckedUser = UserDtoToUserConverter.convert(newUser);
-        userService.addNewUser(newCheckedUser);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            userService.addNewUser(newCheckedUser);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (SignUpException ue) {
+            return new ResponseEntity<>(ue.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+        }
     }
 
     @RequestMapping(value = "/user/confirm-account", method = {RequestMethod.GET, RequestMethod.POST})
