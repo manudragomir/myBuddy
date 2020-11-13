@@ -1,15 +1,11 @@
 package ro.mybuddy.server.user.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ro.mybuddy.server.user.exceptions.InvalidTokenException;
-import ro.mybuddy.server.user.exceptions.NotMatchingPassword;
-import ro.mybuddy.server.user.exceptions.TokenNotFoundException;
-import ro.mybuddy.server.user.exceptions.UserException;
+import ro.mybuddy.server.user.exceptions.*;
 import ro.mybuddy.server.user.model.User;
 import ro.mybuddy.server.user.model.UserDto;
 import ro.mybuddy.server.user.service.UserService;
@@ -25,6 +21,11 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @PostMapping(value = "/user/login")
+    public ResponseEntity<?> login() {
+        return new ResponseEntity<>("ok", HttpStatus.OK);
+    }
 
     @PostMapping(value = "/user/registration")
     public ResponseEntity<?> signUp(@Valid @RequestBody UserDto newUser, BindingResult bindingResult) {

@@ -44,17 +44,17 @@ public class UserService {
             try {
                 User user = userRepository.findByUsernameOrEmail(token.getUser().getUsername(), token.getUser().getEmail());
                 if(user.getRole().equals("USER")){
-                    throw new UserException("User already confirmed...");
+                    throw new UserException("Account has already been confirmed.");
                 }
                 user.setRole("USER");
                 userRepository.save(user);
             } catch (NonUniqueResultException nue) {
                 throw new UserException("Two users must not use the same email address");
             } catch(NullPointerException ne){
-                throw new UserException("User was not found to be registered");
+                throw new UserException("User is not registered.");
             }
         }
-        return "OK Confirmation";
+        return "Account confirmed successfully.";
     }
 
     public void emailNewTokenToUser(User user) {
