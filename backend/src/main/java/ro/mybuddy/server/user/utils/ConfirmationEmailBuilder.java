@@ -23,7 +23,7 @@ public class ConfirmationEmailBuilder {
         // TODO replace raw text with HTML (with inline CSS)
         message.setText("Thank you for creating a MyBuddy account! In order "
                 + "to be able to use it, please copy the following link:\n"
-                + "http://localhost:8080/user/confirm-account?token=" + token.getConfirmationToken());
+                + "http://localhost:8100/confirm?token=" + token.getConfirmationToken());
 
         return message;
     }

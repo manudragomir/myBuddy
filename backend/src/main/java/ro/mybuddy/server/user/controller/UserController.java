@@ -3,13 +3,17 @@ package ro.mybuddy.server.user.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ro.mybuddy.server.user.exceptions.InvalidTokenException;
-import ro.mybuddy.server.user.exceptions.TokenException;
-import ro.mybuddy.server.user.exceptions.TokenNotFoundException;
-import ro.mybuddy.server.user.exceptions.UserException;
+import ro.mybuddy.server.user.exceptions.*;
 import ro.mybuddy.server.user.model.User;
+import ro.mybuddy.server.user.model.UserDto;
 import ro.mybuddy.server.user.service.UserService;
+import ro.mybuddy.server.user.utils.UserDtoToUserConverter;
+
+import javax.validation.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -18,12 +22,30 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    // TODO embed the inner code in the sign-up function
-    @RequestMapping(value = "/user/test-send-confirmation", method = RequestMethod.POST)
-    public ResponseEntity<Void> Registration(@RequestParam(name="username") String username) {
-        User user = userService.findByUsername(username);
-        userService.emailNewTokenToUser(user);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @PostMapping(value = "/user/login")
+    public ResponseEntity<?> login() {
+        return new ResponseEntity<>("ok", HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/user/registration")
+    public ResponseEntity<?> signUp(@Valid @RequestBody UserDto newUser, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            List<String> errors = bindingResult.getAllErrors().stream()
+                    .map(x -> x.getDefaultMessage())
+                    .collect(Collectors.toList());
+
+            return new ResponseEntity<>(errors.toString(), HttpStatus.NOT_ACCEPTABLE);
+        }
+        if(!newUser.getPassword().equals(newUser.getConfirmPassword())){
+            return new ResponseEntity<String>("Passwords do not match", HttpStatus.BAD_REQUEST);
+        }
+        User newCheckedUser = UserDtoToUserConverter.convert(newUser);
+        try {
+            userService.addNewUser(newCheckedUser);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (SignUpException ue) {
+            return new ResponseEntity<>(ue.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+        }
     }
 
     @RequestMapping(value = "/user/confirm-account", method = {RequestMethod.GET, RequestMethod.POST})
@@ -34,8 +56,8 @@ public class UserController {
             return new ResponseEntity<>(te.getMessage(), HttpStatus.GONE);
         } catch (InvalidTokenException te) {
             return new ResponseEntity<>(te.getMessage(), HttpStatus.NOT_ACCEPTABLE);
-        } catch (UserException te) {
-            return new ResponseEntity<>(te.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (UserException ue){
+            return new ResponseEntity<>(ue.getMessage(), HttpStatus.CONFLICT);
         }
     }
 }

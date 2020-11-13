@@ -1,6 +1,6 @@
 package ro.mybuddy.server.user.exceptions;
 
-public class NotMatchingPassword extends UserException {
+public class NotMatchingPassword extends SignUpException {
     public NotMatchingPassword() {
     }
 

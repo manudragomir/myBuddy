@@ -11,10 +11,8 @@ import ro.mybuddy.server.user.model.User;
 import ro.mybuddy.server.user.repository.ConfirmationTokenRepository;
 import ro.mybuddy.server.user.repository.UserRepository;
 import ro.mybuddy.server.user.utils.ConfirmationEmailBuilder;
-import ro.mybuddy.server.user.utils.Random;
 
 import javax.persistence.NonUniqueResultException;
-import java.util.UUID;
 
 @Component
 public class UserService {
@@ -27,8 +25,16 @@ public class UserService {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    public User findByUsername(String username) {
-        return userRepository.findByUsernameOrEmail(username, username);
+    public void addNewUser(User newUser){
+        User userOnRepo = userRepository.findByUsernameOrEmail(newUser.getUsername(), newUser.getEmail());
+        if (userOnRepo != null) {
+            throw new SignUpException("User already signed up. Please check your email to confirm the account.");
+        }
+        User returnedUser = userRepository.save(newUser);
+        if(returnedUser == null){
+            throw new SignUpException("Error when added to database");
+        }
+        emailNewTokenToUser(newUser);
     }
 
     public String confirmAccount(String confirmationToken) {
@@ -40,16 +46,21 @@ public class UserService {
                 throw new InvalidTokenException("Token has no associated account");
             try {
                 User user = userRepository.findByUsernameOrEmail(token.getUser().getUsername(), token.getUser().getEmail());
+                if(user.getRole().equals("USER")){
+                    throw new UserException("Account has already been confirmed.");
+                }
                 user.setRole("USER");
                 userRepository.save(user);
             } catch (NonUniqueResultException nue) {
                 throw new UserException("Two users must not use the same email address");
+            } catch(NullPointerException ne){
+                throw new UserException("User is not registered.");
             }
         }
-        return null;
+        return "Account confirmed successfully.";
     }
 
-    public void emailNewTokenToUser(User user) {
+    private void emailNewTokenToUser(User user) {
         ConfirmationToken token = new ConfirmationToken(user);
         System.out.println("[DEBUG] token: " + token.getConfirmationToken());
         System.out.println("[DEBUG] user id: " + token.getUser().getId());
