@@ -44,7 +44,7 @@ public class UserController {
             userService.addNewUser(newCheckedUser);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (SignUpException ue) {
-            return new ResponseEntity<>(ue.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(ue.getMessage(), HttpStatus.CONFLICT);
         }
     }
 
