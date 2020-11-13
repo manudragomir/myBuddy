@@ -17,8 +17,7 @@ import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-public class UserController {
-
+public class Use
     @Autowired
     private UserService userService;
 
@@ -31,13 +30,13 @@ public class UserController {
 
             return new ResponseEntity<>(errors.toString(), HttpStatus.NOT_ACCEPTABLE);
         }
-        if(!newUser.getPassword().equals(newUser.getConfirmPassword())){
+        if(!newUser.getPasswoewUser.getConfirmPassword())){
             return new ResponseEntity<String>("Passwords do not match", HttpStatus.BAD_REQUEST);
         }
         User newCheckedUser = UserDtoToUserConverter.convert(newUser);
         try {
             userService.addNewUser(newCheckedUser);
-            return new ResponseEntity<>(HttpStatus.OK);
+       ResponseEntity<>(HttpStatus.OK);
         } catch (SignUpException ue) {
             return new ResponseEntity<>(ue.getMessage(), HttpStatus.CONFLICT);
         }
