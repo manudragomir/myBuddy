@@ -21,10 +21,15 @@ import java.util.Arrays;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        super.configure(http);
-        http.csrf().disable();
-        http.cors().configurationSource(corsConfigurationSource());
-        http.exceptionHandling().authenticationEntryPoint(new MyBasicAuthenticationEntryPoint());
+        //super.configure(http);
+        http
+                .csrf().disable()
+                .cors().configurationSource(corsConfigurationSource())
+                .and().exceptionHandling().authenticationEntryPoint(new MyBasicAuthenticationEntryPoint())
+                .and().httpBasic()
+                .and().authorizeRequests()
+                .antMatchers("/user/registration", "/user/confirm-account").permitAll()
+                .anyRequest().authenticated();
     }
 
     @Autowired
