@@ -1,8 +1,9 @@
-package ro.mybuddy.server.user.security;
+package ro.mybuddy.server.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,8 +30,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().httpBasic()
                 .and().authorizeRequests()
                 .antMatchers("/user/registration", "/user/confirm-account").permitAll()
-                .antMatchers("/user/login").hasAnyRole("USER", "ADMIN").antMatchers("/post","/tag").permitAll().antMatchers("/tag","/index").permitAll()
-                .anyRequest().authenticated();
+                .antMatchers("/user/login","/post","/index").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.GET,"/tag").hasAnyRole("USER","ADMIN")
+                .antMatchers(HttpMethod.POST,"/tag").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE,"/tag").hasRole("ADMIN").anyRequest().authenticated();
+
     }
 
     @Autowired
