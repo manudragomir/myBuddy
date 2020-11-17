@@ -2,9 +2,11 @@ package ro.mybuddy.server.user.model;
 
 
 import lombok.*;
+import ro.mybuddy.server.post.model.Post;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Data
