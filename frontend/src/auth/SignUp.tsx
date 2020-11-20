@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {IonButton, IonContent, IonDatetime, IonInput, IonItem, IonLabel, IonPage, IonText} from '@ionic/react';
+import {IonButton, IonContent, IonDatetime, IonInput, IonItem, IonLabel, IonPage, IonText, IonLoading } from '@ionic/react';
 import './signup.css'
 import {Card, Col, Nav, Row} from "react-bootstrap";
 import logo from '../images/logo_full.png';
@@ -24,6 +24,7 @@ interface SignUpState {
     redirect: boolean,
     messageError: string,
     pendingSignup: boolean,
+    signuping: boolean,
 }
 
 const initialState: SignUpState = {
@@ -42,6 +43,7 @@ const initialState: SignUpState = {
     redirect: false,
     messageError: '',
     pendingSignup: false,
+    signuping: false,
 };
 
 interface SignUpProviderProps {
@@ -70,14 +72,15 @@ export const SignUp: React.FC<SignUpProviderProps> = ({children}) => {
         }
 
         async function signUp() {
+            setState({...state, signuping: true});
             try {
                 await signup(state.firstName, state.lastName, Moment(state.dateOfBirth).format("YYYY-MM-DD"), state.username, state.email, state.password, state.confirmPassword);
-                setState({...state, redirect: true, pendingSignup: false})
+                setState({...state, redirect: true, pendingSignup: false, signuping: false})
             } catch (error) {
                 if (canceled) {
                     return;
                 }
-                setState({...state, messageError: error.toString(), pendingSignup: false})
+                setState({...state, messageError: error.toString(), pendingSignup: false, signuping: false})
             }
         }
     }
@@ -229,13 +232,18 @@ export const SignUp: React.FC<SignUpProviderProps> = ({children}) => {
 
                                                            disabled>Submit</IonButton>}
                         {state.messageError != '' && <IonText color={"danger"}> {state.messageError} </IonText>}
+
+                        <IonLoading isOpen={state.signuping}
+                                    message={'Becoming our buddy...'}
+                        />
                         {state.redirect &&
                         <Nav>
                             <Nav.Link href="/login"
                                       style={{color: "#565210", fontSize: "20px", fontFamily: "Josefin Slab"}}>Successfully
-                                signed up! Go back to login.</Nav.Link>
+                                signed up! Just check your email and confirm the account. Go back to login.</Nav.Link>
                         </Nav>
                         }
+                        
                     </Col>
                     <Col id={"logoCol"}>
                         <Card id={"logoCardParrent"}>
