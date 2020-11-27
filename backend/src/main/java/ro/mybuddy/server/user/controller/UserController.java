@@ -1,5 +1,6 @@
 package ro.mybuddy.server.user.controller;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/user/registration")
+    @ApiOperation(value = "Creates a new account")
     public ResponseEntity<?> signUp(@Valid @RequestBody UserDto newUser, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<String> errors = bindingResult.getAllErrors().stream()
