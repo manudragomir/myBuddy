@@ -12,15 +12,10 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import {red} from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import MessageIcon from '@material-ui/icons/Message';
 import {PostProps} from "./PostProps";
-
-
-
-
 
 
 const useStyles = makeStyles((theme) => ({
@@ -48,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export const Post: React.FC<PostProps> = ({image}) => {
+export const Post: React.FC<PostProps> = ({id, body, date, latitude, longitude, user_id, tags}) => {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
 
@@ -70,18 +65,18 @@ export const Post: React.FC<PostProps> = ({image}) => {
                     </IconButton>
                 }
                 title="NUME user"
-                subheader="November 13, 2020 | Aurel Vlaicu, Cluj-Napoca"
-             >
-
+                subheader={`${date} | ${latitude} ${longitude}`}
+            >
             </CardHeader>
             <CardMedia
                 className={classes.media}
-                image={image}
+                image={"assets/icon/logo.png"}
                 title="titlu imagine"
             />
             <CardContent>
                 <Typography variant="body2" color="textSecondary" component="p">
-                    descriere scurta
+                    TAGS: {tags.toString()}
+                    {console.log(tags)}
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
@@ -106,7 +101,7 @@ export const Post: React.FC<PostProps> = ({image}) => {
                 <CardContent>
                     <Typography paragraph>Descriere:</Typography>
                     <Typography paragraph>
-                        descriere lungaaaaaaaaaaaaaaa
+                        {body}
                     </Typography>
                 </CardContent>
             </Collapse>

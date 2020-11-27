@@ -26,6 +26,7 @@ import { UserPage, UserEdit } from './profile';
 import { AuthProvider, Login, PrivateRoute, Confirm } from './auth';
 import SignUp from './auth/SignUp';
 import NewsFeed from './newsfeed/NewsFeed';
+import {NewsFeedProvider} from "./newsfeed/NewsFeedProvider";
 
 const App: React.FC = () => (
   <IonApp>
@@ -33,11 +34,15 @@ const App: React.FC = () => (
       <IonRouterOutlet>
         <AuthProvider>
           <Route path="/login" component={Login} exact={true}/>
+          <NewsFeedProvider>
             <PrivateRoute path="/user" component={UserPage}/>
+          </NewsFeedProvider>
             <PrivateRoute path="/user/edit" component={UserEdit}/>
           <Route path="/signup" component={SignUp}/>
-          <Route path="/home" component={NewsFeed}/>
           <Route path="/confirm" component={Confirm}/>
+          <NewsFeedProvider>
+            <Route path="/home" component={NewsFeed}/>
+          </NewsFeedProvider>
           <Route exact path="/" render={() => <Redirect to="/user"/>}/>
         </AuthProvider>
       </IonRouterOutlet>

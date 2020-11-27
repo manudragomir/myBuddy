@@ -1,3 +1,9 @@
 export interface PostProps {
-    image: string,
+    id: string,
+    body: string,
+    date: string,
+    latitude: number,
+    longitude: number,
+    user_id: number,
+    tags: []
 }
