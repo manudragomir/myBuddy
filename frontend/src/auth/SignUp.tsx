@@ -24,7 +24,6 @@ interface SignUpState {
     redirect: boolean,
     messageError: string,
     pendingSignup: boolean,
-    signuping: boolean,
 }
 
 const initialState: SignUpState = {
@@ -43,7 +42,6 @@ const initialState: SignUpState = {
     redirect: false,
     messageError: '',
     pendingSignup: false,
-    signuping: false,
 };
 
 interface SignUpProviderProps {
@@ -72,15 +70,14 @@ export const SignUp: React.FC<SignUpProviderProps> = ({children}) => {
         }
 
         async function signUp() {
-            setState({...state, signuping: true});
             try {
                 await signup(state.firstName, state.lastName, Moment(state.dateOfBirth).format("YYYY-MM-DD"), state.username, state.email, state.password, state.confirmPassword);
-                setState({...state, redirect: true, pendingSignup: false, signuping: false})
+                setState({...state, redirect: true, pendingSignup: false})
             } catch (error) {
                 if (canceled) {
                     return;
                 }
-                setState({...state, messageError: error.toString(), pendingSignup: false, signuping: false})
+                setState({...state, messageError: error.toString(), pendingSignup: false})
             }
         }
     }
@@ -154,7 +151,7 @@ export const SignUp: React.FC<SignUpProviderProps> = ({children}) => {
                             <IonInput name={"firstName"} onIonChange={e => setState({
                                 ...state,
                                 firstName: e.detail.value || ''
-                            })} onMouseLeave={() => checkFirstName(state.firstName)}/>
+                            })} onIonBlur={() => checkFirstName(state.firstName)}/>
                             {!state.validFirstName && <IonText color={"danger"}> Name is not valid! </IonText>
                             }
                         </IonItem>
@@ -163,7 +160,7 @@ export const SignUp: React.FC<SignUpProviderProps> = ({children}) => {
                             <IonInput name={"lastName"} onIonChange={e => setState({
                                 ...state,
                                 lastName: e.detail.value || ''
-                            })} onMouseLeave={() => checkLastName(state.lastName)}/>
+                            })} onIonBlur={() => checkLastName(state.lastName)}/>
                             {!state.validLastName &&
                             <IonText color={"danger"}> Last Name is not valid! </IonText>
                             }
@@ -190,7 +187,7 @@ export const SignUp: React.FC<SignUpProviderProps> = ({children}) => {
                             <IonInput name={"email"} onIonChange={e => setState({
                                 ...state,
                                 email: e.detail.value || ''
-                            })} onMouseLeave={() => checkEmail(state.email)}
+                            })} onIonBlur={() => checkEmail(state.email)}
                             />
                             {!state.validEmail &&
                             <IonText color={"danger"}> Email is not valid. (e.g petlovers@ubbcluj.ro) </IonText>
@@ -203,13 +200,13 @@ export const SignUp: React.FC<SignUpProviderProps> = ({children}) => {
                             <IonInput name={"password"} type={"password"} onIonChange={e => setState({
                                 ...state,
                                 password: e.detail.value || ''
-                            })} onMouseLeave={() => checkPassword(state.password)}/>
+                            })} onIonBlur={() => checkPassword(state.password)}/>
                             {!state.validPassword &&
                             <IonText color={"danger"}> Password should contain at least one upper case, one lower
                                 case, one digit and one special character. Length should be at least 8.
                             </IonText>
                             }
-                        </IonItem>
+                        </IonItem>  
 
                         <IonItem>
                             <IonLabel position={"floating"}>Confirm password</IonLabel>
@@ -217,9 +214,10 @@ export const SignUp: React.FC<SignUpProviderProps> = ({children}) => {
                                       onIonChange={e => setState({
                                           ...state,
                                           confirmPassword: e.detail.value || ''
-                                      })} onMouseLeave={() => checkConfirmedPass(state.confirmPassword)}/>
+                                      })} onIonBlur={() => checkConfirmedPass(state.confirmPassword)}/>
                             {!state.validConfirmedPassword &&
-                            <IonText color={"danger"}> Confirmed Password is not valid! </IonText>
+                            <IonText color={"danger"}> Passwords do not match! </IonText>
+                             
                             }
                         </IonItem>
                         {checkIfAllFilled() && <IonButton type={"submit"} color={"warning"} expand={"block"}
@@ -232,18 +230,13 @@ export const SignUp: React.FC<SignUpProviderProps> = ({children}) => {
 
                                                            disabled>Submit</IonButton>}
                         {state.messageError != '' && <IonText color={"danger"}> {state.messageError} </IonText>}
-
-                        <IonLoading isOpen={state.signuping}
-                                    message={'Becoming our buddy...'}
-                        />
                         {state.redirect &&
                         <Nav>
                             <Nav.Link href="/login"
                                       style={{color: "#565210", fontSize: "20px", fontFamily: "Josefin Slab"}}>Successfully
-                                signed up! Just check your email and confirm the account. Go back to login.</Nav.Link>
+                                signed up! A confirmation link was sent to the given email address. Go back to login.</Nav.Link>
                         </Nav>
                         }
-                        
                     </Col>
                     <Col id={"logoCol"}>
                         <Card id={"logoCardParrent"}>
