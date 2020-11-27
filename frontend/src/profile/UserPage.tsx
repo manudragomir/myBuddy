@@ -1,18 +1,20 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {RouteComponentProps} from 'react-router';
-import {IonContent, IonPage} from '@ionic/react';
+import {IonCol, IonContent, IonGrid, IonImg, IonPage, IonRow} from '@ionic/react';
 import {Button, Col, Container, Image, Row, Tab, Tabs} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NavBarUser from '../components/NavBarUser';
 import img from '../images/column.png';
 import dog from '../images/dog_cut1.jpg';
 import profileImg from '../images/logoMyPicture.png';
-import NewsFeed from "../newsfeed/NewsFeed";
+import { Post } from './Post';
+import { PostProps } from './PostProps';
+import { PostContext } from './PostProvider';
 
 
 const UserPage: React.FC<RouteComponentProps> = ({history}) => {
     const [key, setKey] = useState('posts');
-
+    const {posts}=useContext(PostContext);
     return (
         <IonPage>
             <IonContent>
@@ -28,11 +30,9 @@ const UserPage: React.FC<RouteComponentProps> = ({history}) => {
                                 onSelect={k => k && setKey(k)}
                             >
                                 <Tab eventKey="posts" title="Posts">
-                                    {/* <NewsFeed>
-                                    </NewsFeed> */}
-                                </Tab>
-                                <Tab eventKey="contact" title="Contact">
-                                    Contact content
+                                {posts && posts.map((item: PostProps, i: number) => {
+                                    return <Post key={`${i}`} id={item.id} date={item.date} user={item.user} body={item.body} tags={item.tags}></Post>
+                                })}
                                 </Tab>
                             </Tabs>
                         </Col>
@@ -55,6 +55,9 @@ const UserPage: React.FC<RouteComponentProps> = ({history}) => {
                                     <Button onClick={() => {
                                         return history.push("/user/edit")
                                     }} variant="secondary">Edit Profile</Button>
+                                    <Button onClick={() => {
+                                        return history.push("/user/post")
+                                    }} variant="secondary">Add Post</Button>
                                 </Col>
                             </Row>
                         </Col>

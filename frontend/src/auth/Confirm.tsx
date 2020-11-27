@@ -15,7 +15,7 @@ const validateURL = (url: string): boolean => {
 };
 
 export const Confirm : React.FC<RouteComponentProps>= ({history}) => {
-    const [mesaj, setMesaj] = useState("");
+    const [mesaj, setMesaj] = useState("hei");
     const [done, setDone] = useState(false);
     const signUpConfirmation = () => { 
         //console.log('[DEBUG] What is this? ' + history.location.search)  

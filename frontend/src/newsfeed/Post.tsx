@@ -70,7 +70,7 @@ export const Post: React.FC<PostProps> = ({id, body, date, latitude, longitude, 
             </CardHeader>
             <CardMedia
                 className={classes.media}
-                image={"assets/icon/logo.png"}
+                image={`https://proiectcolectivmybuddy.s3.eu-central-1.amazonaws.com/testFolder/${id}.jpg`}
                 title="titlu imagine"
             />
             <CardContent>
