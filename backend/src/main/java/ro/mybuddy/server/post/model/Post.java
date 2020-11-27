@@ -2,6 +2,7 @@ package ro.mybuddy.server.post.model;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import ro.mybuddy.server.post.utils.PostSerializer;
 import ro.mybuddy.server.tag.model.Tag;
@@ -41,6 +42,8 @@ public class Post {
     @Min(value=-90, message = "Latitude must be higher than -90")
     @Max(value=90, message = "Latitude must be lower than 90")
     private Double latitude;
+
+    @ApiModelProperty(notes = "a set of strings that represents the tags of the post")
     @ManyToMany
     private Set<Tag> tags = new HashSet<>();
 

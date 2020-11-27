@@ -20,6 +20,16 @@ import java.util.Arrays;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private static final String[] AUTH_WHITELIST = {
+
+            // -- swagger ui
+            "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/v2/api-docs",
+            "/webjars/**"
+    };
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //super.configure(http);
@@ -30,6 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().httpBasic()
                 .and().authorizeRequests()
                 .antMatchers("/user/registration", "/user/confirm-account").permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers("/user/login","/post","/index").hasAnyRole("USER", "ADMIN")
                 .antMatchers(HttpMethod.GET,"/tag").hasAnyRole("USER","ADMIN")
                 .antMatchers(HttpMethod.POST,"/tag").hasRole("ADMIN")

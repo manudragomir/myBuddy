@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
-
 public class PostController {
     @Autowired
     private PostService postService;
