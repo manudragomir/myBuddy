@@ -24,6 +24,7 @@ interface SignUpState {
     redirect: boolean,
     messageError: string,
     pendingSignup: boolean,
+    signuping: boolean,
 }
 
 const initialState: SignUpState = {
@@ -42,6 +43,7 @@ const initialState: SignUpState = {
     redirect: false,
     messageError: '',
     pendingSignup: false,
+    signuping: false,
 };
 
 interface SignUpProviderProps {
@@ -70,14 +72,15 @@ export const SignUp: React.FC<SignUpProviderProps> = ({children}) => {
         }
 
         async function signUp() {
+            setState({...state, signuping: true});
             try {
                 await signup(state.firstName, state.lastName, Moment(state.dateOfBirth).format("YYYY-MM-DD"), state.username, state.email, state.password, state.confirmPassword);
-                setState({...state, redirect: true, pendingSignup: false})
+                setState({...state, redirect: true, pendingSignup: false, signuping: false})
             } catch (error) {
                 if (canceled) {
                     return;
                 }
-                
+                console.log(error.response);
                 setState({...state, messageError: error.response.data, pendingSignup: false})
             }
         }
@@ -231,6 +234,10 @@ export const SignUp: React.FC<SignUpProviderProps> = ({children}) => {
 
                                                            disabled>Submit</IonButton>}
                         {state.messageError != '' && <IonText color={"danger"}> {state.messageError} </IonText>}
+
+                        <IonLoading isOpen={state.signuping}
+                                    message={'Becoming our buddy...'}
+                        />                        
                         {state.redirect &&
                         <Nav>
                             <Nav.Link href="/login"
@@ -238,6 +245,7 @@ export const SignUp: React.FC<SignUpProviderProps> = ({children}) => {
                                 signed up! A confirmation link was sent to the given email address. Go back to login.</Nav.Link>
                         </Nav>
                         }
+
                     </Col>
                     <Col id={"logoCol"}>
                         <Card id={"logoCardParrent"}>
