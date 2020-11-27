@@ -1,7 +1,7 @@
 export const baseUrl = 'localhost:8080';
 
 export const getLogger: (tag: string) => (...args: any) => void =
-    tag => (...args) => console.log(tag, ...args);
+  tag => (...args) => console.log(tag, ...args);
 
 const log = getLogger('api');
 
@@ -30,7 +30,9 @@ export const config = {
 
 export const authConfig = (token?: string) => ({
   headers: {
+    'Accept': 'application/json',
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${token}`,
-  }
+    // Authorization: `Bearer ${token}`,
+  },
+  withCredentials: true
 });
