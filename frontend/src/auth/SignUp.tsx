@@ -77,7 +77,8 @@ export const SignUp: React.FC<SignUpProviderProps> = ({children}) => {
                 if (canceled) {
                     return;
                 }
-                setState({...state, messageError: error.toString(), pendingSignup: false})
+                
+                setState({...state, messageError: error.response.data, pendingSignup: false})
             }
         }
     }
