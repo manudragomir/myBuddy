@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import ro.mybuddy.server.post.utils.PostSerializer;
+import ro.mybuddy.server.post.utils.TypePost;
 import ro.mybuddy.server.tag.model.Tag;
 import ro.mybuddy.server.user.model.User;
 
@@ -29,6 +30,9 @@ import java.util.Set;
 public class Post {
     @Id
     private String id;
+    @Enumerated(EnumType.ORDINAL)
+    @NotNull
+    private TypePost type;
     @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL, targetEntity = User.class)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

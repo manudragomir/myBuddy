@@ -9,6 +9,7 @@ import ro.mybuddy.server.post.exceptions.AddPostException;
 import ro.mybuddy.server.post.exceptions.DeletePostException;
 import ro.mybuddy.server.post.exceptions.PostNotFoundException;
 import ro.mybuddy.server.post.exceptions.UpdatePostException;
+import ro.mybuddy.server.post.model.FilterPrototype;
 import ro.mybuddy.server.post.model.Post;
 import ro.mybuddy.server.tag.model.Tag;
 import ro.mybuddy.server.post.service.PostService;
@@ -25,8 +26,14 @@ public class PostController {
     private PostService postService;
 
     @GetMapping(value = "/post")
-    public ResponseEntity<List<Post>> findAll(){
-        return new ResponseEntity<List<Post>>(postService.findAll(), HttpStatus.ACCEPTED);
+    public ResponseEntity<?> findAll(@Valid @RequestBody FilterPrototype tags, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            List<String> errors = bindingResult.getAllErrors().stream()
+                    .map(x -> x.getDefaultMessage()).collect(Collectors.toList());
+            return new ResponseEntity<>(errors.toString(),HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        return new ResponseEntity<List<Post>>(postService.findAll(tags),HttpStatus.OK);
     }
 
     @PostMapping(value="/post")
@@ -39,7 +46,7 @@ public class PostController {
         }
         try{
             Post post_new = postService.savePost(post);
-            return new ResponseEntity<>(post_new, HttpStatus.ACCEPTED);
+            return new ResponseEntity<Post>(post_new, HttpStatus.ACCEPTED);
         } catch(AddPostException e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_ACCEPTABLE);
         }
@@ -57,6 +64,16 @@ public class PostController {
             Post post_new = postService.updatePost(post);
             return new ResponseEntity<>(post_new, HttpStatus.ACCEPTED);
         } catch(UpdatePostException e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_ACCEPTABLE);
+        }
+    }
+
+    @PutMapping(value="/post/type/{id}")
+    public ResponseEntity<?> updatePost(@PathVariable String id){
+        try{
+            postService.changeTypePost(id);
+            return new ResponseEntity<>("updated",HttpStatus.ACCEPTED);
+        } catch(Exception e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_ACCEPTABLE);
         }
     }
