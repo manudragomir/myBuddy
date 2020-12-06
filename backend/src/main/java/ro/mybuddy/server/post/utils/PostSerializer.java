@@ -16,6 +16,7 @@ public class PostSerializer extends JsonSerializer<Post> {
         gen.writeObjectFieldStart("user");
         gen.writeStringField("username",value.getUser().getUsername());
         gen.writeEndObject();
+        gen.writeStringField("type",value.getType().toString());
         if(value.getBody()!=null)
             gen.writeStringField("body",value.getBody());
         gen.writeStringField("date",value.getDate().toString());
