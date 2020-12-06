@@ -22,6 +22,7 @@ import ro.mybuddy.server.user.model.User;
 import ro.mybuddy.server.user.repository.UserRepository;
 import ro.mybuddy.server.user.utils.GetAuthenticatedUserId;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
 @Component
@@ -96,7 +97,7 @@ public class PostService {
         return i;
     }
 
-    public String deletePost(Post post){
+    public void deletePost(Post post){
         try{
             postRepository.delete(post);
         } catch(JpaObjectRetrievalFailureException e){
@@ -105,7 +106,6 @@ public class PostService {
 
         if(post==null)
             throw new DeletePostException("Error deleting post");
-        return "Successfully deleted";
     }
 
     public Post updatePost(Post post){
@@ -135,9 +135,10 @@ public class PostService {
         return post.get();
     }
 
-    public void changeTypePost(String id){
+    public Post changeTypePost(String id){
         Post post = postRepository.findById(id).get();
         post.setType(post.getType().update());
         updatePost(post);
+        return post;
     }
 }
