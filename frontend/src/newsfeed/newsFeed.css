@@ -1,0 +1,15 @@
+.my-custom-class {
+    --background: #dbd55b;
+    --backdrop-opacity: 0.6;
+    --ion-text-color: white;
+}
+
+
+button.alert-button:nth-child(1) {
+    color: white;
+}
+
+
+button.alert-button:nth-child(2){
+    color: white;
+}
