@@ -1,9 +1,11 @@
+import {UserPostProps} from "./UserPostProps";
+
 export interface PostProps {
     id: string,
+    user: UserPostProps,
     body: string,
     date: string,
     latitude: number,
     longitude: number,
-    user_id: number,
     tags: []
 }

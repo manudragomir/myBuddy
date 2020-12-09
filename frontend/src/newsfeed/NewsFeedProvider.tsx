@@ -51,7 +51,7 @@ export const NewsFeedProvider: React.FC<NewsFeedProviderProps> = ({children}) =>
     const [state, dispatch] = useReducer(reducer, initialState);
     const {posts, fetching, fetchingError} = state;
 
-    useEffect(getNewsFeedPostsEffect, []);
+    //  useEffect(getNewsFeedPostsEffect, []);
 
     const value = {posts, fetching, fetchingError};
     log('returns');
@@ -61,28 +61,28 @@ export const NewsFeedProvider: React.FC<NewsFeedProviderProps> = ({children}) =>
         </NewsFeedContext.Provider>
     );
 
-    function getNewsFeedPostsEffect() {
-        console.log("GET NEWS FEED")
-        let canceled = false;
-        fetchPosts();
-        return () => {
-            canceled = true;
-        }
-
-        async function fetchPosts() {
-            try {
-                log('fetchPosts started');
-                dispatch({type: FETCH_POSTS_STARTED, payload: ""})
-                const result = await getNewsFeed();
-                log('fetchPosts succeeded');
-                if (!canceled) {
-                    dispatch({type: FETCH_POSTS_SUCCEEDED, payload: {result: result}})
-                }
-            } catch (error) {
-                log('fetchPosts failed');
-                log(error);
-                dispatch({type: FETCH_POSTS_FAILED, payload: {error: error}})
-            }
-        }
-    }
+    // function getNewsFeedPostsEffect() {
+    //     console.log("GET NEWS FEED")
+    //     let canceled = false;
+    //     fetchPosts();
+    //     return () => {
+    //         canceled = true;
+    //     }
+    //
+    //     async function fetchPosts() {
+    //         try {
+    //             log('fetchPosts started');
+    //             dispatch({type: FETCH_POSTS_STARTED, payload: ""})
+    //             const result = await getNewsFeed(0,1);
+    //             log('fetchPosts succeeded');
+    //             if (!canceled) {
+    //                 dispatch({type: FETCH_POSTS_SUCCEEDED, payload: {result: result}})
+    //             }
+    //         } catch (error) {
+    //             log('fetchPosts failed');
+    //             log(error);
+    //             dispatch({type: FETCH_POSTS_FAILED, payload: {error: error}})
+    //         }
+    //     }
+    // }
 };

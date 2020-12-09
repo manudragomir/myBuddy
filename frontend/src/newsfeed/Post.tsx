@@ -18,6 +18,7 @@ import ReportIcon from '@material-ui/icons/Report';
 import {PostProps} from "./PostProps";
 import {IonAlert} from '@ionic/react';
 import "../newsfeed/newsFeed.css"
+import {sendReport} from "./newsFeedApi";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -64,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
 ;
 
 
-export const Post: React.FC<PostProps> = ({id, body, date, latitude, longitude, user_id, tags}) => {
+export const Post: React.FC<PostProps> = ({id,user, body, date, latitude, longitude, tags}) => {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
     const [reported, setReported] = React.useState(false);
@@ -133,6 +134,8 @@ export const Post: React.FC<PostProps> = ({id, body, date, latitude, longitude, 
                         handler: (reason) => {
                             console.log(reason)
                             console.log('Confirm Ok');
+
+                            sendReport(Number(id),reason);
                         }
                     }
                 ]}
@@ -148,7 +151,7 @@ export const Post: React.FC<PostProps> = ({id, body, date, latitude, longitude, 
                         <MoreVertIcon/>
                     </IconButton>
                 }
-                title="NUME user"
+                title={`${user.username}`}
                 subheader={`${date} | ${latitude} ${longitude}`}
             >
             </CardHeader>
@@ -159,7 +162,7 @@ export const Post: React.FC<PostProps> = ({id, body, date, latitude, longitude, 
             />
             <CardContent>
                 <Typography variant="body2" color="textSecondary" component="p">
-                    TAGS: {tags.toString()}
+                    {tags.toString()}
                     {console.log(tags)}
                 </Typography>
             </CardContent>
