@@ -20,28 +20,12 @@ import {PostProps} from "./PostProps";
 import {getNewsFeed} from "./newsFeedApi";
 
 const NewsFeed: React.FC<RouteComponentProps> = (history) => {
-    const {posts, fetching, fetchingError} = useContext(NewsFeedContext);
-    const [disableInfiniteScroll, setDisableInfiniteScroll] = useState<boolean>(false);
-    const [page, setPage] = useState<number>(0);
-    const [newsFeedPosts, setNewsFeedPosts] = useState<PostProps[]>([])
+    const {posts, fetching, fetchingError, fetchNewsFeed, disableInfiniteScroll} = useContext(NewsFeedContext);
     const [newsFeedTypes] = useState(["All", "Adoption", "Lost", "Adopted", "Found", "MyBuddy"])
     const [filter, setFilter] = useState<string | undefined>(undefined);
-    const SIZE = 2;
 
     async function fetchNewsFeedPosts() {
-        try {
-            const posts = await getNewsFeed(page, SIZE);
-            if (posts.length > 0) {
-                setNewsFeedPosts([...newsFeedPosts, ...posts]);
-                setPage(page + 1);
-                setDisableInfiniteScroll(posts.length < SIZE);
-            } else {
-                setDisableInfiniteScroll(true);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-
+        await fetchNewsFeed?.();
     }
 
     useIonViewWillEnter(async () => {
@@ -49,6 +33,7 @@ const NewsFeed: React.FC<RouteComponentProps> = (history) => {
     });
 
     async function searchNext($event: CustomEvent<void>) {
+        console.log("NEXT")
         await fetchNewsFeedPosts();
         ($event.target as HTMLIonInfiniteScrollElement).complete();
     }
@@ -76,7 +61,7 @@ const NewsFeed: React.FC<RouteComponentProps> = (history) => {
                     </IonGrid>
                 </IonItemDivider>
 
-                {newsFeedPosts?.map(({id, user, body, date, latitude, longitude, tags}) =>
+                {posts?.map(({id, user, body, date, latitude, longitude, tags}) =>
                     <Post key={id} id={id} user={user} body={body} date={date} latitude={latitude} longitude={longitude}
                           tags={tags}/>
                 )}
