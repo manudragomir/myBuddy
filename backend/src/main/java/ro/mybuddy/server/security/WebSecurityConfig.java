@@ -55,7 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers("/user/login", "/post", "/index").hasAnyRole("USER", "ADMIN")
                 .antMatchers(HttpMethod.GET, "/tag").hasAnyRole("USER", "ADMIN")
-                .antMatchers(HttpMethod.POST, "/tag").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/tag", "/report").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/tag").hasRole("ADMIN")
                 .antMatchers("/post/newsfeed").permitAll()
                 .anyRequest().authenticated();
