@@ -42,7 +42,7 @@ const UserPage: React.FC<RouteComponentProps> = ({history}) => {
                     </Row>
                     <Row>
                         <Col lg="2">
-                            <Image src={img} fluid/>
+                            {/* <Image src={img} fluid/> */}
                         </Col>
                         <Col lg="8">
                             <Row>
@@ -64,7 +64,7 @@ const UserPage: React.FC<RouteComponentProps> = ({history}) => {
                             </Row>
                         </Col>
                         <Col lg="2">
-                            <Image src={img} fluid/>
+                            {/* <Image src={img} fluid/> */}
                         </Col>
                     </Row>
 

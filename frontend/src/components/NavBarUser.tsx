@@ -2,7 +2,12 @@ import React from 'react'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import color from '../images/logo_full.png';
+import {Plugins} from '@capacitor/core';
+const {Storage} = Plugins;
 export default function NavBarUser() {
+    function handleLogOut(){
+        (async() => {await Storage.clear()})();
+    }
     return (
         <div>
         <Navbar bg="dark" variant="dark">
@@ -21,7 +26,8 @@ export default function NavBarUser() {
                 <Nav.Link href="#">Our Mission</Nav.Link>
                 </Nav>
                 <Nav>
-                <Nav.Link href="/login">Sign Out</Nav.Link>
+                {/* <Nav.Link href="/login" onClick=​​​​​{handleLogOut}>SignOut</Nav.Link>    */}
+                <Nav.Link href="/login" onClick={handleLogOut}>SignOut</Nav.Link>
                 <Nav.Link href="#">Contact</Nav.Link>
                 <Nav.Link href="#">Help</Nav.Link>
                 </Nav>   

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {IonButton, IonContent, IonDatetime, IonInput, IonItem, IonLabel, IonPage, IonText} from '@ionic/react';
+import {IonButton, IonContent, IonDatetime, IonInput, IonItem, IonLabel, IonLoading, IonPage, IonText} from '@ionic/react';
 import './signup.css'
 import {Card, Col, Nav, Row} from "react-bootstrap";
 import logo from '../images/logo_full.png';
@@ -232,9 +232,7 @@ export const SignUp: React.FC<SignUpProviderProps> = ({children}) => {
                                                            disabled>Submit</IonButton>}
                         {state.messageError != '' && <IonText color={"danger"}> {state.messageError} </IonText>}
 
-                        <IonLoading isOpen={state.signuping}
-                                    message={'Becoming our buddy...'}
-                        />                        
+                                            
                         {state.redirect &&
                         <Nav>
                             <Nav.Link href="/login"

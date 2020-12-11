@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { RouteComponentProps } from 'react-router';
-import { IonButton, IonContent, IonHeader, IonInput, IonLoading, IonPage} from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonInput, IonLoading, IonPage, IonPopover} from '@ionic/react';
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -34,6 +34,11 @@ import Button from '@material-ui/core/Button';
 import { Input, InputLabel } from '@material-ui/core';
 import { PostContext } from './PostProvider';
 import Moment from 'moment';
+import { MyMap } from './GeoMap';
+import CancelIcon from '@material-ui/icons/Cancel';
+import { getLocation } from './mapApi';
+import { useMyLocation } from './useMyLocation';
+
 
 
 const StyledCard = styled(Card)`
@@ -41,6 +46,12 @@ const StyledCard = styled(Card)`
     width: 100%;
     height: 100%;
     margin: 0;
+`
+
+const StyledPopover = styled(IonPopover)`
+    height : 400px;
+    width : 400px;
+    --backdrop-opacity : 0%;
 `
 
 
@@ -126,6 +137,13 @@ export const AddPost: React.FC<RouteComponentProps> = ({history}) => {
     const [imgSrc,setImgSrc] = useState<string | undefined>(photo);
     const { posts,saving,savingError,addPost } = useContext(PostContext);
 
+    // for map
+    const myLocation = useMyLocation();
+    const { latitude: lat, longitude: lng } = myLocation.position?.coords || {}
+    const [popoverState, setShowPopover] = useState({ showPopover: false, event: undefined });
+    const [latitude,setLatitude] = useState(0);
+    const [longitude,setLongitude] = useState(0);
+
   const handleChangeMandatory = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMandatoryTag(event.target.value);
   };
@@ -203,17 +221,48 @@ export const AddPost: React.FC<RouteComponentProps> = ({history}) => {
                                 <div className={classes.margin}>
                                     <Grid container spacing={1} alignItems="flex-end">
                                     <Grid item>
-                                        <Room fontSize="large"/>
+                                        {/* <Room fontSize="large"/> */}
+                                        <StyledPopover
+                                              event={popoverState.event}
+                                              isOpen={popoverState.showPopover}
+                                              onDidDismiss={() => setShowPopover({ showPopover: false, event: undefined })}
+                                              
+                                              >
+                                                  <IconButton onClick={(e: any) => {
+                                                        setShowPopover({ showPopover: false, event: e })
+                                                      }}
+                                                  >
+                                                    <CancelIcon fontSize="large"/>
+                                                  </IconButton>
+                                                  {/* <div>latitude: {lat}</div>     
+                                                  <div>longitude: {lng}</div>   */}
+                                                  {lat && lng &&
+                                                    <MyMap
+                                                      lat={lat}
+                                                      lng={lng}
+                                                      onMapClick={log('onMap')}
+                                                      onMarkerClick={getLatLng()}
+                                                  />} 
+                                            </StyledPopover>
+                                            <IconButton aria-label="mapPopover" onClick={
+                                                (e: any) => {
+                                                  e.persist();
+                                                  setShowPopover({ showPopover: true, event: e })
+                                                }}>
+                                              <Room fontSize="large"/>
+                                            </IconButton>
                                     </Grid>
                                     <Grid item>
-                                        <TextField id="input-with-icon-grid" label="find me here" fullWidth/>
+                                      <TextField id="input-with-icon-grid" label="find me here" fullWidth value={"You're here "+latitude+" "+longitude}/>
                                     </Grid>
                                     </Grid>
                                 </div>
                                 <div className={classes.margin}>
                                     <Grid container spacing={1} alignItems="flex-end">
                                     <Grid item>
-                                        <Pets fontSize="large"/>
+                                        <IconButton>
+                                          <Pets fontSize="large"/>
+                                        </IconButton>                                    
                                     </Grid>
                                     <Grid item>
                                         <TextField id="input-with-icon-grid" label="about the pet" fullWidth onChange={handleChangeBody}/>
@@ -221,8 +270,8 @@ export const AddPost: React.FC<RouteComponentProps> = ({history}) => {
                                     </Grid>
                                 </div>
                             </div>
-                            <br></br>
-                            <br></br>
+                            {/* <br></br>
+                            <br></br> */}
                             <FormControl component="fieldset">
                             <FormLabel component="legend">Whose pet is it?</FormLabel>
                             <br></br>
@@ -329,6 +378,13 @@ export const AddPost: React.FC<RouteComponentProps> = ({history}) => {
       </IonContent>
     </IonPage>
   );
+  function log(source: string) {
+    return (e: any) => console.log(source, e.latLng.lat(), e.latLng.lng());
+  }
+
+  function getLatLng(){
+    return (e:any) => {console.log(getLocation(e.latLng.lat(),e.latLng.lng()));setLatitude(e.latLng.lat());setLongitude(e.latLng.lng())};
+  }
 };
 
 export default AddPost;
