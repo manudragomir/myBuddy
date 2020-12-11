@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {IonButton, IonContent, IonDatetime, IonInput, IonItem, IonLabel, IonPage, IonText} from '@ionic/react';
+import {IonButton, IonContent, IonDatetime, IonInput, IonItem, IonLabel, IonPage, IonText, IonLoading} from '@ionic/react';
 import './signup.css'
 import {Card, Col, Nav, Row} from "react-bootstrap";
 import logo from '../images/logo_full.png';
