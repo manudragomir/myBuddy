@@ -1,11 +1,9 @@
-import axios from "axios";
 export const baseUrl = 'localhost:8080';
 
 export const getLogger: (tag: string) => (...args: any) => void =
     tag => (...args) => console.log(tag, ...args);
 
 const log = getLogger('api');
-axios.defaults.withCredentials = true;
 
 export interface ResponseProps<T> {
   data: T;
@@ -24,14 +22,10 @@ export function withLogs<T>(promise: Promise<ResponseProps<T>>, fnName: string):
     });
 }
 
-
 export const config = {
   headers: {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Credentials': true,
-  },
-  allowCredentials: true,
-  withCredentials: true,
+    'Content-Type': 'application/json'
+  }
 };
 
 export const authConfig = (token?: string) => ({

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {IonButton, IonContent, IonDatetime, IonInput, IonItem, IonLabel, IonPage, IonText, IonLoading } from '@ionic/react';
+import {IonButton, IonContent, IonDatetime, IonInput, IonItem, IonLabel, IonPage, IonText} from '@ionic/react';
 import './signup.css'
 import {Card, Col, Nav, Row} from "react-bootstrap";
 import logo from '../images/logo_full.png';
@@ -24,7 +24,6 @@ interface SignUpState {
     redirect: boolean,
     messageError: string,
     pendingSignup: boolean,
-    signuping: boolean,
 }
 
 const initialState: SignUpState = {
@@ -43,7 +42,6 @@ const initialState: SignUpState = {
     redirect: false,
     messageError: '',
     pendingSignup: false,
-    signuping: false,
 };
 
 interface SignUpProviderProps {
@@ -72,10 +70,9 @@ export const SignUp: React.FC<SignUpProviderProps> = ({children}) => {
         }
 
         async function signUp() {
-            setState({...state, signuping: true});
             try {
                 await signup(state.firstName, state.lastName, Moment(state.dateOfBirth).format("YYYY-MM-DD"), state.username, state.email, state.password, state.confirmPassword);
-                setState({...state, redirect: true, pendingSignup: false, signuping: false})
+                setState({...state, redirect: true, pendingSignup: false})
             } catch (error) {
                 if (canceled) {
                     return;

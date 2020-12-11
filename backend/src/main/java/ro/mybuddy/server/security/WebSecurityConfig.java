@@ -40,6 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().httpBasic()
                 .and().authorizeRequests()
                 .antMatchers("/user/registration", "/user/confirm-account").permitAll()
+                .antMatchers("/ws/**").permitAll()
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers("/user/login","/post","/index").hasAnyRole("USER", "ADMIN")
                 .antMatchers(HttpMethod.GET,"/tag").hasAnyRole("USER","ADMIN")
@@ -61,7 +62,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/user/**", configuration);
+        source.registerCorsConfiguration("/post/**", configuration);
+        source.registerCorsConfiguration("/tag/**", configuration);
         return source;
     }
 

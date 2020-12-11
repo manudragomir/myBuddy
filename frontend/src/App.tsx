@@ -25,8 +25,11 @@ import './theme/variables.css';
 import { UserPage, UserEdit } from './profile';
 import { AuthProvider, Login, PrivateRoute, Confirm } from './auth';
 import SignUp from './auth/SignUp';
+import FileUpload from './profile/FileUpload';
+import AddPost from './profile/AddPost';
+import { PostProvider } from './profile/PostProvider';
+import { NewsFeedProvider } from './newsfeed/NewsFeedProvider';
 import NewsFeed from './newsfeed/NewsFeed';
-import {NewsFeedProvider} from "./newsfeed/NewsFeedProvider";
 
 const App: React.FC = () => (
   <IonApp>
@@ -34,16 +37,20 @@ const App: React.FC = () => (
       <IonRouterOutlet>
         <AuthProvider>
           <Route path="/login" component={Login} exact={true}/>
-          <NewsFeedProvider>
+          <PostProvider>
             <PrivateRoute path="/user" component={UserPage}/>
-          </NewsFeedProvider>
             <PrivateRoute path="/user/edit" component={UserEdit}/>
+            <PrivateRoute path="/user/post" component={AddPost}/>
+          </PostProvider>
           <Route path="/signup" component={SignUp}/>
-          <Route path="/confirm" component={Confirm}/>
           <NewsFeedProvider>
             <Route path="/home" component={NewsFeed}/>
           </NewsFeedProvider>
+          <Route path="/confirm" component={Confirm}/>
           <Route exact path="/" render={() => <Redirect to="/user"/>}/>
+          {/* <Route exact path="/upload" component={FileUpload}/>
+          <Route exact path="/addpost" component={AddPost}/>
+          <Route exact path="/usernow" component={UserPage}/> */}
         </AuthProvider>
       </IonRouterOutlet>
     </IonReactRouter>
