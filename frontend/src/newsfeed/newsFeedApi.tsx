@@ -1,10 +1,23 @@
 import {PostProps} from "./PostProps";
-import {baseUrl, config, withLogs} from "../core";
+import {baseUrl, withLogs} from "../core";
 import axios from 'axios';
 
 const newsUrl = `http://${baseUrl}/post/newsfeed`;
 
-export const getNewsFeed: (page: number, size: number) => Promise<PostProps[]> = (page, size) => {
+export const getNewsFeed: (page: number, size: number, type?: string, tags?: string[]) => Promise<PostProps[]> = (page, size, type, tags) => {
+    let filterProps;
+    if (type === "All") {
+        if (tags !== undefined && tags.length > 0) filterProps = JSON.stringify({
+            page: {nrOrd: page, size: size},
+            listTags: tags
+        });
+        else filterProps = JSON.stringify({page: {nrOrd: page, size: size}});
+    } else {
+        if (tags !== undefined && tags.length > 0) {
+            filterProps = JSON.stringify({page: {nrOrd: page, size: size}, type: type, listTags: tags});
+        } else filterProps = JSON.stringify({page: {nrOrd: page, size: size}, type: type});
+    }
+
     return withLogs(
         axios({
             method: 'post',
@@ -12,7 +25,7 @@ export const getNewsFeed: (page: number, size: number) => Promise<PostProps[]> =
             headers: {
                 'Content-Type': 'application/json',
             },
-            data: JSON.stringify({page: {nrOrd: page, size: size}}),
+            data: filterProps,
             auth: {
                 username: "a",
                 password: "a"

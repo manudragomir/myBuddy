@@ -8,4 +8,5 @@ export interface PostProps {
     latitude: number,
     longitude: number,
     tags: []
+    type: []
 }

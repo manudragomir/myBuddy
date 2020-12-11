@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
 ;
 
 
-export const Post: React.FC<PostProps> = ({id,user, body, date, latitude, longitude, tags}) => {
+export const Post: React.FC<PostProps> = ({id,user, body, date, latitude, longitude, tags, type}) => {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
     const [reported, setReported] = React.useState(false);
@@ -77,6 +77,12 @@ export const Post: React.FC<PostProps> = ({id,user, body, date, latitude, longit
     const handleReportClick = () => {
         setReported(true);
     };
+
+    const getTags = ()=>{
+        let tagString=""
+        tags.forEach(tag=> tagString+=tag+" ")
+        return tagString
+    }
 
     return (
         <Card className={classes.root}>
@@ -162,8 +168,9 @@ export const Post: React.FC<PostProps> = ({id,user, body, date, latitude, longit
             />
             <CardContent>
                 <Typography variant="body2" color="textSecondary" component="p">
-                    {tags.toString()}
-                    {console.log(tags)}
+                    TAGS: {getTags()}
+                    <br/>
+                    TYPE: {type.toString()}
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
@@ -189,7 +196,7 @@ export const Post: React.FC<PostProps> = ({id,user, body, date, latitude, longit
             </CardActions>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
-                    <Typography paragraph>Descriere:</Typography>
+                    <Typography paragraph>description</Typography>
                     <Typography paragraph>
                         {body}
                     </Typography>
