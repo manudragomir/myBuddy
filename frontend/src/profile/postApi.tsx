@@ -1,26 +1,21 @@
 import axios from 'axios';
-import {baseUrl, withLogs} from '../core';
+import {baseUrl, withLogs,authConfig} from '../core';
 
 import { PostProps } from './PostProps';
 const postUrl = `http://${baseUrl}/post`;
 
 
-export const add: (date: string,body?: string, tags?: string[])=> Promise<PostProps> = (date,body, tags) => {
+export const add: (date: string,type: string,token:string, body?: string, tags?: string[])=> Promise<PostProps> = (date,type,token,body, tags) => {
     return withLogs(
         axios({
             method: 'post',
             url: postUrl,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            auth: {
-                username: "a",
-                password: "a"
-            },
+            ...authConfig(token),
             data: {
                 body: body,
                 date: date,
                 tags: tags,
+                type: type,
             }
         }), 'Add Post');
 }

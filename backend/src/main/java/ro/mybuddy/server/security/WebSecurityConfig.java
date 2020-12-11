@@ -57,6 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/tag").hasAnyRole("USER", "ADMIN")
                 .antMatchers(HttpMethod.POST, "/tag").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/tag").hasRole("ADMIN")
+                .antMatchers("/post/newsfeed").permitAll()
                 .anyRequest().authenticated();
     }
 

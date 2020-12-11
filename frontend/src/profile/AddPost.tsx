@@ -138,11 +138,22 @@ export const AddPost: React.FC<RouteComponentProps> = ({history}) => {
     setTagName(event.target.value as string[]);
   };
 
+  function getType(str: string): string{
+    switch(str){
+      case 'adoption':
+        return 'Adoption';
+      case 'lost':
+        return 'Lost';
+      case 'mybuddy':
+        return 'MyBuddy';
+      default:
+        return 'MyBuddy';
+    }
+  }
 
   const handleSavePost = () => {
     const date= Moment(Date.now()).format("YYYY-MM-DD")
-    tagName.push(mandatoryTag);
-    const post = {id:undefined, user:undefined,body: body, date: date,tags: tagName}
+    const post = {id:undefined, user:undefined,body: body, date: date,tags: tagName, type: getType(mandatoryTag)}
     console.log(post);
     console.log(file);
     console.log(addPost);
