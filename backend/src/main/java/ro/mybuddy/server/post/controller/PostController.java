@@ -29,7 +29,7 @@ public class PostController {
     @Autowired
     private EventHandler eventHandler;
 
-    @GetMapping(value = "/post")
+    @PostMapping(value = "/post/newsfeed")
     public ResponseEntity<?> findAll(@Valid @RequestBody FilterPrototype tags, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             List<String> errors = bindingResult.getAllErrors().stream()

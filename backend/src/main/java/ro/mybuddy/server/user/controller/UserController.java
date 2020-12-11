@@ -24,9 +24,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping(value = "/user/login")
-    public ResponseEntity<?> login() {
-        return new ResponseEntity<>("ok", HttpStatus.OK);
-    }
+    public void login() {}
 
     @PostMapping(value = "/user/registration")
     @ApiOperation(value = "Creates a new account")

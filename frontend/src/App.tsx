@@ -43,14 +43,13 @@ const App: React.FC = () => (
             <PrivateRoute path="/user/post" component={AddPost}/>
           </PostProvider>
           <Route path="/signup" component={SignUp}/>
+          {/* <Route path="/public/user" component={UserPage}/>
+          <Route path="/public/edit" component={UserEdit}/> */}
           <NewsFeedProvider>
             <Route path="/home" component={NewsFeed}/>
           </NewsFeedProvider>
           <Route path="/confirm" component={Confirm}/>
           <Route exact path="/" render={() => <Redirect to="/user"/>}/>
-          {/* <Route exact path="/upload" component={FileUpload}/>
-          <Route exact path="/addpost" component={AddPost}/>
-          <Route exact path="/usernow" component={UserPage}/> */}
         </AuthProvider>
       </IonRouterOutlet>
     </IonReactRouter>

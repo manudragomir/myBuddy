@@ -17,8 +17,7 @@ export default function NavBar() {
                 <Nav>
                 <Nav.Link href="/login">Login</Nav.Link>
                 <Nav.Link href="#deets">Contact</Nav.Link>
-                </Nav>
-                
+                </Nav>   
             </Navbar.Collapse>
             </Navbar>
         </div>
