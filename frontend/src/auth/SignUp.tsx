@@ -232,7 +232,7 @@ export const SignUp: React.FC<SignUpProviderProps> = ({children}) => {
                                                            disabled>Submit</IonButton>}
                         {state.messageError != '' && <IonText color={"danger"}> {state.messageError} </IonText>}
 
-                        <IonLoading isOpen={state.signuping}
+                        <IonLoading isOpen={state.pendingSignup}
                                     message={'Becoming our buddy...'}
                         />                        
                         {state.redirect &&
