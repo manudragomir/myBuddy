@@ -62,12 +62,12 @@ const reducer: (state: NewsFeedState, action: ActionProps) => NewsFeedState =
             case ENABLE_INFINITE_SCROLL:
                 return {...state, disableInfiniteScroll: false}
             case DISABLE_INFINITE_SCROLL:
-                return {...state, disableInfiniteScroll: true}
+                return {...state, disableInfiniteScroll: true, fetching: false}
             case ADD_TO_FEED:
                 console.log(`ADD_TO_FEED >>>>>>>> ${payload.newsFeed}`)
                 let newPosts = [...(state.posts || [])]
                 newPosts = newPosts?.concat(payload.newsFeed);
-                return {...state, posts: newPosts}
+                return {...state, posts: newPosts, fetching: false}
             case WS_SAVE_POST_TO_FEED:
                 log(`[WS-REDUCER] SAVE POST TO FEED ${payload.post}`)
                 let onSavePosts = [...(state.posts || [])]
@@ -86,7 +86,6 @@ const reducer: (state: NewsFeedState, action: ActionProps) => NewsFeedState =
                 if (deleteIdx !== -1) onDeletePosts.splice(deleteIdx, 1);
                 return {...state, posts: onDeletePosts}
             case PREPARE_FOR_FILTERED_POSTS:
-                console.log(`[REDUCER] PREPARE FOR FILTERED POSTS >>>>>>>>>>>>>>`)
                 return {...state, posts: [], disableInfiniteScroll: false}
             default:
                 return state;
@@ -97,8 +96,8 @@ export const NewsFeedProvider: React.FC<NewsFeedProviderProps> = ({children}) =>
         const {posts, fetching, fetchingError, disableInfiniteScroll} = state;
         const fetchNewsFeed = newsFeedCallback
         const SIZE = 2;
-        const [prevtype, setPrevtype] = useState("");
-        const [prevTags, setPrevTags] = useState<string[]>([]);
+        const [prevtype, setPrevtype] = useState<string | undefined>("");
+        const [prevTags, setPrevTags] = useState<string[] | undefined>([]);
 
         useEffect(initializeWebSocket, [])
 
@@ -112,28 +111,25 @@ export const NewsFeedProvider: React.FC<NewsFeedProviderProps> = ({children}) =>
 
         async function newsFeedCallback(type?: string, tags?: string[]) {
             try {
-                console.log(`[NF] TAGS: ${tags}`)
-                if ((prevtype !== type && type !== undefined)) {
+                console.log(`[PROVIDER] TAGS: ${tags}`)
+                console.log(`[PROVIDER] PREV_TAGS: ${prevTags}`)
+                console.log(`[PROVIDER] TYPE: ${type}`)
+                if (prevtype !== type || prevTags !== tags) {
                     setPrevtype(type);
-                    dispatch({type: PREPARE_FOR_FILTERED_POSTS})
-                    PAGE = 0
-                }
-                if (prevTags !== tags && tags !== undefined) {
                     setPrevTags(tags);
                     dispatch({type: PREPARE_FOR_FILTERED_POSTS})
                     PAGE = 0
                 }
 
-                console.log(`CURRENT PAGE : ${PAGE}`)
+                console.log(`[PROVIDER] CURRENT PAGE : ${PAGE}`)
+                dispatch({type: FETCH_POSTS_STARTED});
 
                 const posts = await getNewsFeed(PAGE, SIZE, type, tags);
+
                 console.log(`[NF CALLBACK] ${posts.length}`)
                 if (posts.length > 0) {
                     dispatch({type: ADD_TO_FEED, payload: {newsFeed: posts}})
                     PAGE = PAGE + 1
-
-                    console.log(`FUTURE PAGE: ${PAGE}`)
-
                     if (posts.length < SIZE) {
                         dispatch({type: DISABLE_INFINITE_SCROLL})
                     }
@@ -143,6 +139,7 @@ export const NewsFeedProvider: React.FC<NewsFeedProviderProps> = ({children}) =>
                 }
             } catch (error) {
                 log(`Getting news feed PAGE ${PAGE} encountered error: ${error}`)
+                dispatch({type: FETCH_POSTS_FAILED});
             }
         }
 
