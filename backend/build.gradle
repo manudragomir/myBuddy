@@ -46,6 +46,17 @@ dependencies {
 
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-websocket
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '2.4.0'
+
+	// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
+	compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+
+	dependencies {
+		compile 'io.jsonwebtoken:jjwt-api:0.11.2'
+		runtime 'io.jsonwebtoken:jjwt-impl:0.11.2',
+				// Uncomment the next line if you want to use RSASSA-PSS (PS256, PS384, PS512) algorithms:
+				//'org.bouncycastle:bcprov-jdk15on:1.60',
+				'io.jsonwebtoken:jjwt-jackson:0.11.2' // or 'io.jsonwebtoken:jjwt-gson:0.11.2' for gson
+	}
 }
 
 test {

@@ -1,12 +1,21 @@
 import {PostProps} from "./PostProps";
-import {baseUrl, getLogger, withLogs} from "../core";
+import {baseUrl, withLogs,authConfig} from "../core";
 import axios from 'axios';
 
 const newsUrl = `http://${baseUrl}/post/newsfeed`;
 
 export const getNewsFeed: (page: number, size: number, type?: string, tags?: string[]) => Promise<PostProps[]> = (page, size, type, tags) => {
-    if (type === 'All') {
-        type = undefined
+    let filterProps;
+    if (type === "All") {
+        if (tags !== undefined && tags.length > 0) filterProps = JSON.stringify({
+            page: {nrOrd: page, size: size},
+            listTags: tags
+        });
+        else filterProps = JSON.stringify({page: {nrOrd: page, size: size}});
+    } else {
+        if (tags !== undefined && tags.length > 0) {
+            filterProps = JSON.stringify({page: {nrOrd: page, size: size}, type: type, listTags: tags});
+        } else filterProps = JSON.stringify({page: {nrOrd: page, size: size}, type: type});
     }
 
     return withLogs(
@@ -16,11 +25,8 @@ export const getNewsFeed: (page: number, size: number, type?: string, tags?: str
             headers: {
                 'Content-Type': 'application/json',
             },
-            data: JSON.stringify({page: {nrOrd: page, size: size}, type: type, listTags: tags}),
-            auth: {
-                username: "a",
-                password: "a"
-            },
+            data: filterProps,
+
         }), 'Get Posts');
 }
 
@@ -33,10 +39,6 @@ export const sendReport: (idPost: number, message: string) => Promise<any> = (id
                     'Content-Type': 'application/json',
                 },
                 data: JSON.stringify({idPost: idPost, message: message}),
-                auth: {
-                    username: "a",
-                    password: "a"
-                },
             }
         ), `Send Report`
     );

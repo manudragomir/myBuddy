@@ -6,5 +6,6 @@ export interface PostProps {
     user?: User;
     body?: string;
     date: string;
+    type: string;
     tags?: string[];
 }

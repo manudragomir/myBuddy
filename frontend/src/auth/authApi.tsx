@@ -17,15 +17,13 @@ export const login: (username?: string, password?: string) => Promise<AuthProps>
     return withLogs(axios({
         method: 'post',
         url: authUrl,
-        //withCredentials: true,
-        auth: {
-            username: username_not_null,
-            password: password_not_null
-        },
         headers: {
             'Content-Type': 'application/json',
         },
-        data: null
+        data: {
+            username: username_not_null,
+            password: password_not_null
+        },
     }), 'Login');
 }
 

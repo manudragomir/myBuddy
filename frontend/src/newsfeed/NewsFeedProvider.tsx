@@ -86,11 +86,13 @@ const reducer: (state: NewsFeedState, action: ActionProps) => NewsFeedState =
                 if (deleteIdx !== -1) onDeletePosts.splice(deleteIdx, 1);
                 return {...state, posts: onDeletePosts}
             case PREPARE_FOR_FILTERED_POSTS:
+                console.log(`[REDUCER] PREPARE FOR FILTERED POSTS >>>>>>>>>>>>>>`)
                 return {...state, posts: [], disableInfiniteScroll: false}
             default:
                 return state;
         }
     };
+
 export const NewsFeedProvider: React.FC<NewsFeedProviderProps> = ({children}) => {
         const [state, dispatch] = useReducer(reducer, initialState);
         const {posts, fetching, fetchingError, disableInfiniteScroll} = state;
@@ -130,6 +132,9 @@ export const NewsFeedProvider: React.FC<NewsFeedProviderProps> = ({children}) =>
                 if (posts.length > 0) {
                     dispatch({type: ADD_TO_FEED, payload: {newsFeed: posts}})
                     PAGE = PAGE + 1
+
+                    console.log(`FUTURE PAGE: ${PAGE}`)
+
                     if (posts.length < SIZE) {
                         dispatch({type: DISABLE_INFINITE_SCROLL})
                     }
@@ -151,7 +156,10 @@ export const NewsFeedProvider: React.FC<NewsFeedProviderProps> = ({children}) =>
                 stompClient.subscribe('/topic/newPost', function (message) {
                     console.log(`[WS] NEW POST RECEIVED >>>>>>>>>> ${message["body"]}`);
                     const post: PostProps = JSON.parse(message["body"]);
-                    dispatch({type: WS_SAVE_POST_TO_FEED, payload: {post: post}})
+                    setTimeout(()=>{
+                        dispatch({type: WS_SAVE_POST_TO_FEED, payload: {post: post}})
+                    },10000);
+
                 });
                 stompClient.subscribe('/topic/updatePost', function (message) {
                     console.log(`[WS] UPDATE POST RECEIVED >>>>>>> ${message["body"]}`);

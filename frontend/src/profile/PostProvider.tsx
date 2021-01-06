@@ -4,7 +4,7 @@ import {PostProps} from './PostProps'
 import {add, submitFile} from './postApi'
 import React from 'react';
 import PropTypes from 'prop-types';
-import { AuthContext } from '../auth';
+import { AuthContext, AuthState } from '../auth';
 import Moment from 'moment';
 
 type AddPostFn = (post : PostProps, file: FileList) => Promise<any>;
@@ -53,10 +53,10 @@ interface PostProviderProps{
 }
 export const PostProvider: React.FC<PostProviderProps>=({children})=>{
     const [state, dispatch] = useReducer(reducer, initialState)
-
+    const {token} = useContext<AuthState>(AuthContext);
     const {posts,saving,savingError}= state;
 
-    const addPost=useCallback<AddPostFn>(savePostCallback,[]);
+    const addPost=useCallback<AddPostFn>(savePostCallback,[token]);
     const value={posts,saving,savingError,addPost}
 
     return (
@@ -69,10 +69,8 @@ export const PostProvider: React.FC<PostProviderProps>=({children})=>{
         try{
             console.log("am ajuns in save cu ",post, file);
             dispatch({type:SAVE_POST_STARTED});
-            const savedPost= await (add(post.date,post.body,post.tags));
+            const savedPost= await (add(post.date,post.type,token,post.body,post.tags));
             savedPost.id && await submitFile(file, savedPost.id);
-            // const user= {username: "a"}
-            // const savedPost = {id: "111",user: user, date: Moment(Date.now()).format("YYYY-MM-DD"),body: "Heyoooooo", tags:["adoption","#cute"] }
             dispatch({type:SAVE_POST_SUCCEEDED,payload:{post: savedPost}})
         }catch(error){
             dispatch({type:SAVE_POST_FAILED, payload:{error}})
