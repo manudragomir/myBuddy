@@ -26,11 +26,9 @@ import {newsFeedTypes} from "./NewsFeedTypes";
 
 const NewsFeed: React.FC<RouteComponentProps> = (history) => {
     const {posts, fetching, fetchingError, fetchNewsFeed, disableInfiniteScroll} = useContext(NewsFeedContext);
-    const [newsFeedTypes] = useState(["All", "Adoption", "MyBuddy", "Lost", "Adopted", "Found"])
     const [currentType, setCurrentType] = useState<string | undefined>("All")
     const [init, setInit] = useState<boolean>(true)
     const [searchTags, setSearchTags] = useState<string[] | undefined> (undefined)
-    const [showTags, setShowTags] = useState<boolean>(false)
     const [tags, setTags] = useState<string[] | undefined>(undefined)
     const [tagError, setTagError] = useState(false)
 
