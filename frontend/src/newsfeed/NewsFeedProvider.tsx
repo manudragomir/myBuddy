@@ -144,7 +144,7 @@ export const NewsFeedProvider: React.FC<NewsFeedProviderProps> = ({children}) =>
                 }
             } catch (error) {
                 log(`Getting news feed PAGE ${PAGE} encountered error: ${error}`)
-                dispatch({type: FETCH_POSTS_FAILED});
+                dispatch({type: FETCH_POSTS_FAILED, payload: {error}});
             }
         }
 
