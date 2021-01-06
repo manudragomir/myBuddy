@@ -13,7 +13,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Card from 'react-bootstrap/Card'
 import NavBar from '../components/NavBar';
 import Image from 'react-bootstrap/Image'
-import color from '../images/logo_full.png';
+import color from '../utils/images/logo_full.png';
 import { Alert, Nav } from 'react-bootstrap';
 
 const log = getLogger('Login');

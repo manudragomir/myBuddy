@@ -10,8 +10,8 @@ import Card from 'react-bootstrap/Card'
 import { makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import Image from 'react-bootstrap/Image'
 import styled from 'styled-components';
-import img from '../images/column.png';
-import photo from '../images/createPost.png';
+import img from '../utils/images/column.png';
+import photo from '../utils/images/createPost.png';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Select from '@material-ui/core/Select';

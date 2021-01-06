@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {IonButton, IonContent, IonDatetime, IonInput, IonItem, IonLabel, IonLoading, IonPage, IonText} from '@ionic/react';
 import './signup.css'
 import {Card, Col, Nav, Row} from "react-bootstrap";
-import logo from '../images/logo_full.png';
+import logo from '../utils/images/logo_full.png';
 import NavBar from '../components/NavBar';
 import {signup} from "./authApi";
 import Moment from 'moment';
