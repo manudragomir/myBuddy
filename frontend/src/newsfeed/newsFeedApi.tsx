@@ -26,7 +26,7 @@ export const getNewsFeed: (page: number, size: number, type?: string, tags?: str
                 'Content-Type': 'application/json',
             },
             data: filterProps,
-         
+
         }), 'Get Posts');
 }
 

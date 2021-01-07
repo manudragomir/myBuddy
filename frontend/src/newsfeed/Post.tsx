@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -19,17 +19,22 @@ import {PostProps} from "./PostProps";
 import {IonAlert} from '@ionic/react';
 import "../newsfeed/newsFeed.css"
 import {sendReport} from "./newsFeedApi";
-import { AuthContext, AuthState } from '../auth';
+import dog from "../utils/images/dog_cut1.jpg"
 
 
 const useStyles = makeStyles((theme) => ({
         root: {
-            width: "80%",
+            width: "60%",
             // maxWidth: '85%',
-            marginLeft: '9%',
+            marginLeft: '20%',
+            paddingTop: '1%',
+            paddingBottom: '5%',
+            transition: 'opacity 500ms ease-in',
+            background: 'linear-gradient(90deg, #fff4f4 1%, #fff6e4 29.5%, #fff6e4 30.33%, #f8fdfd 120%) !important'
         },
         media: {
             paddingTop: '36.25%', // 16:9
+            padding:'20%',
         },
         expand: {
             transform: 'rotate(0deg)',
@@ -70,6 +75,7 @@ export const Post: React.FC<PostProps> = ({id,user, body, date, latitude, longit
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
     const [reported, setReported] = React.useState(false);
+
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
@@ -163,7 +169,8 @@ export const Post: React.FC<PostProps> = ({id,user, body, date, latitude, longit
             </CardHeader>
             <CardMedia
                 className={classes.media}
-                image={`https://proiectcolectivmybuddy.s3.eu-central-1.amazonaws.com/testFolder/${id}.jpg`}
+                // image={`https://proiectcolectivmybuddy.s3.eu-central-1.amazonaws.com/testFolder/${id}.jpg`}
+                image={dog}
                 title="titlu imagine"
             />
             <CardContent>

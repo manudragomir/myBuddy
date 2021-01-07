@@ -1,7 +1,7 @@
 import React from 'react'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
-import color from '../images/logo_full.png';
+import color from '../utils/images/logo_full.png';
 import {Plugins} from '@capacitor/core';
 const {Storage} = Plugins;
 export default function NavBarUser() {
