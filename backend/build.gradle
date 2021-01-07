@@ -44,6 +44,10 @@ dependencies {
 
 	//compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
 
+	// https://mvnrepository.com/artifact/com.opencsv/opencsv
+	compile group: 'com.opencsv', name: 'opencsv', version: '3.7'
+
+
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-websocket
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '2.4.0'
 
