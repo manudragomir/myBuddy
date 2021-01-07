@@ -171,7 +171,7 @@ export const AddPost: React.FC<RouteComponentProps> = ({history}) => {
 
   const handleSavePost = () => {
     const date= Moment(Date.now()).format("YYYY-MM-DD")
-    const post = {id:undefined, user:undefined,body: body, date: date,tags: tagName, type: getType(mandatoryTag)}
+    const post = {id:undefined, user:undefined,body: body, date: date,tags: tagName, type: getType(mandatoryTag),latitude:latitude,longitude:longitude}
     console.log(post);
     console.log(file);
     console.log(addPost);

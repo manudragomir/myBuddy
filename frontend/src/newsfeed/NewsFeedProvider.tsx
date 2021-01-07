@@ -67,7 +67,8 @@ const reducer: (state: NewsFeedState, action: ActionProps) => NewsFeedState =
             case ADD_TO_FEED:
                 console.log(`ADD_TO_FEED >>>>>>>> ${payload.newsFeed}`)
                 let newPosts = [...(state.posts || [])]
-                newPosts = newPosts?.concat(payload.newsFeed);
+                payload.newsFeed.forEach((p: PostProps) => newPosts.findIndex(x => x.id === p.id) === -1 ? newPosts.push(p) : '')
+                //newPosts = newPosts?.concat(payload.newsFeed);
                 return {...state, posts: newPosts, fetching: false}
             case WS_SAVE_POST_TO_FEED:
                 log(`[WS-REDUCER] SAVE POST TO FEED ${payload.post}`)

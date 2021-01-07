@@ -69,7 +69,7 @@ export const PostProvider: React.FC<PostProviderProps>=({children})=>{
         try{
             console.log("am ajuns in save cu ",post, file);
             dispatch({type:SAVE_POST_STARTED});
-            const savedPost= await (add(post.date,post.type,token,post.body,post.tags));
+            const savedPost= await (add(post.date,post.type,token,post.body,post.tags,post.latitude,post.longitude));
             savedPost.id && await submitFile(file, savedPost.id);
             dispatch({type:SAVE_POST_SUCCEEDED,payload:{post: savedPost}})
         }catch(error){

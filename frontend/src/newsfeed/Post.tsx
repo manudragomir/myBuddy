@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -12,13 +12,17 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ReportIcon from '@material-ui/icons/Report';
 import {PostProps} from "./PostProps";
-import {IonAlert} from '@ionic/react';
+import {IonAlert, IonFabButton, IonIcon, IonPopover} from '@ionic/react';
 import "../newsfeed/newsFeed.css"
 import {sendReport} from "./newsFeedApi";
 import dog from "../utils/images/dog_cut1.jpg"
+import './newsFeed.css'
+import {eye} from "ionicons/icons";
+import {PostMap} from "../map/PostMap";
+import x from '../utils/images/114.jpg'
+import {Badge} from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -47,6 +51,8 @@ const useStyles = makeStyles((theme) => ({
         },
         avatar: {
             backgroundColor: "#dbd55b",
+            width: '6vh',
+            height: '6vh',
         },
 
         lightbox: {
@@ -74,6 +80,7 @@ export const Post: React.FC<PostProps> = ({id, user, body, date, latitude, longi
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
     const [reported, setReported] = React.useState(false);
+    const [popoverState, setShowPopover] = useState({showPopover: false, event: undefined});
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -145,25 +152,47 @@ export const Post: React.FC<PostProps> = ({id, user, body, date, latitude, longi
                         handler: (reason) => {
                             console.log(reason)
                             console.log('Confirm Ok');
-
                             sendReport(Number(id), reason);
                         }
                     }
                 ]}
             />}
+
+            <IonPopover
+                animated={true}
+                showBackdrop={true}
+                cssClass='map-popover'
+                event={popoverState.event}
+                isOpen={popoverState.showPopover}
+                onDidDismiss={() => setShowPopover({showPopover: false, event: undefined})}>
+                <PostMap
+                    lat={Number(latitude)}
+                    lng={Number(longitude)}
+                    onMapClick={console.log('onMapClick')}
+                    onMarkerClick={console.log('onMarkerClick')}
+                />
+            </IonPopover>
+
             <CardHeader
                 avatar={
-                    <Avatar aria-label="recipe" className={classes.avatar}>
-                        R
-                    </Avatar>
+                    <Badge color={"error"} badgeContent={type}>
+                        <Avatar aria-label="recipe" className={classes.avatar}>
+                            <img src={x} alt={"q"}/>
+                        </Avatar>
+                    </Badge>
                 }
                 action={
-                    <IconButton aria-label="settings">
-                        <MoreVertIcon/>
-                    </IconButton>
+                    <IonFabButton color={"transparent"} className={"eye-button"} onClick={
+                        (e: any) => {
+                            e.persist();
+                            setShowPopover({showPopover: true, event: e});
+                        }}
+                    >
+                        <IonIcon className={"eye-icon"} icon={eye}/>
+                    </IonFabButton>
                 }
                 title={`${user.username}`}
-                subheader={`${date} | ${latitude} ${longitude}`}
+                subheader={`${date}`}
             >
             </CardHeader>
             <CardMedia
@@ -178,13 +207,12 @@ export const Post: React.FC<PostProps> = ({id, user, body, date, latitude, longi
                     <br/>
                     TYPE: {type.toString()}
                 </Typography>
+
             </CardContent>
             <CardActions disableSpacing>
                 <IconButton aria-label="add to favorites">
                     <FavoriteIcon/>
                 </IconButton>
-
-
                 <IconButton aria-label="message" onClick={() => handleReportClick()}>
                     <ReportIcon/>
                 </IconButton>
@@ -195,8 +223,7 @@ export const Post: React.FC<PostProps> = ({id, user, body, date, latitude, longi
                     })}
                     onClick={handleExpandClick}
                     aria-expanded={expanded}
-                    aria-label="show more"
-                >
+                    aria-label="show more">
                     <ExpandMoreIcon/>
                 </IconButton>
             </CardActions>

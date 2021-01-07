@@ -117,7 +117,6 @@ export const Post: React.FC<PostProps> = ({id,date,user,body,type,tags}) => {
                             R
                         </Avatar>
                     </Badge>
-                    
                 }
                 action={
                     <Grid container spacing={1} alignItems="flex-end">
@@ -243,8 +242,6 @@ export const Post: React.FC<PostProps> = ({id,date,user,body,type,tags}) => {
                                             </IconButton>
                                         </ListItem>
                                     </List>
-                                                
-
                                     </IonPopover>
                         </Grid>
                     </Grid>

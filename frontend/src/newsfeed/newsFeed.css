@@ -93,7 +93,7 @@ p {
 }
 
 .search-area-div{
-    width: 60vh;
+    width: 70vh;
     float:left;
 }
 
@@ -124,6 +124,27 @@ p {
     width: 40%;
     font-size: 4vh;
 }
+
+.map-popover{
+    --height: 43vh;
+    --width: 70vh;
+}
+
+.eye-button{
+    width: 4vh;
+    height: 4vh;
+}
+
+.eye-icon{
+    width: 7vh;
+    height: 7vh;
+    color: #e9bd31;
+}
+
+.eye-button:hover .eye-icon{
+    color: #dd0202;
+}
+
 
 @media(max-width: 1100px){
 
