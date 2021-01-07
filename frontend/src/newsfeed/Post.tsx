@@ -10,7 +10,6 @@ import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import {red} from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -34,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
         },
         media: {
             paddingTop: '36.25%', // 16:9
-            padding:'20%',
+            padding: '20%',
         },
         expand: {
             transform: 'rotate(0deg)',
@@ -71,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
 ;
 
 
-export const Post: React.FC<PostProps> = ({id,user, body, date, latitude, longitude, tags, type}) => {
+export const Post: React.FC<PostProps> = ({id, user, body, date, latitude, longitude, tags, type}) => {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
     const [reported, setReported] = React.useState(false);
@@ -84,9 +83,9 @@ export const Post: React.FC<PostProps> = ({id,user, body, date, latitude, longit
         setReported(true);
     };
 
-    const getTags = ()=>{
-        let tagString=""
-        tags.forEach(tag=> tagString+=tag+" ")
+    const getTags = () => {
+        let tagString = ""
+        tags.forEach(tag => tagString += tag + " ")
         return tagString
     }
 
@@ -147,7 +146,7 @@ export const Post: React.FC<PostProps> = ({id,user, body, date, latitude, longit
                             console.log(reason)
                             console.log('Confirm Ok');
 
-                            sendReport(Number(id),reason);
+                            sendReport(Number(id), reason);
                         }
                     }
                 ]}

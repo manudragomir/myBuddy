@@ -1,41 +1,44 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {
-    IonAlert, IonButton,
+    IonButton,
     IonCol,
     IonContent,
-    IonFab,
-    IonFabButton,
     IonGrid,
     IonIcon,
     IonInfiniteScroll,
     IonInfiniteScrollContent,
+    IonItem,
     IonItemDivider,
+    IonLabel,
     IonPage,
-    IonRow, IonSearchbar,
-    IonSelect,
-    IonSelectOption, IonSlide, IonSlides, IonSpinner, IonText,
+    IonRange,
+    IonRow,
+    IonSearchbar,
+    IonSlide,
+    IonSlides,
+    IonText,
     useIonViewWillEnter
 } from '@ionic/react';
 import {Post} from "./Post";
 import NavBar from '../components/NavBar';
 import {NewsFeedContext} from "./NewsFeedProvider";
 import {RouteComponentProps} from "react-router";
-import {colorFilter, sad, sadOutline} from "ionicons/icons";
-import my_img from '../utils/images/all.png'
 import {newsFeedTypes} from "./NewsFeedTypes";
+import {location} from "ionicons/icons";
 
 const NewsFeed: React.FC<RouteComponentProps> = (history) => {
     const {posts, fetching, fetchingError, fetchNewsFeed, disableInfiniteScroll} = useContext(NewsFeedContext);
     const [currentType, setCurrentType] = useState<string | undefined>("All")
     const [init, setInit] = useState<boolean>(true)
-    const [searchTags, setSearchTags] = useState<string[] | undefined> (undefined)
+    const [searchTags, setSearchTags] = useState<string[] | undefined>(undefined)
     const [tags, setTags] = useState<string[] | undefined>(undefined)
     const [tagError, setTagError] = useState(false)
+    const [value, setValue] = useState(0);
+    const [firstLoad, setFirstLoad] = useState(true);
+    const [rangeValue, setRangeValue] = useState<number>(0);
 
-    async function fetchNewsFeedPosts(allTags: string[] | undefined) {
-        console.log(`[DEBUG] TAG ${allTags}`)
-
-        await fetchNewsFeed?.(currentType, allTags);
+    async function fetchNewsFeedPosts(rangeValue: number, allTags: string[] | undefined) {
+        await fetchNewsFeed?.(rangeValue, currentType, allTags);
 
         if (posts?.length === 0) setTagError(true)
 
@@ -43,16 +46,21 @@ const NewsFeed: React.FC<RouteComponentProps> = (history) => {
     }
 
     useEffect(() => {
-        if (!init) fetchNewsFeedPosts(tags)
-    }, [currentType, tags])
+        console.log(`EFFECT>>>> ${rangeValue}`)
+        if (!init) fetchNewsFeedPosts(rangeValue, tags)
+    }, [rangeValue])
+
+    useEffect(() => {
+        if (!init) fetchNewsFeedPosts(rangeValue, tags)
+    }, [currentType])
 
     useIonViewWillEnter(async () => {
-        await fetchNewsFeedPosts(tags);
+        await fetchNewsFeedPosts(rangeValue, tags);
     });
 
     async function searchNext($event: CustomEvent<void>) {
         console.log("NEXT")
-        await fetchNewsFeedPosts(tags);
+        await fetchNewsFeedPosts(rangeValue, tags);
         ($event.target as HTMLIonInfiniteScrollElement).complete();
     }
 
@@ -63,11 +71,23 @@ const NewsFeed: React.FC<RouteComponentProps> = (history) => {
                 <IonItemDivider className={"menu-row"} sticky>
                     <IonGrid>
                         <IonRow>
-                            <IonCol size={"12"} size-sm >
+                            <IonCol size={"12"} size-sm>
                                 <NavBar/>
                             </IonCol>
                         </IonRow>
                         <div className={"wrapper-div"}>
+                            <div className={"search-area-div"}>
+                                <IonItem className={"search-item"}>
+                                    <IonText>search area</IonText>
+                                    <IonRange debounce={300} color={"danger"} dualKnobs={false} min={0} max={100}
+                                              step={20} snaps={true}
+                                              onIonChange={e => setRangeValue(e.detail.value as number)}>
+                                        <IonIcon slot="start" icon={location}/>
+                                    </IonRange>
+                                    {rangeValue === 0 && <IonLabel>everywhere</IonLabel>}
+                                    {rangeValue !== 0 && <IonLabel>{rangeValue} km far</IonLabel>}
+                                </IonItem>
+                            </div>
                             <div className={"search-bar-div"}>
                                 <IonSearchbar className={"tags-search-bar"} placeholder={"search by tags"}
                                               onIonChange={(e) => {
@@ -77,12 +97,14 @@ const NewsFeed: React.FC<RouteComponentProps> = (history) => {
                             </div>
                             <div className={"button-search-div"}>
                                 <IonButton color={"dark"} className={"search-button"}
-                                           onClick={() => {setTags(searchTags); fetchNewsFeedPosts(searchTags);}}>Search</IonButton>
+                                           onClick={() => {
+                                               setTags(searchTags);
+                                               fetchNewsFeedPosts(rangeValue, searchTags);
+                                           }}>Search</IonButton>
                             </div>
                         </div>
                     </IonGrid>
                 </IonItemDivider>
-
                 <div className="title ion-padding">
                     <h3>Types</h3>
                 </div>

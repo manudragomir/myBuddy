@@ -88,11 +88,22 @@ p {
 
 .wrapper-div{
     overflow: hidden;
-    margin-left: 20%;
+    margin-left: 12%;
+    width: 100%;
+}
+
+.search-area-div{
+    width: 60vh;
+    float:left;
+}
+
+.search-item{
+    --background: transparent;
 }
 
 .search-bar-div{
-    width: 80%;
+    padding-left: 10vh;
+    width: 80vh;
     float:left; /* add this */
 }
 
@@ -111,8 +122,24 @@ p {
     text-align: center;
     margin:auto;
     width: 40%;
-
     font-size: 4vh;
-
 }
 
+@media(max-width: 1100px){
+
+    .wrapper-div{
+        overflow: hidden;
+        margin-left: 0%;
+        width: 100%;
+    }
+    .search-area-div{
+        width: 70vh;
+        float:left;
+    }
+
+    .search-bar-div{
+        padding-left: 0vh;
+        width: 40vh;
+        float:left; /* add this */
+    }
+}
