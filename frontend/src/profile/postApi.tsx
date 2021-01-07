@@ -55,3 +55,12 @@ export const submitFile = async (file : FileList ,id: string) => {
       // handle error
     }
 }
+
+export const remove: (token:string, postId:string) => Promise<any> = (token, postId) => {
+  return withLogs(
+    axios({
+      method: 'delete',
+      url: `${postUrl}/${postId}`,
+      ...authConfig(token),
+    }), 'Remove Post');
+}

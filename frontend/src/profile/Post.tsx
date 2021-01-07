@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -29,6 +29,7 @@ import ListItem from '@material-ui/core/ListItem';
 import Checkbox from '@material-ui/core/Checkbox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import {PostContext} from './PostProvider';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -82,6 +83,8 @@ export const Post: React.FC<PostProps> = ({id,date,user,body,type,tags}) => {
     const [adopted,setAdopted] = useState(false);
     const [mandatoryTag,setMandatoryTag]=useState('MyBuddy')
     const [checkedTag,setCheckedTag]=useState('');
+
+    const {deletePost} = useContext(PostContext);
 
     useEffect(()=>{
         if(lost){
@@ -227,10 +230,16 @@ export const Post: React.FC<PostProps> = ({id,date,user,body,type,tags}) => {
                                             adopted
                                         </ListItem> */}
                                         <ListItem>
-                                            <IconButton>
-                                                <DeleteIcon fontSize="small"/>
-                                                 delete
-                                            </IconButton>
+                                            {id != null && deletePost != null
+                                                ? <IconButton onClick={() => { deletePost?.(id) }}>
+                                                    <DeleteIcon fontSize="small"/>
+                                                    delete
+                                                  </IconButton>
+                                                : <IconButton disabled={true}>
+                                                    <DeleteIcon fontSize="small"/>
+                                                    missing postId or deletePost_func
+                                                  </IconButton>
+                                            }
                                         </ListItem>
                                         <ListItem>
                                             

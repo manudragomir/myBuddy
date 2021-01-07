@@ -1,6 +1,6 @@
 import React, {useContext, useState} from 'react';
 import {RouteComponentProps} from 'react-router';
-import {IonCol, IonContent, IonGrid, IonImg, IonPage, IonRow} from '@ionic/react';
+import {IonCol, IonContent, IonGrid, IonImg, IonLoading, IonPage, IonRow, IonToast} from '@ionic/react';
 import {Button, Col, Container, Image, Row, Tab, Tabs} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NavBarUser from '../components/NavBarUser';
@@ -15,7 +15,7 @@ import { PostContext } from './PostProvider';
 
 const UserPage: React.FC<RouteComponentProps> = ({history}) => {
     const [key, setKey] = useState('posts');
-    const {posts}=useContext(PostContext);
+    const {posts, deleting, deleteError}=useContext(PostContext);
     return (   
         <IonPage>
             <IonContent>
@@ -69,6 +69,20 @@ const UserPage: React.FC<RouteComponentProps> = ({history}) => {
                     </Row>
 
                 </Container>
+
+                <IonLoading isOpen={deleting}/>
+                <IonToast
+                  isOpen={(deleteError != null)}
+                  message={deleteError?.message || "Network Error while deleting"}
+                  position="bottom"
+                  buttons={[
+                      {
+                          side: 'end',
+                          text: 'Dismiss',
+                          role: 'cancel',
+                      }
+                  ]}
+                />
             </IonContent>
         </IonPage>
     );
