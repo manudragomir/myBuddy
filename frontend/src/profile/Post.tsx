@@ -134,6 +134,7 @@ export const Post: React.FC<PostProps> = ({id, date, user, body, type, tags, lat
                             R
                         </Avatar>
                     </Badge>
+                    
                 }
                 action={
                     <Grid container spacing={1} alignItems="flex-end">
@@ -284,6 +285,32 @@ export const Post: React.FC<PostProps> = ({id, date, user, body, type, tags, lat
                     {body}{tags}
                 </Typography>
             </CardContent>
+            <CardActions disableSpacing>
+                <IconButton aria-label="add to favorites">
+                    <FavoriteIcon/>
+                </IconButton>
+                <IconButton aria-label="message">
+                    <MessageIcon/>
+                </IconButton>
+                <IconButton
+                    className={clsx(classes.expand, {
+                        [classes.expandOpen]: expanded,
+                    })}
+                    onClick={handleExpandClick}
+                    aria-expanded={expanded}
+                    aria-label="show more"
+                >
+                    <ExpandMoreIcon/>
+                </IconButton>
+            </CardActions>
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <CardContent>
+                    <Typography paragraph>Descriere:</Typography>
+                    <Typography paragraph>
+                        descriere lungaaaaaaaaaaaaaaa
+                    </Typography>
+                </CardContent>
+            </Collapse>
         </Card>
     );
 }

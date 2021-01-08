@@ -6,7 +6,7 @@ const postUrl = `http://${baseUrl}/post`;
 const newsUrl = `http://${baseUrl}/post/newsfeed`;
 
 
-export const add: (date: string,type: string,token:string, body?: string, tags?: string[])=> Promise<PostProps> = (date,type,token,body, tags) => {
+export const add: (date: string,type: string,token:string, body?: string, tags?: string[],latitude?: number,longitude?:number)=> Promise<PostProps> = (date,type,token,body, tags,latitude,longitude) => {
     return withLogs(
         axios({
             method: 'post',
@@ -17,6 +17,8 @@ export const add: (date: string,type: string,token:string, body?: string, tags?:
                 date: date,
                 tags: tags,
                 type: type,
+                latitude:latitude,
+                longitude: longitude,
             }
         }), 'Add Post');
 }
@@ -76,7 +78,7 @@ export const getUserPersonalData = async (username : string) => {
     const response=await axios({
       method: 'get',
       url:'http://localhost:9000/user'  ,
-     
+
       headers: {
         'Content-Type': 'application/json',
       },

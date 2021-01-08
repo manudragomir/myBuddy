@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -24,6 +24,10 @@ import dog from "../utils/images/dog_cut1.jpg"
 import {RouteComponentProps} from "react-router";
 import {UserPostProps} from "./UserPostProps";
 import {Button} from "react-bootstrap";
+import {eye} from "ionicons/icons";
+import {PostMap} from "../map/PostMap";
+import x from '../utils/images/114.jpg'
+import {Badge} from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -38,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
         },
         media: {
             paddingTop: '36.25%', // 16:9
-            padding:'20%',
+            padding: '20%',
         },
         expand: {
             transform: 'rotate(0deg)',
@@ -52,6 +56,8 @@ const useStyles = makeStyles((theme) => ({
         },
         avatar: {
             backgroundColor: "#dbd55b",
+            width: '6vh',
+            height: '6vh',
         },
 
         lightbox: {
@@ -75,11 +81,12 @@ const useStyles = makeStyles((theme) => ({
 ;
 
 
-export const Post: React.FC<PostProps> = ({id,user, body, date, latitude, longitude, tags, type}) => {
+export const Post: React.FC<PostProps> = ({id, user, body, date, latitude, longitude, tags, type}) => {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
     const [reported, setReported] = React.useState(false);
     const [path, setPath] = React.useState<string>("");
+    const [popoverState, setShowPopover] = React.useState({showPopover: false, event: undefined});
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -89,9 +96,9 @@ export const Post: React.FC<PostProps> = ({id,user, body, date, latitude, longit
         setReported(true);
     };
 
-    const getTags = ()=>{
-        let tagString=""
-        tags.forEach(tag=> tagString+=tag+" ")
+    const getTags = () => {
+        let tagString = ""
+        tags.forEach(tag => tagString += tag + " ")
         return tagString
     }
 
@@ -156,25 +163,47 @@ export const Post: React.FC<PostProps> = ({id,user, body, date, latitude, longit
                         handler: (reason) => {
                             console.log(reason)
                             console.log('Confirm Ok');
-
-                            sendReport(Number(id),reason);
+                            sendReport(Number(id), reason);
                         }
                     }
                 ]}
             />}
+
+            <IonPopover
+                animated={true}
+                showBackdrop={true}
+                cssClass='map-popover'
+                event={popoverState.event}
+                isOpen={popoverState.showPopover}
+                onDidDismiss={() => setShowPopover({showPopover: false, event: undefined})}>
+                <PostMap
+                    lat={Number(latitude)}
+                    lng={Number(longitude)}
+                    onMapClick={console.log('onMapClick')}
+                    onMarkerClick={console.log('onMarkerClick')}
+                />
+            </IonPopover>
+
             <CardHeader
                 avatar={
-                    <Avatar aria-label="recipe" className={classes.avatar}>
-                        R
-                    </Avatar>
+                    <Badge color={"error"} badgeContent={type}>
+                        <Avatar aria-label="recipe" className={classes.avatar}>
+                            <img src={x} alt={"q"}/>
+                        </Avatar>
+                    </Badge>
                 }
                 action={
-                    <IconButton aria-label="settings" >
-                        <MoreVertIcon/>
-                    </IconButton>
+                    <IonFabButton color={"transparent"} className={"eye-button"} onClick={
+                        (e: any) => {
+                            e.persist();
+                            setShowPopover({showPopover: true, event: e});
+                        }}
+                    >
+                        <IonIcon className={"eye-icon"} icon={eye}/>
+                    </IonFabButton>
                 }
                 title={`${user.username}`}
-                subheader={`${date} | ${latitude} ${longitude}`}
+                subheader={`${date}`}
             >
             </CardHeader>
             <CardMedia
@@ -184,7 +213,6 @@ export const Post: React.FC<PostProps> = ({id,user, body, date, latitude, longit
                 title="titlu imagine"
             />
             <CardContent>
-                {/*<Button onClick={ () => location.href=`/user/${user.username}`} variant="secondary">Show Profile</Button>*/}
                 <Typography variant="body2" color="textSecondary" component="p">
                     TAGS: {getTags()}
                     <br/>
@@ -195,6 +223,7 @@ export const Post: React.FC<PostProps> = ({id,user, body, date, latitude, longit
                 <IconButton aria-label="add to favorites">
                     <FavoriteIcon/>
                 </IconButton>
+
 
                 <IconButton aria-label="message" onClick={() => handleReportClick()}>
                     <ReportIcon/>
@@ -210,8 +239,7 @@ export const Post: React.FC<PostProps> = ({id,user, body, date, latitude, longit
                     })}
                     onClick={handleExpandClick}
                     aria-expanded={expanded}
-                    aria-label="show more"
-                >
+                    aria-label="show more">
                     <ExpandMoreIcon/>
                 </IconButton>
             </CardActions>

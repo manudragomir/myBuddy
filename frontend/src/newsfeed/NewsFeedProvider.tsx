@@ -5,10 +5,11 @@ import {PostProps} from "./PostProps";
 import {getNewsFeed} from "./newsFeedApi";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
+import {useMyLocation} from "./useLocation";
 
 const log = getLogger('NewsFeedProvider');
 
-type fetchNewsFeedTemplate = (type?: string, tags?: string[]) => void;
+type fetchNewsFeedTemplate = (searchArea: number, type?: string, tags?: string[]) => void;
 
 var PAGE = 0;
 
@@ -66,7 +67,8 @@ const reducer: (state: NewsFeedState, action: ActionProps) => NewsFeedState =
             case ADD_TO_FEED:
                 console.log(`ADD_TO_FEED >>>>>>>> ${payload.newsFeed}`)
                 let newPosts = [...(state.posts || [])]
-                newPosts = newPosts?.concat(payload.newsFeed);
+                payload.newsFeed.forEach((p: PostProps) => newPosts.findIndex(x => x.id === p.id) === -1 ? newPosts.push(p) : '')
+                //newPosts = newPosts?.concat(payload.newsFeed);
                 return {...state, posts: newPosts, fetching: false}
             case WS_SAVE_POST_TO_FEED:
                 log(`[WS-REDUCER] SAVE POST TO FEED ${payload.post}`)
@@ -86,13 +88,11 @@ const reducer: (state: NewsFeedState, action: ActionProps) => NewsFeedState =
                 if (deleteIdx !== -1) onDeletePosts.splice(deleteIdx, 1);
                 return {...state, posts: onDeletePosts}
             case PREPARE_FOR_FILTERED_POSTS:
-                console.log(`[REDUCER] PREPARE FOR FILTERED POSTS >>>>>>>>>>>>>>`)
                 return {...state, posts: [], disableInfiniteScroll: false}
             default:
                 return state;
         }
     };
-
 export const NewsFeedProvider: React.FC<NewsFeedProviderProps> = ({children}) => {
         const [state, dispatch] = useReducer(reducer, initialState);
         const {posts, fetching, fetchingError, disableInfiniteScroll} = state;
@@ -100,6 +100,9 @@ export const NewsFeedProvider: React.FC<NewsFeedProviderProps> = ({children}) =>
         const SIZE = 2;
         const [prevtype, setPrevtype] = useState<string | undefined>("");
         const [prevTags, setPrevTags] = useState<string[] | undefined>([]);
+        const [prevSearchArea, setPrevSearchArea] = useState<number | undefined>(0);
+        const currentLocation = useMyLocation();
+        const {latitude: lat, longitude: lng} = currentLocation.position?.coords || {}
 
         useEffect(initializeWebSocket, [])
 
@@ -111,30 +114,35 @@ export const NewsFeedProvider: React.FC<NewsFeedProviderProps> = ({children}) =>
             </NewsFeedContext.Provider>
         );
 
-        async function newsFeedCallback(type?: string, tags?: string[]) {
+        async function newsFeedCallback(searchArea: number, type?: string, tags?: string[]) {
             try {
                 console.log(`[PROVIDER] TAGS: ${tags}`)
                 console.log(`[PROVIDER] PREV_TAGS: ${prevTags}`)
                 console.log(`[PROVIDER] TYPE: ${type}`)
-                if (prevtype !== type || prevTags !== tags) {
+                console.log(`[PROVIDER] SEARCHAREA: ${searchArea}`)
+                console.log(`[PROVIDER] PREV SEARCH: ${prevSearchArea}`)
+                if (prevtype !== type || prevTags !== tags || prevSearchArea !== searchArea) {
+                    dispatch({type: PREPARE_FOR_FILTERED_POSTS})
                     setPrevtype(type);
                     setPrevTags(tags);
-                    dispatch({type: PREPARE_FOR_FILTERED_POSTS})
+                    setPrevSearchArea(searchArea)
                     PAGE = 0
                 }
 
                 console.log(`[PROVIDER] CURRENT PAGE : ${PAGE}`)
                 dispatch({type: FETCH_POSTS_STARTED});
 
-                const posts = await getNewsFeed(PAGE, SIZE, type, tags);
+                let posts: PostProps[];
+                console.log(`SEARCH AREA IN POST: ${searchArea}`)
+                if (searchArea > 0)
+                    posts = await getNewsFeed(PAGE, SIZE, type, tags, lat, lng, searchArea);
+                else
+                    posts = await getNewsFeed(PAGE, SIZE, type, tags);
 
                 console.log(`[NF CALLBACK] ${posts.length}`)
                 if (posts.length > 0) {
                     dispatch({type: ADD_TO_FEED, payload: {newsFeed: posts}})
                     PAGE = PAGE + 1
-
-                    console.log(`FUTURE PAGE: ${PAGE}`)
-
                     if (posts.length < SIZE) {
                         dispatch({type: DISABLE_INFINITE_SCROLL})
                     }
@@ -144,7 +152,7 @@ export const NewsFeedProvider: React.FC<NewsFeedProviderProps> = ({children}) =>
                 }
             } catch (error) {
                 log(`Getting news feed PAGE ${PAGE} encountered error: ${error}`)
-                dispatch({type: FETCH_POSTS_FAILED, payload: {error}});
+                dispatch({type: FETCH_POSTS_FAILED});
             }
         }
 
@@ -156,10 +164,7 @@ export const NewsFeedProvider: React.FC<NewsFeedProviderProps> = ({children}) =>
                 stompClient.subscribe('/topic/newPost', function (message) {
                     console.log(`[WS] NEW POST RECEIVED >>>>>>>>>> ${message["body"]}`);
                     const post: PostProps = JSON.parse(message["body"]);
-                    setTimeout(()=>{
-                        dispatch({type: WS_SAVE_POST_TO_FEED, payload: {post: post}})
-                    },10000);
-
+                    dispatch({type: WS_SAVE_POST_TO_FEED, payload: {post: post}})
                 });
                 stompClient.subscribe('/topic/updatePost', function (message) {
                     console.log(`[WS] UPDATE POST RECEIVED >>>>>>> ${message["body"]}`);

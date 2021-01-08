@@ -8,6 +8,6 @@ export interface PostProps {
     date: string;
     type: string;
     tags?: string[];
-    latitude?: number;
-    longitude?: number;
+    latitude?:number;
+    longitude?:number;
 }
