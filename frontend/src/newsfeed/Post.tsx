@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -17,7 +17,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ReportIcon from '@material-ui/icons/Report';
 import PersonIcon from '@material-ui/icons/Person';
 import {PostProps} from "./PostProps";
-import {IonAlert} from '@ionic/react';
+import {IonAlert, IonPopover, IonFabButton, IonIcon} from '@ionic/react';
 import "../newsfeed/newsFeed.css"
 import {sendReport} from "./newsFeedApi";
 import dog from "../utils/images/dog_cut1.jpg"
