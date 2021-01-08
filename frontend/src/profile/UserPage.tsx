@@ -1,16 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {RouteComponentProps} from 'react-router';
-import {
-    IonCol,
-    IonContent,
-    IonGrid,
-    IonImg,
-    IonInfiniteScroll, IonInfiniteScrollContent,
-    IonPage,
-    IonRow,
-    IonText,
-    useIonViewWillEnter
-} from '@ionic/react';
+import {IonCol, IonContent, IonGrid, IonImg, IonPage, IonRow} from '@ionic/react';
 import {Button, Col, Container, Image, Row, Tab, Tabs} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NavBarUser from '../components/NavBarUser';
@@ -28,7 +18,7 @@ const Storage = Plugins.Storage;
 const UserPage: React.FC<RouteComponentProps> = ({history}) => {
     const [key, setKey] = useState('posts');
 
-    const {posts, fetching,getData, fetchingError, fetchPosts, disableInfiniteScroll} = useContext(PostContext);
+    const {posts,deleting, deleteError, fetching,getData, fetchingError, fetchPosts, disableInfiniteScroll} = useContext(PostContext);
     const [init, setInit] = useState<boolean>(true);
     const [username, setUsername] = useState<string|undefined>(undefined);
     const [hasImage, setHasImage] = useState<boolean>(false);
@@ -55,12 +45,12 @@ const UserPage: React.FC<RouteComponentProps> = ({history}) => {
                 setUsername(user.value);
                 getData?.(user.value);
             }
-            
+
         })();
 
     },[])
 
-    return (   
+    return (
         <IonPage>
             <IonContent>
                 <NavBarUser/>
@@ -106,7 +96,7 @@ const UserPage: React.FC<RouteComponentProps> = ({history}) => {
                         <Col lg="8">
                             <Row>
                                 <Col lg="3">
-                                    {hasImage? <Image src="https://proiectcolectivmybuddy.s3.eu-central-1.amazonaws.com/testFolder/a.jpg" roundedCircle/> 
+                                    {hasImage? <Image src="https://proiectcolectivmybuddy.s3.eu-central-1.amazonaws.com/testFolder/a.jpg" roundedCircle/>
                                     :  <Image src={profileImg} roundedCircle/>}
                                 </Col>
                                 <Col lg="4">
@@ -129,6 +119,20 @@ const UserPage: React.FC<RouteComponentProps> = ({history}) => {
                     </Row>
 
                 </Container>
+
+                <IonLoading isOpen={deleting}/>
+                <IonToast
+                  isOpen={(deleteError != null)}
+                  message={deleteError?.message || "Network Error while deleting"}
+                  position="bottom"
+                  buttons={[
+                      {
+                          side: 'end',
+                          text: 'Dismiss',
+                          role: 'cancel',
+                      }
+                  ]}
+                />
             </IonContent>
         </IonPage>
     );

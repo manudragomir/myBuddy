@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -35,6 +35,7 @@ import {PhotoModal} from "./PhotoModal";
 
 const Storage = Plugins.Storage;
 
+import {PostContext} from './PostProvider';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -99,6 +100,8 @@ export const Post: React.FC<PostProps> = ({id, date, user, body, type, tags, lat
             }
         })();
     },[])
+
+    const {deletePost} = useContext(PostContext);
 
     useEffect(()=>{
         if(lost){
@@ -250,10 +253,16 @@ export const Post: React.FC<PostProps> = ({id, date, user, body, type, tags, lat
                                             adopted
                                         </ListItem> */}
                                         <ListItem>
-                                            <IconButton>
-                                                <DeleteIcon fontSize="small"/>
-                                                 delete
-                                            </IconButton>
+                                            {id != null && deletePost != null
+                                                ? <IconButton onClick={() => { deletePost?.(id) }}>
+                                                    <DeleteIcon fontSize="small"/>
+                                                    delete
+                                                  </IconButton>
+                                                : <IconButton disabled={true}>
+                                                    <DeleteIcon fontSize="small"/>
+                                                    missing postId or deletePost_func
+                                                  </IconButton>
+                                            }
                                         </ListItem>
                                         <ListItem>
                                             
