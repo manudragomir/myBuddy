@@ -1,7 +1,7 @@
 import {useState,useEffect, useReducer, ReactPropTypes, useCallback, useContext} from 'react';
 import {Post} from './Post';
 import {PostProps} from './PostProps'
-import {add, getUserPosts, submitFile} from './postApi'
+import {add, getUserPosts, submitFile,getUserPersonalData} from './postApi'
 import React from 'react';
 import PropTypes from 'prop-types';
 import { AuthContext, AuthState } from '../auth';
@@ -10,6 +10,7 @@ import Moment from 'moment';
 var PAGE = 0;
 type AddPostFn = (post : PostProps, file: FileList) => Promise<any>;
 type fetchUserPosts = () => void;
+type GetPersonalDataFn = (username : string) => Promise<any>; 
 
 export interface PostState{
     posts?: PostProps[],
@@ -20,6 +21,7 @@ export interface PostState{
     fetchingError: string,
     fetchPosts?: fetchUserPosts,
     disableInfiniteScroll: boolean,
+    getData?: GetPersonalDataFn
 }
 
 interface ActionProps{
@@ -88,9 +90,10 @@ export const PostProvider: React.FC<PostProviderProps>=({children})=>{
     const {posts, saving, savingError, fetching, fetchingError, disableInfiniteScroll}= state;
 
     const addPost=useCallback<AddPostFn>(savePostCallback,[token]);
+    const getData=useCallback<GetPersonalDataFn>(getPersonalDataCallback,[]);
     const fetchPosts = userPageCallback
     const SIZE = 2;
-    const value={posts,saving,savingError,addPost, fetching, fetchingError, fetchPosts, disableInfiniteScroll}
+    const value={posts,saving,savingError,addPost, fetching, fetchingError, fetchPosts, disableInfiniteScroll,getData}
 
     return (
         <PostContext.Provider value={value}>
@@ -137,5 +140,10 @@ export const PostProvider: React.FC<PostProviderProps>=({children})=>{
         }catch(error){
             dispatch({type:SAVE_POST_FAILED, payload:{error}})
         }
+    }
+
+    async function getPersonalDataCallback(username : string){
+        console.log(username);
+        await getUserPersonalData(username);
     }
 };

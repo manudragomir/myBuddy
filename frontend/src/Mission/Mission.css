@@ -1,0 +1,39 @@
+.mission-page-content{
+    --background: linear-gradient(60deg, grey 1%, #f3edbb 29.5%, #eeebce 30.33%, #f8f5ec 120%) !important;
+}
+.logoMission{
+    height: 300px;
+    width: 300px;
+    margin-top: 20px;
+
+}
+.textStyle{
+    color: #4c4a37; font-family: 'Source Sans Pro', sans-serif; font-size: 16px; line-height: 32px; margin: 0 0 24px
+
+}
+.textStyle1{
+    color: #4c4a37; font-family: 'Source Sans Pro', sans-serif; font-size: 16px; line-height: 32px;
+
+}
+.titlu{
+    color: #7c795d;
+    font-family: 'Trocchi', serif;
+    font-size: 30px;
+    font-weight: normal;
+    line-height: 48px;
+    margin: 0;
+}
+.titlu2{
+    color: #7c795d;
+    font-family: 'Trocchi', serif;
+    font-size: 20px;
+    font-weight: normal;
+    line-height: 48px;
+    margin: 0;
+}
+.poza1{
+    height: 600px;
+    width: 500px;
+
+
+}

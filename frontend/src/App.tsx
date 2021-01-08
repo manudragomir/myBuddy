@@ -30,6 +30,9 @@ import AddPost from './profile/AddPost';
 import { PostProvider } from './profile/PostProvider';
 import { NewsFeedProvider } from './newsfeed/NewsFeedProvider';
 import NewsFeed from './newsfeed/NewsFeed';
+import Mission from "./Mission/Mission";
+import Help from "./Mission/Help";
+import Contact from "./Mission/Contact";
 
 const App: React.FC = () => (
   <IonApp>
@@ -37,6 +40,9 @@ const App: React.FC = () => (
       <IonRouterOutlet>
         <AuthProvider>
           <Route path="/login" component={Login} exact={true}/>
+          <Route path="/mission" component={Mission} exact={true}/>
+          <Route path="/help" component={Help} exact={true}/>
+          <Route path="/contact" component={Contact} exact={true}/>
           <PostProvider>
             <PrivateRoute path="/user" component={UserPage}/>
             <PrivateRoute path="/user/edit" component={UserEdit}/>

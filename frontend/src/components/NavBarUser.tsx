@@ -23,13 +23,14 @@ export default function NavBarUser() {
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="mr-auto">
-                <Nav.Link href="#">Our Mission</Nav.Link>
+                <Nav.Link href="/mission">Our Mission</Nav.Link>
                 </Nav>
                 <Nav>
                 {/* <Nav.Link href="/login" onClick=​​​​​{handleLogOut}>SignOut</Nav.Link>    */}
-                <Nav.Link href="/login" onClick={handleLogOut}>SignOut</Nav.Link>
-                <Nav.Link href="#">Contact</Nav.Link>
-                <Nav.Link href="#">Help</Nav.Link>
+                <Nav.Link href="/user">My Profile</Nav.Link>
+                <Nav.Link href="/login" onClick={handleLogOut}>Log Out</Nav.Link>
+                <Nav.Link href="/contact">Contact</Nav.Link>
+                <Nav.Link href="/help">Help</Nav.Link>
                 </Nav>   
             </Navbar.Collapse>
         </Navbar>

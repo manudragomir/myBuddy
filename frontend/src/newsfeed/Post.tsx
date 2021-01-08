@@ -179,8 +179,8 @@ export const Post: React.FC<PostProps> = ({id,user, body, date, latitude, longit
             </CardHeader>
             <CardMedia
                 className={classes.media}
-                // image={`https://proiectcolectivmybuddy.s3.eu-central-1.amazonaws.com/testFolder/${id}.jpg`}
-                image={dog}
+                 image={`https://proiectcolectivmybuddy.s3.eu-central-1.amazonaws.com/testFolder/${id}.jpg`}
+                //image={dog}
                 title="titlu imagine"
             />
             <CardContent>

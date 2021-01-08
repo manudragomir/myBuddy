@@ -71,3 +71,18 @@ export const submitFile = async (file : FileList ,id: string) => {
       // handle error
     }
 }
+
+export const getUserPersonalData = async (username : string) => {
+    const response=await axios({
+      method: 'get',
+      url:'http://localhost:9000/user'  ,
+     
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: JSON.stringify({
+        "username": username,
+      }),
+    });
+    console.log(response);
+}

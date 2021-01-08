@@ -28,9 +28,10 @@ const Storage = Plugins.Storage;
 const UserPage: React.FC<RouteComponentProps> = ({history}) => {
     const [key, setKey] = useState('posts');
 
-    const {posts, fetching, fetchingError, fetchPosts, disableInfiniteScroll} = useContext(PostContext);
+    const {posts, fetching,getData, fetchingError, fetchPosts, disableInfiniteScroll} = useContext(PostContext);
     const [init, setInit] = useState<boolean>(true);
     const [username, setUsername] = useState<string|undefined>(undefined);
+    const [hasImage, setHasImage] = useState<boolean>(false);
 
     async function fetchUserPosts() {
         await fetchPosts?.();
@@ -52,7 +53,9 @@ const UserPage: React.FC<RouteComponentProps> = ({history}) => {
             const user = await Storage.get({ key: 'username' });
             if(user.value){
                 setUsername(user.value);
+                getData?.(user.value);
             }
+            
         })();
 
     },[])
@@ -103,7 +106,8 @@ const UserPage: React.FC<RouteComponentProps> = ({history}) => {
                         <Col lg="8">
                             <Row>
                                 <Col lg="3">
-                                    <Image src={profileImg} roundedCircle/>
+                                    {hasImage? <Image src="https://proiectcolectivmybuddy.s3.eu-central-1.amazonaws.com/testFolder/a.jpg" roundedCircle/> 
+                                    :  <Image src={profileImg} roundedCircle/>}
                                 </Col>
                                 <Col lg="4">
                                     <h3>{username}</h3>
@@ -111,7 +115,7 @@ const UserPage: React.FC<RouteComponentProps> = ({history}) => {
                                         Some things about me...
                                     </p>
                                     <Button onClick={() => {
-                                        return history.push("/public/edit")
+                                        return history.push("/user/edit")
                                     }} variant="secondary">Edit Profile</Button>
                                     <Button onClick={() => {
                                         return history.push("/user/post")
