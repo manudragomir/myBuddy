@@ -10,7 +10,7 @@ import Moment from 'moment';
 var PAGE = 0;
 type AddPostFn = (post : PostProps, file: FileList) => Promise<any>;
 type fetchUserPosts = () => void;
-type GetPersonalDataFn = (username : string) => Promise<any>; 
+type GetPersonalDataFn = (username : string) => Promise<any>;
 
 export interface PostState{
     posts?: PostProps[],
@@ -92,7 +92,7 @@ export const PostProvider: React.FC<PostProviderProps>=({children})=>{
     const addPost=useCallback<AddPostFn>(savePostCallback,[token]);
     const getData=useCallback<GetPersonalDataFn>(getPersonalDataCallback,[]);
     const fetchPosts = userPageCallback
-    const SIZE = 2;
+    const SIZE = 4;
     const value={posts,saving,savingError,addPost, fetching, fetchingError, fetchPosts, disableInfiniteScroll,getData}
 
     return (
