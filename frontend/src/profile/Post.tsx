@@ -29,7 +29,9 @@ import ListItem from '@material-ui/core/ListItem';
 import Checkbox from '@material-ui/core/Checkbox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import AspectRatioIcon from '@material-ui/icons/AspectRatio';
 import {Plugins} from "@capacitor/core";
+import {PhotoModal} from "./PhotoModal";
 
 const Storage = Plugins.Storage;
 
@@ -132,11 +134,14 @@ export const Post: React.FC<PostProps> = ({id, date, user, body, type, tags, lat
                             R
                         </Avatar>
                     </Badge>
-                    
                 }
                 action={
                     <Grid container spacing={1} alignItems="flex-end">
                         <Grid item>
+                            {
+                                !showButtons &&
+                                    <PhotoModal id={id}/>
+                            }
                             {showButtons &&
                                     <IconButton aria-label="settings" onClick={
                                                 (e: any) => {
@@ -260,8 +265,6 @@ export const Post: React.FC<PostProps> = ({id, date, user, body, type, tags, lat
                                             </IconButton>
                                         </ListItem>
                                     </List>
-                                                
-
                                     </IonPopover> }
                         </Grid>
                     </Grid>
@@ -281,32 +284,6 @@ export const Post: React.FC<PostProps> = ({id, date, user, body, type, tags, lat
                     {body}{tags}
                 </Typography>
             </CardContent>
-            <CardActions disableSpacing>
-                <IconButton aria-label="add to favorites">
-                    <FavoriteIcon/>
-                </IconButton>
-                <IconButton aria-label="message">
-                    <MessageIcon/>
-                </IconButton>
-                <IconButton
-                    className={clsx(classes.expand, {
-                        [classes.expandOpen]: expanded,
-                    })}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                >
-                    <ExpandMoreIcon/>
-                </IconButton>
-            </CardActions>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-                <CardContent>
-                    <Typography paragraph>Descriere:</Typography>
-                    <Typography paragraph>
-                        descriere lungaaaaaaaaaaaaaaa
-                    </Typography>
-                </CardContent>
-            </Collapse>
         </Card>
     );
 }

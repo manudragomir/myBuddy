@@ -89,7 +89,7 @@ export const PostProvider: React.FC<PostProviderProps>=({children})=>{
 
     const addPost=useCallback<AddPostFn>(savePostCallback,[token]);
     const fetchPosts = userPageCallback
-    const SIZE = 2;
+    const SIZE = 4;
     const value={posts,saving,savingError,addPost, fetching, fetchingError, fetchPosts, disableInfiniteScroll}
 
     return (
@@ -102,7 +102,6 @@ export const PostProvider: React.FC<PostProviderProps>=({children})=>{
         try {
             console.log(`[PROVIDER] CURRENT PAGE : ${PAGE}`)
             dispatch({type: FETCH_POSTS_STARTED});
-            console.log("E AICIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII - provider");
 
             const posts = await getUserPosts(PAGE, SIZE);
 

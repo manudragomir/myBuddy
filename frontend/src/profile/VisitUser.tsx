@@ -71,8 +71,8 @@ const VisitUser: React.FC<VisitUserProps> = ({history , match}) => {
                                 <Col lg="3">
                                     <Image src={profileImg} roundedCircle/>
                                 </Col>
-                                <Col lg="4">
-                                    <h3>{match.params.username}</h3>
+                                <Col lg="4" style={{padding:"70px"}}>
+                                    <p style={{fontSize: "70px", fontFamily: "Josefin Slab"}}>{match.params.username}</p>
                                 </Col>
                             </Row>
                         </Col>
