@@ -1,6 +1,6 @@
 import {UserPostProps} from "./UserPostProps";
 
-export interface PostProps {
+export interface PostProps{
     id: string,
     user: UserPostProps,
     body: string,

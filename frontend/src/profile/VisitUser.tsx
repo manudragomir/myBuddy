@@ -25,7 +25,12 @@ import {Plugins} from "@capacitor/core";
 
 const Storage = Plugins.Storage;
 
-const UserPage: React.FC<RouteComponentProps> = ({history}) => {
+interface VisitUserProps extends RouteComponentProps<{
+    username?: string;
+}> {}
+
+
+const VisitUser: React.FC<VisitUserProps> = ({history , match}) => {
     const [key, setKey] = useState('posts');
 
     const {posts, fetching, fetchingError, fetchPosts, disableInfiniteScroll} = useContext(PostContext);
@@ -48,22 +53,36 @@ const UserPage: React.FC<RouteComponentProps> = ({history}) => {
     }
 
     useEffect(()=>{
-        (async () => {
-            const user = await Storage.get({ key: 'username' });
-            if(user.value){
-                setUsername(user.value);
-            }
-        })();
-
+        const user = match.params.username;
+        setUsername(user);
     },[])
 
-    return (   
+    return (
         <IonPage>
-            <IonContent>
+            <IonContent className={"news-feed-content"}>
                 <NavBarUser/>
                 <Container fluid style={{height: "100%"}}>
+                    <Row>
+                        <Col lg="2">
+                            {/* <Image src={img} fluid/> */}
+                        </Col>
+                        <Col lg="8">
+                            <Row>
+                                <Col lg="3">
+                                    <Image src={profileImg} roundedCircle/>
+                                </Col>
+                                <Col lg="4">
+                                    <h3>{match.params.username}</h3>
+                                </Col>
+                            </Row>
+                        </Col>
+                        <Col lg="2">
+                            {/* <Image src={img} fluid/> */}
+                        </Col>
+                    </Row>
                     <Row style={{height: "10px"}}>
-                        <Image src={dog} fluid/>
+                        {/*<Image src={dog} fluid/>*/}
+                        <br/>
                         <Col lg="2"></Col>
                         <Col lg="8">
                             <Tabs
@@ -72,12 +91,20 @@ const UserPage: React.FC<RouteComponentProps> = ({history}) => {
                                 onSelect={k => k && setKey(k)}
                             >
                                 <Tab eventKey="posts" title="Posts">
-                                    {posts?.filter((x)=>
-                                        x.user?.username == username
-                                    ).map(({id, user, body, date, latitude, longitude, tags, type}) =>
-                                        <Post key={id} id={id} user={user} body={body} date={date} latitude={latitude} longitude={longitude}
-                                              tags={tags} type={type}/>
-                                    )}
+                                        <IonGrid>
+                                            <IonRow>
+                                                {
+                                                    posts?.filter((x)=>
+                                                        x.user?.username == username
+                                                    ).map(({id, user, body, date, latitude, longitude, tags, type}, index) =>
+                                                        (<IonCol size="6" key={index}>
+                                                            <Post key={id} id={id} user={user} body={body} date={date} latitude={latitude} longitude={longitude}
+                                                                  tags={tags} type={type}/>
+                                                        </IonCol>)
+                                                    )
+                                                }
+                                            </IonRow>
+                                        </IonGrid>
 
                                     {!fetching && posts?.length === 0 &&
                                     <div className={"tag-error-div"}>
@@ -96,33 +123,6 @@ const UserPage: React.FC<RouteComponentProps> = ({history}) => {
                         </Col>
                         <Col lg="2"></Col>
                     </Row>
-                    <Row>
-                        <Col lg="2">
-                            {/* <Image src={img} fluid/> */}
-                        </Col>
-                        <Col lg="8">
-                            <Row>
-                                <Col lg="3">
-                                    <Image src={profileImg} roundedCircle/>
-                                </Col>
-                                <Col lg="4">
-                                    <h3>{username}</h3>
-                                    <p>
-                                        Some things about me...
-                                    </p>
-                                    <Button onClick={() => {
-                                        return history.push("/public/edit")
-                                    }} variant="secondary">Edit Profile</Button>
-                                    <Button onClick={() => {
-                                        return history.push("/user/post")
-                                    }} variant="secondary">Add Post</Button>
-                                </Col>
-                            </Row>
-                        </Col>
-                        <Col lg="2">
-                            {/* <Image src={img} fluid/> */}
-                        </Col>
-                    </Row>
 
                 </Container>
             </IonContent>
@@ -130,4 +130,4 @@ const UserPage: React.FC<RouteComponentProps> = ({history}) => {
     );
 };
 
-export default UserPage;
+export default VisitUser;

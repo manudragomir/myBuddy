@@ -3,6 +3,7 @@ import {baseUrl, withLogs,authConfig} from '../core';
 
 import { PostProps } from './PostProps';
 const postUrl = `http://${baseUrl}/post`;
+const newsUrl = `http://${baseUrl}/post/newsfeed`;
 
 
 export const add: (date: string,type: string,token:string, body?: string, tags?: string[])=> Promise<PostProps> = (date,type,token,body, tags) => {
@@ -18,6 +19,21 @@ export const add: (date: string,type: string,token:string, body?: string, tags?:
                 type: type,
             }
         }), 'Add Post');
+}
+
+export const getUserPosts: (page: number, size: number) => Promise<PostProps[]> = (page, size) => {
+    let filterProps = JSON.stringify({page: {nrOrd: page, size: size}});
+
+    return withLogs(
+        axios({
+            method: 'post',
+            url: newsUrl,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: filterProps,
+
+        }), 'Get Posts FOR USER');
 }
 
 export const submitFile = async (file : FileList ,id: string) => {
