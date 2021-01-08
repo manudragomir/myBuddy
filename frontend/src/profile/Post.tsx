@@ -29,6 +29,10 @@ import ListItem from '@material-ui/core/ListItem';
 import Checkbox from '@material-ui/core/Checkbox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import {Plugins} from "@capacitor/core";
+
+const Storage = Plugins.Storage;
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -70,7 +74,7 @@ const StyledBadge = styled(Badge)`
 `
 
 
-export const Post: React.FC<PostProps> = ({id,date,user,body,type,tags}) => {
+export const Post: React.FC<PostProps> = ({id, date, user, body, type, tags, latitude, longitude}) => {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
 
@@ -82,6 +86,17 @@ export const Post: React.FC<PostProps> = ({id,date,user,body,type,tags}) => {
     const [adopted,setAdopted] = useState(false);
     const [mandatoryTag,setMandatoryTag]=useState('MyBuddy')
     const [checkedTag,setCheckedTag]=useState('');
+
+    const [showButtons, setShowButtons]=useState<boolean>(false);
+
+    useEffect(()=>{
+        (async () => {
+            const storageUser = await Storage.get({ key: 'username' });
+            if(storageUser.value && storageUser.value == user?.username){
+                setShowButtons(true);
+            }
+        })();
+    },[])
 
     useEffect(()=>{
         if(lost){
@@ -122,14 +137,16 @@ export const Post: React.FC<PostProps> = ({id,date,user,body,type,tags}) => {
                 action={
                     <Grid container spacing={1} alignItems="flex-end">
                         <Grid item>
+                            {showButtons &&
                                     <IconButton aria-label="settings" onClick={
                                                 (e: any) => {
                                                   e.persist();
                                                   setShowPopover({ showPopover: true, event: e })
                                                 }}>
                                             <MoreVertIcon/>
-                                    </IconButton>
-                                    <IonPopover
+                                    </IconButton> }
+                            {showButtons &&
+                                <IonPopover
                                               event={popoverState.event}
                                               isOpen={popoverState.showPopover}
                                               onDidDismiss={() => setShowPopover({ showPopover: false, event: undefined })}
@@ -245,7 +262,7 @@ export const Post: React.FC<PostProps> = ({id,date,user,body,type,tags}) => {
                                     </List>
                                                 
 
-                                    </IonPopover>
+                                    </IonPopover> }
                         </Grid>
                     </Grid>
                 }

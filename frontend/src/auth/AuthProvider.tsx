@@ -99,6 +99,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
               value: token
           });
         })();
+        (async () => {
+          await Storage.set({
+            key: 'username',
+            value: username!
+          });
+        })();
         setState({
           ...state,
           token,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -15,11 +15,15 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ReportIcon from '@material-ui/icons/Report';
+import PersonIcon from '@material-ui/icons/Person';
 import {PostProps} from "./PostProps";
 import {IonAlert} from '@ionic/react';
 import "../newsfeed/newsFeed.css"
 import {sendReport} from "./newsFeedApi";
 import dog from "../utils/images/dog_cut1.jpg"
+import {RouteComponentProps} from "react-router";
+import {UserPostProps} from "./UserPostProps";
+import {Button} from "react-bootstrap";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -75,6 +79,7 @@ export const Post: React.FC<PostProps> = ({id,user, body, date, latitude, longit
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
     const [reported, setReported] = React.useState(false);
+    const [path, setPath] = React.useState<string>("");
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -89,6 +94,11 @@ export const Post: React.FC<PostProps> = ({id,user, body, date, latitude, longit
         tags.forEach(tag=> tagString+=tag+" ")
         return tagString
     }
+
+    useEffect(()=>{
+        setPath("/visit/"+user.username);
+        console.log("/visit/"+user.username)
+    },[])
 
     return (
         <Card className={classes.root}>
@@ -159,7 +169,7 @@ export const Post: React.FC<PostProps> = ({id,user, body, date, latitude, longit
                     </Avatar>
                 }
                 action={
-                    <IconButton aria-label="settings">
+                    <IconButton aria-label="settings" >
                         <MoreVertIcon/>
                     </IconButton>
                 }
@@ -174,6 +184,7 @@ export const Post: React.FC<PostProps> = ({id,user, body, date, latitude, longit
                 title="titlu imagine"
             />
             <CardContent>
+                {/*<Button onClick={ () => location.href=`/user/${user.username}`} variant="secondary">Show Profile</Button>*/}
                 <Typography variant="body2" color="textSecondary" component="p">
                     TAGS: {getTags()}
                     <br/>
@@ -185,9 +196,12 @@ export const Post: React.FC<PostProps> = ({id,user, body, date, latitude, longit
                     <FavoriteIcon/>
                 </IconButton>
 
-
                 <IconButton aria-label="message" onClick={() => handleReportClick()}>
                     <ReportIcon/>
+                </IconButton>
+
+                <IconButton aria-label="message" href={path}>
+                    <PersonIcon/>
                 </IconButton>
 
                 <IconButton

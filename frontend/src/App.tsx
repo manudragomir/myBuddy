@@ -22,7 +22,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import { UserPage, UserEdit } from './profile';
+import { UserPage, UserEdit, VisitUser } from './profile';
 import { AuthProvider, Login, PrivateRoute, Confirm } from './auth';
 import SignUp from './auth/SignUp';
 import FileUpload from './profile/FileUpload';
@@ -48,6 +48,10 @@ const App: React.FC = () => (
           <NewsFeedProvider>
             <Route path="/home" component={NewsFeed}/>
           </NewsFeedProvider>
+          <PostProvider>
+            {/*<Route path="/visit" component={VisitUser}/>*/}
+            {/*<Route path="/visit/:username" component={VisitUser}/>*/}
+          </PostProvider>
           <Route path="/confirm" component={Confirm}/>
           <Route exact path="/" render={() => <Redirect to="/user"/>}/>
         </AuthProvider>
