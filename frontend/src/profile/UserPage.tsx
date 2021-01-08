@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {RouteComponentProps} from 'react-router';
-import {IonCol, IonContent, IonGrid, IonImg, IonPage, IonRow} from '@ionic/react';
+import {IonCol, IonContent, IonGrid, IonImg, IonPage, IonRow, IonLoading, useIonViewWillEnter, IonToast, IonText, IonInfiniteScroll, IonInfiniteScrollContent} from '@ionic/react';
 import {Button, Col, Container, Image, Row, Tab, Tabs} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NavBarUser from '../components/NavBarUser';
