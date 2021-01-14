@@ -24,8 +24,8 @@ public class MatcherService {
     /**
      * Iterates through all dogs, computes the matching score between the request and
      * each dog and then returns the dog with highest score
-     * @param matchRequest
-     * @return Dog The dog with the highest coefficient of matching
+     * @param matchRequest The match request, the dog is compared to
+     * @return The dog with the highest coefficient of matching
      */
     public Dog matchDogBreed(MatchDogRequest matchRequest) {
         List<Dog> dogList = matcherReader.getDogList();
@@ -49,7 +49,7 @@ public class MatcherService {
 
     /**
      * Computes the union of all skills from all dogs
-     * @return Set<String> The sets of skills from all dogs of all breeds
+     * @return The sets of skills from all dogs of all breeds
      */
     public Set<String> getSkills() {
         Map<String, Integer> dogSkillsApp = new HashMap<>();
@@ -76,7 +76,7 @@ public class MatcherService {
 
     /**
      * Computes the union of all purposes from all dogs
-     * @return Set<String> The sets of purposes from all dogs of all breeds
+     * @return The sets of purposes from all dogs of all breeds
      */
     public Set<String> getPurposes() {
         List<Dog> dogList = matcherReader.getDogList();

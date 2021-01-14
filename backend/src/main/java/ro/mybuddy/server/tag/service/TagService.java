@@ -27,7 +27,7 @@ public class TagService {
 
     /***
      * Returns a list of tags
-     * @return List<Tag> A list of all tags
+     * @return A list of all tags
      */
     public List<Tag> findAll(){
         return tagRepository.findAll();
@@ -53,6 +53,7 @@ public class TagService {
     /***
      * Method that saves one tag
      * @param tag Tag that will be saved
+     * @return The new tag
      * @throws SaveTagException Throw exception if tag cannot be added
      */
     public Tag saveTag(Tag tag){

@@ -20,7 +20,7 @@ public class MatcherReader {
 
     /**
      * Singleton function to get list only once
-     * @return List<Dog> A list of dogs from our db
+     * @return A list of dogs from our db
      */
     public List<Dog> getDogList(){
         if(dogList == null){
@@ -37,7 +37,7 @@ public class MatcherReader {
     /**
      * Parsing the skills from a string with special chars
      * @param skills A string of skills, separated by commas and other special characters
-     * @return List<String> A list of skills after the parse
+     * @return A list of skills after the parse
      */
     private List<String> getSkills(String skills){
         skills = skills.replaceAll("\\s+", "");
@@ -50,7 +50,7 @@ public class MatcherReader {
      * Get a a line of dogs attributes separted by commas and parse the line to obtain a dog
      * @param elems
      * @param id Id of the returned dog
-     * @return Dog The dog parsed
+     * @return The dog parsed
      */
     private Dog constructDogFromLine(List<String> elems, Integer id){
         //System.out.println(elems);

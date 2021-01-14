@@ -167,7 +167,7 @@ public class PostService {
     }
 
     /**
-     * Change the type of the post (LOST -> FOUND, ADOPTION->ADOPTED)
+     * Change the type of the post (LOST - FOUND, ADOPTION - ADOPTED)
      * @param id The id of the post
      * @return The new post updated
      */
