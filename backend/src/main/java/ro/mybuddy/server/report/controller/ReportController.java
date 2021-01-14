@@ -52,7 +52,6 @@ public class ReportController {
             return new ResponseEntity<>(errors.toString(), HttpStatus.NOT_ACCEPTABLE);
         }
         try {
-            System.out.println("[DEBUG] id of post: " + postId);
             service.saveReport(postId, report);
             return new ResponseEntity<Void>(HttpStatus.OK);
         } catch (ReportException e) {
