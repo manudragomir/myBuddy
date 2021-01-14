@@ -13,6 +13,10 @@ import ro.mybuddy.server.tag.repository.TagRepository;
 
 import java.util.List;
 
+/***
+ * Service that works with tags
+ * @see Tag
+ */
 @Component
 public class TagService {
     @Autowired
@@ -21,10 +25,19 @@ public class TagService {
     @Autowired
     PostRepository postRepository;
 
+    /***
+     * Returns a list of tags
+     * @return List<Tag> A list of all tags
+     */
     public List<Tag> findAll(){
         return tagRepository.findAll();
     }
 
+    /***
+     * Method that deletes one tag
+     * @param tag Tag that will be deleted
+     * @throws DeleteTagException Throw exception if tag cannot be deleted/found
+     */
     public void deleteTag(Tag tag){
         try{
             for(Post post: postRepository.findPostsByTagsContains(tag)){
@@ -37,6 +50,11 @@ public class TagService {
         }
     }
 
+    /***
+     * Method that saves one tag
+     * @param tag Tag that will be saved
+     * @throws SaveTagException Throw exception if tag cannot be added
+     */
     public Tag saveTag(Tag tag){
         tag = tagRepository.save(tag);
         if(tag==null){

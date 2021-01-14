@@ -12,6 +12,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/***
+ * Class used for particularizing posts, in order to filter them
+ * @see Post
+ */
 @Entity
 @Data
 @RequiredArgsConstructor

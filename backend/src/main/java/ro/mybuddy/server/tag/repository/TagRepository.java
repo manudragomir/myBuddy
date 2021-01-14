@@ -6,6 +6,10 @@ import ro.mybuddy.server.tag.model.Tag;
 
 import java.util.List;
 
+/***
+ * Repository responsible for tags
+ * @see Tag
+ */
 @Repository
 public interface TagRepository extends JpaRepository<Tag,String> {
     List<Tag> findAll();
