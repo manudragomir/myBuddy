@@ -11,6 +11,9 @@ export interface SignupProps {
     message: string;
 }
 
+// the methods contained in this file
+// are making requests for the login and signup functionalities
+// once the answers are received, the user interface is updated
 export const login: (username?: string, password?: string) => Promise<AuthProps> = (username, password) => {
     const username_not_null = username == undefined ? '' : username
     const password_not_null = password == undefined ? '' : password

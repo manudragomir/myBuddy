@@ -48,7 +48,17 @@ interface SignUpProviderProps {
     children: PropTypes.ReactNodeLike,
 }
 
-
+/*
+ The component serves the scope of sign-up functionality
+ It ensures the possibility of signing up through the input fields :
+ - first and last name
+ - date of birth
+ - username
+ - email
+ - password
+ - confirm password
+ It will redirect the user to a confirmation page if the provided data is secure
+ */
 export const SignUp: React.FC<SignUpProviderProps> = ({children}) => {
 
     const [state, setState] = useState<SignUpState>(initialState);

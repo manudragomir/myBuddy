@@ -15,6 +15,10 @@ import {Plugins} from "@capacitor/core";
 
 const Storage = Plugins.Storage;
 
+/*
+    The component shows the profile of the current logged user
+    It provides the posts of the logged user and information regarding the user's personal data
+ */
 const UserPage: React.FC<RouteComponentProps> = ({history}) => {
     const [key, setKey] = useState('posts');
 
@@ -25,12 +29,17 @@ const UserPage: React.FC<RouteComponentProps> = ({history}) => {
 
     async function fetchUserPosts() {
         await fetchPosts?.();
-        //if (init) setInit(false);
+        if (init) setInit(false);
     }
 
     useIonViewWillEnter(async () => {
         //await fetchUserPosts();
     });
+
+    useEffect(() => {
+        if(init) fetchUserPosts();
+        console.log(posts);
+    }, [])
 
     async function searchNext($event: CustomEvent<void>) {
         console.log("NEXT")
@@ -72,11 +81,7 @@ const UserPage: React.FC<RouteComponentProps> = ({history}) => {
                                               tags={tags} type={type}/>
                                     )}
 
-                                    {!fetching && posts?.length === 0 &&
-                                    <div className={"tag-error-div"}>
-                                        <IonText>loading...</IonText>
-                                    </div>
-                                    }
+
                                     <IonInfiniteScroll threshold="100px" disabled={disableInfiniteScroll}
                                                        onIonInfinite={(e: CustomEvent<void>) => searchNext(e)}>
                                         <IonInfiniteScrollContent

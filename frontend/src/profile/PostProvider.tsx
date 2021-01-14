@@ -55,6 +55,7 @@ const DELETE_POST_STARTED = 'DELETE_POST_STARTED';
 const DELETE_POST_SUCCEDED = 'DELETE_POST_SUCCEDED';
 const DELETE_POST_FAILED = 'DELETE_POST_FAILED';
 
+
 const reducer: (state: PostState, action: ActionProps)=> PostState =
     (state, {type,payload}) => {
         switch(type){
@@ -102,6 +103,9 @@ export const PostContext = React.createContext<PostState>(initialState);
 interface PostProviderProps{
     children: PropTypes.ReactNodeLike,
 }
+/*
+    The "PostProvider" component maitains the logic of the application regarding the adding and providing the posts functionalities
+ */
 export const PostProvider: React.FC<PostProviderProps>=({children})=>{
     const [state, dispatch] = useReducer(reducer, initialState)
     const {token} = useContext<AuthState>(AuthContext);
@@ -111,7 +115,7 @@ export const PostProvider: React.FC<PostProviderProps>=({children})=>{
     const addPost=useCallback<AddPostFn>(savePostCallback,[token]);
     const getData=useCallback<GetPersonalDataFn>(getPersonalDataCallback,[]);
     const fetchPosts = userPageCallback
-    const SIZE = 4;
+    const SIZE = 2;
     const deletePost=useCallback<DeletePostFn>(deletePostCallback, [token]);
     const value={posts,saving,savingError,addPost, fetching, fetchingError, fetchPosts,deleting,deleteError,deletePost, disableInfiniteScroll,getData}
 
@@ -126,10 +130,8 @@ export const PostProvider: React.FC<PostProviderProps>=({children})=>{
         try {
             console.log(`[PROVIDER] CURRENT PAGE : ${PAGE}`)
             dispatch({type: FETCH_POSTS_STARTED});
-            console.log("E AICIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII - provider");
 
             const posts = await getUserPosts(PAGE, SIZE);
-
 
             console.log(`[NF CALLBACK] ${posts.length}`)
             if (posts.length > 0) {
@@ -163,6 +165,7 @@ export const PostProvider: React.FC<PostProviderProps>=({children})=>{
         }
     }
 
+    //callback for deleting te post
     async function deletePostCallback(postId: string) {
         try {
             dispatch({type: DELETE_POST_STARTED});
@@ -173,6 +176,7 @@ export const PostProvider: React.FC<PostProviderProps>=({children})=>{
         }
     }
 
+    //callback for getting the personal data
     async function getPersonalDataCallback(username : string){
         console.log(username);
         await getUserPersonalData(username);

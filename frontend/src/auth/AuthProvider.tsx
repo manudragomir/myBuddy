@@ -35,6 +35,10 @@ interface AuthProviderProps {
   children: PropTypes.ReactNodeLike,
 }
 
+/*
+  The component maintains the authentication logic part
+  making the calls to the API based on the information from the user inputs
+ */
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [state, setState] = useState<AuthState>(initialState);
   const { isAuthenticated, isAuthenticating, authenticationError, pendingAuthentication, token } = state;

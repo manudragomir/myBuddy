@@ -126,7 +126,12 @@ const tags = [
   }
 
 
-
+/*
+    The component presents a page to the user interface when is trying to add a post
+    The input fields are : description, location, tags, the type of the post and the picture/image of the pet corresponding to the pet
+    The component gets the information from the input fields and at the click on the "upload" button,
+    the handle method is called and the callback from "PostProvider" is put im execution
+ */
 export const AddPost: React.FC<RouteComponentProps> = ({history}) => {
     const theme = useTheme();
     const classes = useStyles();
