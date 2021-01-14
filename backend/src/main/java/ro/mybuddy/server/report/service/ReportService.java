@@ -31,12 +31,24 @@ public class ReportService {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Saves a report to the report repository.
+     * The post ID is checked for existence, so a valid one must be provided.
+     * The report argument must specify the reporting username and the reason for reporting formatted as a message.
+     * <p>
+     *     It validates the given postId and the username field in reportDto and creates a Report instance which is
+     *     saved to reportRepository
+     * </p>
+     * @param postId
+     * @param reportDto  the report data
+     * @throws InvalidUserException  in case the given username is not found
+     * @throws InvalidPostException  in case the given post is not found
+     * @throws SaveReportException   in case of unsuccessful save
+     */
     public void saveReport(String postId, ReportDto reportDto) {
-        logger.info("Saving report...");
         Report report = new Report();
         report.setPost(postRepository.findPostById(postId));
         report.setMessage(reportDto.getMessage());
-        logger.info("finding user " + reportDto.getUsername() + " in database");
         User user = userRepository.findByUsernameOrEmail(reportDto.getUsername(), reportDto.getUsername());
 
         if (user == null) {
@@ -55,10 +67,19 @@ public class ReportService {
         }
     }
 
+    /**
+     * Fetches all the existing reports from the report repository.
+     * @return  a list containing all reports
+     */
     public List<Report> findAll() {
         return reportRepository.findAll();
     }
 
+    /**
+     * Deletes the report from the report repository only if it exists.
+     * @param id  the identifier of the given report
+     * @throws DeleteReportException  in case of unsuccessful deletion
+     */
     public void deleteReport(long id) {
         Optional<Report> report = reportRepository.findById(id);
         if (report.isPresent()) {
