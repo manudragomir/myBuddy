@@ -53,7 +53,6 @@ public class ReportService {
         } catch (JpaObjectRetrievalFailureException e) {
             throw new SaveReportException("Error while saving report: " + e.getMessage());
         }
-//        Post post =
     }
 
     public List<Report> findAll() {
