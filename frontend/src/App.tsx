@@ -22,7 +22,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import { UserPage, UserEdit } from './profile';
+import { UserPage, UserEdit, VisitUser } from './profile';
 import { AuthProvider, Login, PrivateRoute, Confirm } from './auth';
 import SignUp from './auth/SignUp';
 import FileUpload from './profile/FileUpload';
@@ -30,6 +30,9 @@ import AddPost from './profile/AddPost';
 import { PostProvider } from './profile/PostProvider';
 import { NewsFeedProvider } from './newsfeed/NewsFeedProvider';
 import NewsFeed from './newsfeed/NewsFeed';
+import Mission from "./Mission/Mission";
+import Help from "./Mission/Help";
+import Contact from "./Mission/Contact";
 
 const App: React.FC = () => (
   <IonApp>
@@ -37,6 +40,9 @@ const App: React.FC = () => (
       <IonRouterOutlet>
         <AuthProvider>
           <Route path="/login" component={Login} exact={true}/>
+          <Route path="/mission" component={Mission} exact={true}/>
+          <Route path="/help" component={Help} exact={true}/>
+          <Route path="/contact" component={Contact} exact={true}/>
           <PostProvider>
             <PrivateRoute path="/user" component={UserPage}/>
             <PrivateRoute path="/user/edit" component={UserEdit}/>
@@ -48,6 +54,10 @@ const App: React.FC = () => (
           <NewsFeedProvider>
             <Route path="/home" component={NewsFeed}/>
           </NewsFeedProvider>
+          <PostProvider>
+            <Route path="/visit" component={VisitUser}/>
+            <Route path="/visit/:username" component={VisitUser}/>
+          </PostProvider>
           <Route path="/confirm" component={Confirm}/>
           <Route exact path="/" render={() => <Redirect to="/user"/>}/>
         </AuthProvider>

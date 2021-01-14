@@ -3,9 +3,10 @@ import {baseUrl, withLogs,authConfig} from '../core';
 
 import { PostProps } from './PostProps';
 const postUrl = `http://${baseUrl}/post`;
+const newsUrl = `http://${baseUrl}/post/newsfeed`;
 
 
-export const add: (date: string,type: string,token:string, body?: string, tags?: string[])=> Promise<PostProps> = (date,type,token,body, tags) => {
+export const add: (date: string,type: string,token:string, body?: string, tags?: string[],latitude?: number,longitude?:number)=> Promise<PostProps> = (date,type,token,body, tags,latitude,longitude) => {
     return withLogs(
         axios({
             method: 'post',
@@ -16,8 +17,25 @@ export const add: (date: string,type: string,token:string, body?: string, tags?:
                 date: date,
                 tags: tags,
                 type: type,
+                latitude:latitude,
+                longitude: longitude,
             }
         }), 'Add Post');
+}
+
+export const getUserPosts: (page: number, size: number) => Promise<PostProps[]> = (page, size) => {
+    let filterProps = JSON.stringify({page: {nrOrd: page, size: size}});
+
+    return withLogs(
+        axios({
+            method: 'post',
+            url: newsUrl,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            data: filterProps,
+
+        }), 'Get Posts FOR USER');
 }
 
 export const submitFile = async (file : FileList ,id: string) => {
@@ -54,4 +72,28 @@ export const submitFile = async (file : FileList ,id: string) => {
     } catch (error) {
       // handle error
     }
+}
+
+export const getUserPersonalData = async (username : string) => {
+    const response=await axios({
+      method: 'get',
+      url:'http://localhost:9000/user'  ,
+
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: JSON.stringify({
+        "username": username,
+      }),
+    });
+    console.log(response);
+}
+
+export const remove: (token:string, postId:string) => Promise<any> = (token, postId) => {
+  return withLogs(
+    axios({
+      method: 'delete',
+      url: `${postUrl}/${postId}`,
+      ...authConfig(token),
+    }), 'Remove Post');
 }

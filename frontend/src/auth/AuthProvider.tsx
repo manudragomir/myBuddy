@@ -2,6 +2,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { getLogger } from '../core';
 import { login as loginApi } from './authApi';
+import {Plugins} from '@capacitor/core';
+const {Storage} = Plugins;
+
 
 const log = getLogger('AuthProvider');
 
@@ -39,11 +42,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(authenticationEffect, [pendingAuthentication]);
   const value = { isAuthenticated, login, isAuthenticating, authenticationError, token };
   log('render');
+
+  useEffect(()=>{
+    (async () => {const res = await Storage.get({ key: 'token' })
+        if (res.value) {
+          setState({...state,token:res.value, isAuthenticated: true})
+      }
+    })();
+  },[]);
+
   return (
     <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
+
+
 
   function loginCallback(username?: string, password?: string): void {
     log('login');
@@ -79,6 +93,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           return;
         }
         log('authenticate succeeded');
+        (async () => {
+          await Storage.set({
+              key: 'token',
+              value: token
+          });
+        })();
+        (async () => {
+          await Storage.set({
+            key: 'username',
+            value: username!
+          });
+        })();
         setState({
           ...state,
           token,

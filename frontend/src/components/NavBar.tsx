@@ -11,12 +11,13 @@ export default function NavBar() {
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="mr-auto">
-                <Nav.Link href="#features">Our Mission</Nav.Link>
-                <Nav.Link href="#pricing">Help</Nav.Link>
+                <Nav.Link href="/mission">Our Mission</Nav.Link>
+                <Nav.Link href="/help">Help</Nav.Link>
                 </Nav>
                 <Nav>
+                <Nav.Link href="/user">My Profile</Nav.Link>
                 <Nav.Link href="/login">Login</Nav.Link>
-                <Nav.Link href="#deets">Contact</Nav.Link>
+                <Nav.Link href="/contact">Contact</Nav.Link>
                 </Nav>   
             </Navbar.Collapse>
             </Navbar>

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, {useEffect} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
@@ -15,21 +15,34 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ReportIcon from '@material-ui/icons/Report';
+import PersonIcon from '@material-ui/icons/Person';
 import {PostProps} from "./PostProps";
-import {IonAlert} from '@ionic/react';
+import {IonAlert, IonPopover, IonFabButton, IonIcon} from '@ionic/react';
 import "../newsfeed/newsFeed.css"
 import {sendReport} from "./newsFeedApi";
-import { AuthContext, AuthState } from '../auth';
+import dog from "../utils/images/dog_cut1.jpg"
+import {RouteComponentProps} from "react-router";
+import {UserPostProps} from "./UserPostProps";
+import {Button} from "react-bootstrap";
+import {eye} from "ionicons/icons";
+import {PostMap} from "../map/PostMap";
+import x from '../utils/images/114.jpg'
+import {Badge} from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
         root: {
-            width: "80%",
+            width: "60%",
             // maxWidth: '85%',
-            marginLeft: '9%',
+            marginLeft: '20%',
+            paddingTop: '1%',
+            paddingBottom: '5%',
+            transition: 'opacity 500ms ease-in',
+            background: 'linear-gradient(90deg, #fff4f4 1%, #fff6e4 29.5%, #fff6e4 30.33%, #f8fdfd 120%) !important'
         },
         media: {
             paddingTop: '36.25%', // 16:9
+            padding: '20%',
         },
         expand: {
             transform: 'rotate(0deg)',
@@ -43,6 +56,8 @@ const useStyles = makeStyles((theme) => ({
         },
         avatar: {
             backgroundColor: "#dbd55b",
+            width: '6vh',
+            height: '6vh',
         },
 
         lightbox: {
@@ -66,10 +81,13 @@ const useStyles = makeStyles((theme) => ({
 ;
 
 
-export const Post: React.FC<PostProps> = ({id,user, body, date, latitude, longitude, tags, type}) => {
+export const Post: React.FC<PostProps> = ({id, user, body, date, latitude, longitude, tags, type}) => {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
     const [reported, setReported] = React.useState(false);
+    const [path, setPath] = React.useState<string>("");
+    const [popoverState, setShowPopover] = React.useState({showPopover: false, event: undefined});
+
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
@@ -78,11 +96,16 @@ export const Post: React.FC<PostProps> = ({id,user, body, date, latitude, longit
         setReported(true);
     };
 
-    const getTags = ()=>{
-        let tagString=""
-        tags.forEach(tag=> tagString+=tag+" ")
+    const getTags = () => {
+        let tagString = ""
+        tags.forEach(tag => tagString += tag + " ")
         return tagString
     }
+
+    useEffect(()=>{
+        setPath("/visit/"+user.username);
+        console.log("/visit/"+user.username)
+    },[])
 
     return (
         <Card className={classes.root}>
@@ -140,30 +163,53 @@ export const Post: React.FC<PostProps> = ({id,user, body, date, latitude, longit
                         handler: (reason) => {
                             console.log(reason)
                             console.log('Confirm Ok');
-
-                            sendReport(Number(id),reason);
+                            sendReport(Number(id), reason);
                         }
                     }
                 ]}
             />}
+
+            <IonPopover
+                animated={true}
+                showBackdrop={true}
+                cssClass='map-popover'
+                event={popoverState.event}
+                isOpen={popoverState.showPopover}
+                onDidDismiss={() => setShowPopover({showPopover: false, event: undefined})}>
+                <PostMap
+                    lat={Number(latitude)}
+                    lng={Number(longitude)}
+                    onMapClick={console.log('onMapClick')}
+                    onMarkerClick={console.log('onMarkerClick')}
+                />
+            </IonPopover>
+
             <CardHeader
                 avatar={
-                    <Avatar aria-label="recipe" className={classes.avatar}>
-                        R
-                    </Avatar>
+                    <Badge color={"error"} badgeContent={type}>
+                        <Avatar aria-label="recipe" className={classes.avatar}>
+                            <img src={x} alt={"q"}/>
+                        </Avatar>
+                    </Badge>
                 }
                 action={
-                    <IconButton aria-label="settings">
-                        <MoreVertIcon/>
-                    </IconButton>
+                    <IonFabButton color={"transparent"} className={"eye-button"} onClick={
+                        (e: any) => {
+                            e.persist();
+                            setShowPopover({showPopover: true, event: e});
+                        }}
+                    >
+                        <IonIcon className={"eye-icon"} icon={eye}/>
+                    </IonFabButton>
                 }
                 title={`${user.username}`}
-                subheader={`${date} | ${latitude} ${longitude}`}
+                subheader={`${date}`}
             >
             </CardHeader>
             <CardMedia
                 className={classes.media}
                 image={`https://proiectcolectivmybuddy.s3.eu-central-1.amazonaws.com/testFolder/${id}.jpg`}
+                //image={dog}
                 title="titlu imagine"
             />
             <CardContent>
@@ -183,14 +229,17 @@ export const Post: React.FC<PostProps> = ({id,user, body, date, latitude, longit
                     <ReportIcon/>
                 </IconButton>
 
+                <IconButton aria-label="message" href={path}>
+                    <PersonIcon/>
+                </IconButton>
+
                 <IconButton
                     className={clsx(classes.expand, {
                         [classes.expandOpen]: expanded,
                     })}
                     onClick={handleExpandClick}
                     aria-expanded={expanded}
-                    aria-label="show more"
-                >
+                    aria-label="show more">
                     <ExpandMoreIcon/>
                 </IconButton>
             </CardActions>

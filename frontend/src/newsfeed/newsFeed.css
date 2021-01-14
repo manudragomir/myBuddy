@@ -4,12 +4,163 @@
     --ion-text-color: black;
 }
 
+.news-feed-content{
+    --background: linear-gradient(60deg, grey 1%, #f3edbb 29.5%, #eeebce 30.33%, #f8f5ec 120%) !important;
+}
+
 
 button.alert-button:nth-child(1) {
     color: turquoise;
 }
 
+.menu-row{
+    --background: linear-gradient(60deg, grey 1%, #f3edbb 29.5%, #eeebce 30.33%, #b3b3b3 120%) !important;
+}
 
 button.alert-button:nth-child(2){
     color: turquoise;
+}
+
+.ion-padding-start{
+    margin-left: 13%;
+    width: 100%;
+}
+
+ion-slide {
+    width: 10% !important;
+    height: 7% !important;
+    margin-right: 1%;
+    margin-left: 1%;
+    margin-bottom: 2%;
+}
+
+.category-col {
+    height: 100% !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.selected-col{
+    height: 100% !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 100px;
+}
+
+.type-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    box-shadow: 0 10px 20px 0 rgb(74, 74, 65);
+}
+
+.selected-img{
+    box-shadow: 1vh 1vh 3vh 0.5vh rgb(239, 203, 121);
+    border: 3px solid moccasin;
+}
+
+h4 {
+    color: #ffffff;
+    margin: 0;
+}
+
+.title {
+    padding-bottom: 0.1%;
+}
+
+h3{
+    padding-bottom: 1%;
+    margin: 0px 0px 0px 15%;
+    color: #434343;
+}
+
+
+p {
+    margin: 0 16px 0 0;
+    color: #656565;
+}
+
+.wrapper-div{
+    overflow: hidden;
+    margin-left: 12%;
+    width: 100%;
+}
+
+.search-area-div{
+    width: 70vh;
+    float:left;
+}
+
+.search-item{
+    --background: transparent;
+}
+
+.search-bar-div{
+    padding-left: 10vh;
+    width: 80vh;
+    float:left; /* add this */
+}
+
+.button-search-div{
+    float: left; /* add this */
+    margin-top:0.8%;
+}
+
+.search-button{
+    height:30px;
+    font-family: Verdana;
+}
+
+.tag-error-div{
+    justify-content: center;
+    text-align: center;
+    margin:auto;
+    width: 40%;
+    font-size: 4vh;
+}
+
+.map-popover{
+    --height: 43vh;
+    --width: 70vh;
+}
+
+.eye-button{
+    width: 4vh;
+    height: 4vh;
+}
+
+.eye-icon{
+    width: 7vh;
+    height: 7vh;
+    color: #e9bd31;
+}
+
+.eye-button:hover .eye-icon{
+    color: #dd0202;
+}
+
+
+@media(max-width: 1100px){
+
+    .wrapper-div{
+        overflow: hidden;
+        margin-left: 0%;
+        width: 100%;
+    }
+    .search-area-div{
+        width: 70vh;
+        float:left;
+    }
+
+    .search-bar-div{
+        padding-left: 0vh;
+        width: 40vh;
+        float:left; /* add this */
+    }
 }
