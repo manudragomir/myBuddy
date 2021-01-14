@@ -83,7 +83,7 @@ const FinalStep = (props: StepComponentProps) => {
             <h4>Your breed is:</h4>
             <h1>{breedName}</h1>
             <IonImg src={breedImgSrc} hidden={!imageAvailable}/>
-            <IonImg src="https://http.cat/404" hidden={imageAvailable}/>
+            <IonImg src="https://http.cat/404" hidden={imageAvailable} style={{width: "30vw"}}/>
             <IonLabel hidden={imageAvailable}>No photo available for this breed :(</IonLabel>
           </div>
         </div>
