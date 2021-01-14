@@ -6,6 +6,9 @@ import lombok.experimental.SuperBuilder;
 import java.util.List;
 import java.util.Objects;
 
+/***
+ * A simple dog, *bark noise*
+ */
 @Data
 @Builder
 @NoArgsConstructor

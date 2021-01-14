@@ -8,12 +8,20 @@ import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+/***
+ * Class that deals with reading from csv and returning an array of dogs
+ * It implements singleton for the list to be read just once
+ */
 @Component
 public class MatcherReader {
     List<Dog> dogList;
     private final String dogPathCsv = "dog_breed_characteristics.csv";
     private final String catPathCsv = "cat_breed_characteristics.csv";
 
+    /**
+     * Singleton function to get list only once
+     * @return List<Dog> A list of dogs from our db
+     */
     public List<Dog> getDogList(){
         if(dogList == null){
             try {
@@ -26,6 +34,11 @@ public class MatcherReader {
         return dogList;
     }
 
+    /**
+     * Parsing the skills from a string with special chars
+     * @param skills A string of skills, separated by commas and other special characters
+     * @return List<String> A list of skills after the parse
+     */
     private List<String> getSkills(String skills){
         skills = skills.replaceAll("\\s+", "");
         skills = skills.replaceAll("\"", "");
@@ -33,6 +46,12 @@ public class MatcherReader {
         return Arrays.asList(skills.split(","));
     }
 
+    /**
+     * Get a a line of dogs attributes separted by commas and parse the line to obtain a dog
+     * @param elems
+     * @param id Id of the returned dog
+     * @return Dog The dog parsed
+     */
     private Dog constructDogFromLine(List<String> elems, Integer id){
         //System.out.println(elems);
         Integer popularity = null;
@@ -55,6 +74,9 @@ public class MatcherReader {
                 .build();
     }
 
+    /**
+     * Method that parse the dog csv file and populate the class field dogList
+     */
     private void readFromFile() throws Exception{
         InputStream is = getClass().getClassLoader().getResourceAsStream(dogPathCsv);
         InputStreamReader isr = new InputStreamReader(is);

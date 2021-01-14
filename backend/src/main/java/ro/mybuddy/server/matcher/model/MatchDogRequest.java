@@ -8,6 +8,9 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+/***
+ * Request for dog matching that will be compared with dogs characteristics
+ */
 @Data
 @Valid
 @RequiredArgsConstructor

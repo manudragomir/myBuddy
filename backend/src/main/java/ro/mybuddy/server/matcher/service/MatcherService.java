@@ -10,6 +10,9 @@ import ro.mybuddy.server.matcher.utils.ScoringComputer;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/***
+ * Service for Matcher
+ * */
 @Component
 public class MatcherService {
     @Autowired
@@ -18,12 +21,18 @@ public class MatcherService {
     @Autowired
     private ScoringComputer scoringComputer;
 
+    /**
+     * Iterates through all dogs, computes the matching score between the request and
+     * each dog and then returns the dog with highest score
+     * @param matchRequest
+     * @return Dog The dog with the highest coefficient of matching
+     */
     public Dog matchDogBreed(MatchDogRequest matchRequest) {
         List<Dog> dogList = matcherReader.getDogList();
         Map<Dog, Double> dogScores = new HashMap<>();
 
         dogList.forEach(dog -> {
-            Double score = computeScoreForDog(dog, matchRequest);
+            Double score = scoringComputer.computeScoreForDog(dog, matchRequest);
             //System.out.println("FOR DOG " + dog.getName() + " SCORE: " + score);
             dogScores.put(dog, score);
         });
@@ -38,6 +47,10 @@ public class MatcherService {
         return sortedScores.get(0);
     }
 
+    /**
+     * Computes the union of all skills from all dogs
+     * @return Set<String> The sets of skills from all dogs of all breeds
+     */
     public Set<String> getSkills() {
         Map<String, Integer> dogSkillsApp = new HashMap<>();
         List<Dog> dogList = matcherReader.getDogList();
@@ -61,6 +74,10 @@ public class MatcherService {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Computes the union of all purposes from all dogs
+     * @return Set<String> The sets of purposes from all dogs of all breeds
+     */
     public Set<String> getPurposes() {
         List<Dog> dogList = matcherReader.getDogList();
         Map<String, Integer> dogListPurposeApp = new HashMap<>();
@@ -86,21 +103,5 @@ public class MatcherService {
                 .filter(x -> x.getValue() > 1)
                 .map(x -> x.getKey())
                 .collect(Collectors.toSet());
-    }
-
-    //NEED TO BE IMPROVED TO WORK LIKE ML
-    private Double computeScoreForDog(Dog dog, MatchDogRequest request) {
-        Double purposeCoef = 0.2;
-        Double skillsCoef = 0.4;
-        Double watchCoef = 0.1;
-        Double priceCoef = 0.2;
-        Double weightCoef = 0.1;
-
-        Double purposeScore = purposeCoef * scoringComputer.computePurpose(dog, request);
-        Double skillsScore = skillsCoef * scoringComputer.computeSkills(dog, request);
-        Double watchScore = watchCoef * scoringComputer.computeWatch(dog, request);
-        Double priceScore = priceCoef * scoringComputer.computePrice(dog, request);
-        Double weightScore = weightCoef * scoringComputer.computeWeight(dog, request);
-        return purposeScore + skillsScore + watchScore + priceScore + weightScore;
     }
 }
