@@ -4,10 +4,26 @@
     <list default="true" id="11cb2bb8-c8f1-4813-8e02-a7ec95b1e294" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/newsfeed/Post.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/newsfeed/Post.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/auth/AuthProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth/AuthProvider.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/auth/Confirm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth/Confirm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/auth/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth/Login.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/auth/PrivateRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth/PrivateRoute.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/auth/SignUp.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth/SignUp.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/auth/authApi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth/authApi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/profile/AddPost.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/profile/AddPost.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/profile/FileUpload.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/profile/FileUpload.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/profile/GeoMap.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/profile/GeoMap.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/profile/PhotoModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/profile/PhotoModal.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/profile/Post.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/profile/Post.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/profile/PostProps.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/profile/PostProps.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/profile/PostProvider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/profile/PostProvider.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/profile/UserEdit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/profile/UserEdit.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/profile/UserPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/profile/UserPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/profile/VisitUser.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/profile/VisitUser.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/profile/mapApi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/profile/mapApi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/profile/mapsApiKey.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/profile/mapsApiKey.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/profile/postApi.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/profile/postApi.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/profile/useMyLocation.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/profile/useMyLocation.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,6 +65,7 @@
       <workItem from="1610047143919" duration="18263000" />
       <workItem from="1610093198843" duration="1433000" />
       <workItem from="1610095273298" duration="6516000" />
+      <workItem from="1610651630263" duration="10850000" />
     </task>
     <servers />
   </component>

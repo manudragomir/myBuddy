@@ -91,7 +91,10 @@ const MenuProps = {
  
 
 
-
+/*
+    The component exposes an interface for the user with the possibility of setting up his/her profile photo, emial and phone number
+    After the completion of the input fields, the data is sent to the server
+ */
 const UserEdit: React.FC<RouteComponentProps> = ({ history }) => {
     const theme = useTheme();
     const classes = useStyles();

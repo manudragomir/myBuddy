@@ -9,7 +9,10 @@ export interface ModalProps {
     id?: string,
 }
 
-
+/*
+    The modal window is called in order to show the post in the context of visiting an user profile
+    This pops over the current component of the user profile page
+ */
 export const PhotoModal: React.FC<ModalProps> = ({id}) => {
     const [showModal, setShowModal] = useState(false);
 

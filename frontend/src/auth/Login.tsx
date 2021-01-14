@@ -23,6 +23,10 @@ interface LoginState {
   password?: string;
 }
 
+/*
+  The component manages the login functionality
+  It contains input fields such as : username and password
+ */
 export const Login: React.FC<RouteComponentProps> = ({ history }) => {
   const { isAuthenticated, isAuthenticating, login, authenticationError } = useContext(AuthContext);
   const [state, setState] = useState<LoginState>({});

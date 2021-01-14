@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+/*
+  The component asks for saving a file containing a picture on the AWS Server
+ */
 const FileUpload=() => {
   const [file, setFile] = useState<FileList | null>(null);
 

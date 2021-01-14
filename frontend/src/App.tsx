@@ -55,7 +55,7 @@ const App: React.FC = () => (
             <Route path="/home" component={NewsFeed}/>
           </NewsFeedProvider>
           <PostProvider>
-            <Route path="/visit" component={VisitUser}/>
+            {/*<Route path="/visit" component={VisitUser}/>*/}
             <Route path="/visit/:username" component={VisitUser}/>
           </PostProvider>
           <Route path="/confirm" component={Confirm}/>
