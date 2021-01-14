@@ -8,6 +8,9 @@ import ro.mybuddy.server.tag.model.Tag;
 
 import java.io.IOException;
 
+/**
+ * Serializer used to convert a post to JSON format
+ */
 public class PostSerializer extends JsonSerializer<Post> {
     @Override
     public void serialize(Post value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
