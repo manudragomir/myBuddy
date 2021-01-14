@@ -55,7 +55,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers("/user/login", "/post", "/index").hasAnyRole("USER", "ADMIN")
                 .antMatchers(HttpMethod.GET, "/tag").hasAnyRole("USER", "ADMIN")
-                .antMatchers(HttpMethod.POST, "/tag", "/report").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/post/newsfeed/report").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.GET, "/post/newsfeed/report").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, "/tag").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/tag").hasRole("ADMIN")
                 .antMatchers("/post/newsfeed").permitAll()
                 .anyRequest().authenticated();
@@ -70,7 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:8100", "http://localhost:3000"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
