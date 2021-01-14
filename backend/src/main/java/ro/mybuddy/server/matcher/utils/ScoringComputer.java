@@ -16,7 +16,7 @@ public class ScoringComputer {
      * Computes the matching coefficient between a dog and a request
      * @param dog Dog
      * @param request Request
-     * @return Double A number between 0 - 10, 10 being the perfect match
+     * @return A number between 0 - 10, 10 being the perfect match
     */
     public Double computeScoreForDog(Dog dog, MatchDogRequest request) {
         Double purposeCoef = 0.2;
@@ -37,7 +37,7 @@ public class ScoringComputer {
      * Computes the matching purpose coefficient between a dog and a dog request
      * @param dog The first arg
      * @param request The second arg
-     * @return Double A number between 0 and 100, 100 being the perfect match
+     * @return A number between 0 and 100, 100 being the perfect match
      */
     public Double computePurpose(Dog dog, MatchDogRequest request) {
         Double score = 0.0;
@@ -54,7 +54,7 @@ public class ScoringComputer {
      * Computes the matching purpose coefficient between a dog and a dog request
      * @param dog The first arg
      * @param request The second arg
-     * @return Double A number between 0 and 100, 100 being the perfect match
+     * @return A number between 0 and 100, 100 being the perfect match
      */
     public Double computeSkills(Dog dog, MatchDogRequest request) {
         Integer score = 0;
@@ -71,7 +71,7 @@ public class ScoringComputer {
      * Computes the matching purpose coefficient between a dog and a dog request
      * @param dog The first arg
      * @param request The second arg
-     * @return Double A number between 0 and 100, 100 being the perfect match
+     * @return A number between 0 and 100, 100 being the perfect match
      */
     public Double computeWatch(Dog dog, MatchDogRequest request) {
         //watchdog is a value between 0 and 10
@@ -83,7 +83,7 @@ public class ScoringComputer {
      * Computes the matching price coefficient between a dog and a dog request
      * @param dog The first arg
      * @param request The second arg
-     * @return Double A number between 0 and 100, 100 being the perfect match
+     * @return A number between 0 and 100, 100 being the perfect match
      */
     public Double computePrice(Dog dog, MatchDogRequest request) {
         int diff = Math.abs(request.getPrice() - dog.getAvgPrice());
@@ -103,7 +103,7 @@ public class ScoringComputer {
      * Computes the matching weight coefficient between a dog and a dog request
      * @param dog The first arg
      * @param request The second arg
-     * @return Double A number between 0 and 100, 100 being the perfect match
+     * @return A number between 0 and 100, 100 being the perfect match
      */
     public Double computeWeight(Dog dog, MatchDogRequest request) {
         //if dimension = 0 -> it means small dog -> small dog < 15kg;
