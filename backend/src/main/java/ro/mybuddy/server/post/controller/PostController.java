@@ -20,6 +20,9 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Controller handling the communication with clients
+ */
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class PostController {
@@ -30,14 +33,14 @@ public class PostController {
     private EventHandler eventHandler;
 
     @PostMapping(value = "/post/newsfeed")
-    public ResponseEntity<?> findAll(@Valid @RequestBody FilterPrototype tags, BindingResult bindingResult){
+    public ResponseEntity<?> findAll(@Valid @RequestBody FilterPrototype filterPrototype, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             List<String> errors = bindingResult.getAllErrors().stream()
                     .map(x -> x.getDefaultMessage()).collect(Collectors.toList());
             return new ResponseEntity<>(errors.toString(),HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return new ResponseEntity<List<Post>>(postService.findAll(tags),HttpStatus.OK);
+        return new ResponseEntity<List<Post>>(postService.findAll(filterPrototype),HttpStatus.OK);
     }
 
     @PostMapping(value="/post")

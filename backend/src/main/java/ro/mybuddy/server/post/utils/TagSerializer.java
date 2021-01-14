@@ -7,6 +7,9 @@ import ro.mybuddy.server.tag.model.Tag;
 
 import java.io.IOException;
 
+/**
+ * Serializer used to convert a Tag to JSON format
+ */
 public class TagSerializer extends JsonSerializer<Tag> {
 
     @Override
