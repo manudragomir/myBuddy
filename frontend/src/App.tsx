@@ -30,11 +30,13 @@ import AddPost from './profile/AddPost';
 import { PostProvider } from './profile/PostProvider';
 import { NewsFeedProvider } from './newsfeed/NewsFeedProvider';
 import NewsFeed from './newsfeed/NewsFeed';
+import Matcher from './matcher/Matcher';
 
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <IonRouterOutlet>
+        <Route path="/match" component={Matcher} exact={true}/>
         <AuthProvider>
           <Route path="/login" component={Login} exact={true}/>
           <PostProvider>
