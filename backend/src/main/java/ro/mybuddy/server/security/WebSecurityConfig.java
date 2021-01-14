@@ -58,6 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/tag").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/tag").hasRole("ADMIN")
                 .antMatchers("/post/newsfeed").permitAll()
+                .antMatchers("/match/**").permitAll()
                 .anyRequest().authenticated();
     }
 
@@ -77,6 +78,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/user/**", configuration);
         source.registerCorsConfiguration("/post/**", configuration);
         source.registerCorsConfiguration("/tag/**", configuration);
+        source.registerCorsConfiguration("/match/**", configuration);
         return source;
     }
 

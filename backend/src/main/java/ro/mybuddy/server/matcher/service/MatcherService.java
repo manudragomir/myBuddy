@@ -4,11 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.mybuddy.server.matcher.model.Dog;
 import ro.mybuddy.server.matcher.model.MatchDogRequest;
-import ro.mybuddy.server.matcher.model.MatchRequest;
-import ro.mybuddy.server.matcher.model.MatchResponse;
 import ro.mybuddy.server.matcher.repository.MatcherReader;
 import ro.mybuddy.server.matcher.utils.ScoringComputer;
-import ro.mybuddy.server.post.model.Post;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,7 +18,7 @@ public class MatcherService {
     @Autowired
     private ScoringComputer scoringComputer;
 
-    public MatchResponse matchDogBreed(MatchDogRequest matchRequest) {
+    public Dog matchDogBreed(MatchDogRequest matchRequest) {
         List<Dog> dogList = matcherReader.getDogList();
         Map<Dog, Double> dogScores = new HashMap<>();
 
@@ -38,7 +35,7 @@ public class MatcherService {
                         .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
 
-        return new MatchResponse(Arrays.asList(sortedScores.get(0), sortedScores.get(1), sortedScores.get(2)));
+        return sortedScores.get(0);
     }
 
     public Set<String> getSkills() {

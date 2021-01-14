@@ -13,13 +13,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
-public class MatchDogRequest extends MatchRequest {
+public class MatchDogRequest {
     @NotNull @NonNull
     private String purpose1;
 
     private String purpose2;
 
-    @NotNull @NonNull @Min(0) @Max(2)
+    @NotNull @NonNull @Min(0) @Max(200)
     private Integer dimension;
 
     @NotNull @NonNull
