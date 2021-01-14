@@ -1,6 +1,6 @@
 package ro.mybuddy.server.user.controller;
 
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +16,9 @@ import javax.validation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * REST Controller that defines the endpoints operating on User entities
+ */
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class UserController {
@@ -23,11 +26,19 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @ApiOperation(value = "Logs user into the system")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Login successful; Token generated"),
+            @ApiResponse(code = 404, message = "Invalid credentials")})
+    @ApiImplicitParams(value = {
+        @ApiImplicitParam(name = "username"),
+        @ApiImplicitParam(name = "password")
+    })
     @PostMapping(value = "/user/login")
     public void login() {}
 
-    @PostMapping(value = "/user/registration")
     @ApiOperation(value = "Creates a new account")
+    @PostMapping(value = "/user/registration")
     public ResponseEntity<?> signUp(@Valid @RequestBody UserDto newUser, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<String> errors = bindingResult.getAllErrors().stream()
@@ -48,6 +59,7 @@ public class UserController {
         }
     }
 
+    @ApiOperation(value = "Confirms a previously created account")
     @RequestMapping(value = "/user/confirm-account", method = {RequestMethod.GET, RequestMethod.POST})
     public ResponseEntity<String> confirmAccount(@RequestParam(name="token") String confirmationToken) {
         try {
