@@ -28,7 +28,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import IconButton from '@material-ui/core/IconButton';
-import NavBarUser from '../components/NavBarUser';
+import {NavBarUser} from '../components/NavBarUser';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import Button from '@material-ui/core/Button';
 import { Input, InputLabel } from '@material-ui/core';
@@ -38,6 +38,8 @@ import { MyMap } from './GeoMap';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { getLocation } from './mapApi';
 import { useMyLocation } from './useMyLocation';
+import {Plugins} from "@capacitor/core";
+const Storage = Plugins.Storage;
 
 
 
@@ -124,7 +126,7 @@ const tags = [
           : theme.typography.fontWeightMedium,
     };
   }
-
+  
 
 
 export const AddPost: React.FC<RouteComponentProps> = ({history}) => {
@@ -143,8 +145,18 @@ export const AddPost: React.FC<RouteComponentProps> = ({history}) => {
     const [popoverState, setShowPopover] = useState({ showPopover: false, event: undefined });
     const [latitude,setLatitude] = useState(0);
     const [longitude,setLongitude] = useState(0);
+    const [username, setUsername] = useState<string>("");
 
-  const handleChangeMandatory = (event: React.ChangeEvent<HTMLInputElement>) => {
+    useEffect(() => {
+      (async () => {
+          const storage = await Storage.get({ key: 'username' });
+          if(storage.value){
+              setUsername(storage.value);
+          }
+      })();
+  });
+  
+    const handleChangeMandatory = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMandatoryTag(event.target.value);
   };
 
@@ -193,7 +205,7 @@ export const AddPost: React.FC<RouteComponentProps> = ({history}) => {
   return (
     <IonPage>
       <IonContent>
-        <NavBarUser/>
+        <NavBarUser username={username}/>
         <Container fluid style={{height:'100%'}}>
             <Row style={{height:'15%', padding: "0"}}>
                 <Col lg="1" style={{ padding: "0"}}>

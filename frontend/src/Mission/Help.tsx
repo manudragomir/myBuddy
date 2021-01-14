@@ -17,16 +17,29 @@ import "./Mission.css";
 import poza1 from  '../utils/images/poza1.jpg'
 import poza2 from  '../utils/images/poza2Help.jpg'
 import {Col, Container, Row} from "react-bootstrap";
-
+import {Plugins} from "@capacitor/core";
+import { NavBarUser } from '../components/NavBarUser';
+const Storage = Plugins.Storage;
 
 
 const Help: React.FC<RouteComponentProps> = () => {
+    const [auth, setAuth] = useState(false);
+    const [username, setUsername] = useState<string>("");
 
+    useEffect(() => {
+        (async () => {
+            const storage = await Storage.get({ key: 'username' });
+            if(storage.value){
+                setAuth(true);
+                setUsername(storage.value);
+            }
+        })();
+    });
 
     return (
         <IonPage>
             <IonContent className={"mission-page-content"} fullscreen>
-                <NavBar/>
+                {auth ? <NavBarUser username={username}/> : <NavBar/>}
                 <Container>
                     <Row>
                         <Col >

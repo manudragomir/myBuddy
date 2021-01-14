@@ -26,6 +26,10 @@ import {RouteComponentProps} from "react-router";
 import {newsFeedTypes} from "./NewsFeedTypes";
 import {location} from "ionicons/icons";
 
+import {Plugins} from "@capacitor/core";
+import { NavBarUser } from '../components/NavBarUser';
+const Storage = Plugins.Storage;
+
 const NewsFeed: React.FC<RouteComponentProps> = (history) => {
     const {posts, fetching, fetchingError, fetchNewsFeed, disableInfiniteScroll} = useContext(NewsFeedContext);
     const [currentType, setCurrentType] = useState<string | undefined>("All")
@@ -36,6 +40,9 @@ const NewsFeed: React.FC<RouteComponentProps> = (history) => {
     const [value, setValue] = useState(0);
     const [firstLoad, setFirstLoad] = useState(true);
     const [rangeValue, setRangeValue] = useState<number>(0);
+
+    const [auth, setAuth] = useState(false);
+    const [username, setUsername] = useState<string>("");
 
     async function fetchNewsFeedPosts(rangeValue: number, allTags: string[] | undefined) {
         await fetchNewsFeed?.(rangeValue, currentType, allTags);
@@ -58,6 +65,17 @@ const NewsFeed: React.FC<RouteComponentProps> = (history) => {
         await fetchNewsFeedPosts(rangeValue, tags);
     });
 
+    useEffect(() => {
+        (async () => {
+            const storage = await Storage.get({ key: 'username' });
+            if(storage.value){
+                setAuth(true);
+                setUsername(storage.value);
+            }
+        })();
+    });
+   
+
     async function searchNext($event: CustomEvent<void>) {
         console.log("NEXT")
         await fetchNewsFeedPosts(rangeValue, tags);
@@ -72,7 +90,7 @@ const NewsFeed: React.FC<RouteComponentProps> = (history) => {
                     <IonGrid>
                         <IonRow>
                             <IonCol size={"12"} size-sm>
-                                <NavBar/>
+                                {auth ? <NavBarUser username={username}/> : <NavBar/>}
                             </IonCol>
                         </IonRow>
                         <div className={"wrapper-div"}>

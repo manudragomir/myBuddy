@@ -16,16 +16,32 @@ import {RouteComponentProps} from "react-router";
 import "./Mission.css";
 import logo from  '../utils/images/PhoneDog.jpg'
 import {Col, Container, Row} from "react-bootstrap";
+import { NavBarUser } from '../components/NavBarUser';
 
 
+import {Plugins} from "@capacitor/core";
+const Storage = Plugins.Storage;
 
 const Contact: React.FC<RouteComponentProps> = () => {
 
 
+    const [auth, setAuth] = useState(false);
+    const [username, setUsername] = useState<string>("");
+
+    useEffect(() => {
+        (async () => {
+            const storage = await Storage.get({ key: 'username' });
+            if(storage.value){
+                setAuth(true);
+                setUsername(storage.value);
+            }
+        })();
+    });
+   
     return (
         <IonPage>
             <IonContent className={"mission-page-content"} fullscreen>
-                <NavBar/>
+                {auth ? <NavBarUser username={username}/> : <NavBar/>}
                 <Container>
                     <Row>
                         <Col >

@@ -3,8 +3,7 @@ import {RouteComponentProps} from 'react-router';
 import {IonCol, IonContent, IonGrid, IonImg, IonPage, IonRow, IonLoading, useIonViewWillEnter, IonToast, IonText, IonInfiniteScroll, IonInfiniteScrollContent} from '@ionic/react';
 import {Button, Col, Container, Image, Row, Tab, Tabs} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import NavBarUser from '../components/NavBarUser';
-import NavBarTest from '../components/NavBarTest';
+import {NavBarUser} from '../components/NavBarUser';
 import img from '../utils/images/column.png';
 import dog from '../utils/images/dog_cut1.jpg';
 import profileImg from '../utils/images/logoMyPicture.png';
@@ -17,11 +16,17 @@ const Storage = Plugins.Storage;
 
 const UserPage: React.FC<RouteComponentProps> = ({history}) => {
     const [key, setKey] = useState('posts');
-
+   
     const {posts,deleting, deleteError, fetching,getData, fetchingError, fetchPosts, disableInfiniteScroll} = useContext(PostContext);
     const [init, setInit] = useState<boolean>(true);
     const [username, setUsername] = useState<string|undefined>(undefined);
+    const [src,setSrc]=useState<string>("");
+
     const [hasImage, setHasImage] = useState<boolean>(false);
+    const [desc, setDesc]=useState<string>("About you");
+    const [phone, setPhone]=useState<string>("Phone number...");
+    const [email, setEmail]=useState<string>("Email...");
+    
 
     async function fetchUserPosts() {
         await fetchPosts?.();
@@ -31,6 +36,10 @@ const UserPage: React.FC<RouteComponentProps> = ({history}) => {
     useIonViewWillEnter(async () => {
         //await fetchUserPosts();
     });
+
+    useEffect(()=>{
+        setSrc(`https://proiectcolectivmybuddy.s3.eu-central-1.amazonaws.com/testFolder/${username}.jpg`);
+    },[username])
 
     async function searchNext($event: CustomEvent<void>) {
         console.log("NEXT")
@@ -43,17 +52,27 @@ const UserPage: React.FC<RouteComponentProps> = ({history}) => {
             const user = await Storage.get({ key: 'username' });
             if(user.value){
                 setUsername(user.value);
-                getData?.(user.value);
+                const response=getData?.(user.value);
+                response?.then(res=>{
+                    setEmail(res.email);
+                    setPhone(res.phone);
+                    setDesc(res.desc);
+                    setHasImage(res.has);
+                });
+                setSrc(`https://proiectcolectivmybuddy.s3.eu-central-1.amazonaws.com/testFolder/${username}.jpg`);
             }
 
         })();
+    });
 
-    },[])
+    useEffect(()=>{
+        setSrc(`https://proiectcolectivmybuddy.s3.eu-central-1.amazonaws.com/testFolder/${username}.jpg`);
+    },[hasImage]);
 
     return (
         <IonPage>
             <IonContent>
-                <NavBarUser/>
+                <NavBarUser username={username} />
                 <Container fluid style={{height: "100%"}}>
                     <Row style={{height: "10px"}}>
                         <Image src={dog} fluid/>
@@ -96,16 +115,16 @@ const UserPage: React.FC<RouteComponentProps> = ({history}) => {
                         <Col lg="8">
                             <Row>
                                 <Col lg="3">
-                                    {hasImage? <Image src="https://proiectcolectivmybuddy.s3.eu-central-1.amazonaws.com/testFolder/a.jpg" roundedCircle/>
+                                    {hasImage? <Image src={src} roundedCircle/>
                                     :  <Image src={profileImg} roundedCircle/>}
                                 </Col>
                                 <Col lg="4">
-                                    <h3>{username}</h3>
-                                    <p>
-                                        Some things about me...
-                                    </p>
+                                    <h1>{username}</h1>
+                                    <h3>{desc}</h3>
+                                    <h3>{email}</h3>
+                                    <h3>{phone}</h3>
                                     <Button onClick={() => {
-                                        return history.push("/user/edit")
+                                        return history.push(`/user/edit/${username}`)
                                     }} variant="secondary">Edit Profile</Button>
                                     <Button onClick={() => {
                                         return history.push("/user/post")

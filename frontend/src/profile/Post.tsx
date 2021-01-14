@@ -90,6 +90,7 @@ export const Post: React.FC<PostProps> = ({id, date, user, body, type, tags, lat
     const [adopted,setAdopted] = useState(false);
     const [mandatoryTag,setMandatoryTag]=useState('MyBuddy')
     const [checkedTag,setCheckedTag]=useState('');
+    const [profileSrc,setProfileSrc]=React.useState<string>("");
 
     const [showButtons, setShowButtons]=useState<boolean>(false);
 
@@ -100,6 +101,7 @@ export const Post: React.FC<PostProps> = ({id, date, user, body, type, tags, lat
                 setShowButtons(true);
             }
         })();
+        setProfileSrc(`https://proiectcolectivmybuddy.s3.eu-central-1.amazonaws.com/testFolder/${user?.username}.jpg`);
     },[])
 
     const {deletePost} = useContext(PostContext);
@@ -135,7 +137,7 @@ export const Post: React.FC<PostProps> = ({id, date, user, body, type, tags, lat
                 avatar={
                     <Badge color="error" badgeContent={mandatoryTag}>
                         <Avatar aria-label="recipe" className={classes.avatar}>
-                            R
+                            <img src={profileSrc} alt="R"/>
                         </Avatar>
                     </Badge>
                     

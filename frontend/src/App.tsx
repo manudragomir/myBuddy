@@ -45,7 +45,7 @@ const App: React.FC = () => (
           <Route path="/contact" component={Contact} exact={true}/>
           <PostProvider>
             <PrivateRoute path="/user" component={UserPage}/>
-            <PrivateRoute path="/user/edit" component={UserEdit}/>
+            <PrivateRoute path="/user/edit/:username" component={UserEdit}/>
             <PrivateRoute path="/user/post" component={AddPost}/>
           </PostProvider>
           <Route path="/signup" component={SignUp}/>

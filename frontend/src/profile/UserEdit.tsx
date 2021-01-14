@@ -19,7 +19,7 @@ import EmojiPeople from '@material-ui/icons/EmojiPeople';
 import ContactMail from '@material-ui/icons/ContactMail';
 import ControlPoint from '@material-ui/icons/ControlPoint';
 import IconButton from '@material-ui/core/IconButton';
-import NavBarUser from '../components/NavBarUser';
+import {NavBarUser} from '../components/NavBarUser';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import Button from '@material-ui/core/Button';
 import { PostContext } from './PostProvider';
@@ -91,17 +91,21 @@ const MenuProps = {
  
 
 
+interface EditUserProps extends RouteComponentProps<{
+  username?: string;
+}> {}
 
-const UserEdit: React.FC<RouteComponentProps> = ({ history }) => {
+const UserEdit: React.FC<EditUserProps> = ({ history, match }) => {
     const theme = useTheme();
     const classes = useStyles();
 
     const [desc,setDesc]= React.useState<string>("");
     const [phone, setPhone] = React.useState<string>("");
     const [email, setEmail] = React.useState<string>("");
+
     const [file, setFile] = useState<FileList | null>(null);
     const [imgSrc,setImgSrc] = useState<string | undefined>(photo);
-    const { posts,saving,savingError,addPost } = useContext(PostContext);
+    const { posts,saving,savingError,uploadData,getData} = useContext(PostContext);
 
   const handleChangeDesc = (event: React.ChangeEvent<HTMLInputElement>) =>{
     setDesc(event.target.value);
@@ -116,13 +120,11 @@ const UserEdit: React.FC<RouteComponentProps> = ({ history }) => {
     setPhone(event.target.value);
   };
 
-  const handleSavePost = () => {
-    const date= Moment(Date.now()).format("YYYY-MM-DD")
-    //const post = {id:undefined, user:undefined,body: body, date: date,tags: tagName, type: getType(mandatoryTag)}
-    // console.log(post);
-    // console.log(file);
-    // console.log(addPost);
-    // addPost && file && addPost(post,file).then(() => history.goBack());
+  const handleSaveProfile = () => {
+    const username= match.params.username ? match.params.username : "";
+    let has;
+    file ? has=true  : has =false;
+    file ? file && uploadData && uploadData(username ,email ,phone , desc, has,file).then(() => history.goBack()) : uploadData && uploadData(username ,email ,phone , desc,  has,undefined).then(() => history.goBack());
   };
 
   useEffect(() => {
@@ -136,10 +138,24 @@ const UserEdit: React.FC<RouteComponentProps> = ({ history }) => {
         // handle error
     }
   }, [file])
+
+  useEffect(()=>{
+    const username= match.params.username ? match.params.username : "";
+    const response=getData?.(username);
+    response?.then(res=>{
+        setEmail(res.email);
+        setPhone(res.phone);
+        setDesc(res.desc);
+        if(res.has){
+          setImgSrc(`https://proiectcolectivmybuddy.s3.eu-central-1.amazonaws.com/testFolder/${username}.jpg`);
+        }
+    }); 
+  },[]);
+
     return (
         <IonPage>
         <IonContent>
-        <NavBarUser/>
+        <NavBarUser username={match.params.username}/>
         <Container fluid style={{height:'100%'}}>
             <Row style={{height:'15%', padding: "0"}}>
                 <Col lg="1" style={{ padding: "0"}}>
@@ -172,7 +188,7 @@ const UserEdit: React.FC<RouteComponentProps> = ({ history }) => {
                                             </IconButton>                                    
                                         </Grid>
                                         <Grid item>
-                                            <TextField id="input-with-icon-grid" label="about you" fullWidth onChange={handleChangeDesc}/>
+                                            <TextField id="input-with-icon-grid" label="about you" value={desc} fullWidth onChange={handleChangeDesc}/>
                                         </Grid>
                                         <Grid item>
                                             <IconButton>
@@ -180,7 +196,7 @@ const UserEdit: React.FC<RouteComponentProps> = ({ history }) => {
                                             </IconButton>                                    
                                         </Grid>
                                         <Grid item>
-                                            <TextField id="input-with-icon-grid" label="your email" fullWidth onChange={handleChangeEmail}/>
+                                            <TextField id="input-with-icon-grid" label="your email" value={email} fullWidth onChange={handleChangeEmail} />
                                         </Grid>
                                         </Grid>
                                         <Grid container spacing={2} alignItems="flex-end">
@@ -190,7 +206,7 @@ const UserEdit: React.FC<RouteComponentProps> = ({ history }) => {
                                             </IconButton>                                    
                                         </Grid>
                                         <Grid item>
-                                            <TextField id="input-with-icon-grid" label="your phone number" fullWidth onChange={handleChangePhone}/>
+                                            <TextField id="input-with-icon-grid" label="your phone number" value={phone} fullWidth onChange={handleChangePhone}/>
                                         </Grid>
                                     </Grid>
                                 </div>
@@ -201,7 +217,7 @@ const UserEdit: React.FC<RouteComponentProps> = ({ history }) => {
                           color="default"
                           className={classes.button}
                           startIcon={<DoneAllIcon />}
-                          onClick={handleSavePost}
+                          onClick={handleSaveProfile}
                         >
                           Update Profile
                         </Button>            

@@ -1,39 +1,44 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
+import { Button, Form, FormControl, NavDropdown } from 'react-bootstrap'
 import color from '../utils/images/logo_full.png';
 import {Plugins} from '@capacitor/core';
+import { Redirect, Route, RouteComponentProps } from 'react-router';
 const {Storage} = Plugins;
-export default function NavBarUser() {
+//import color from '../images/logo_full.png';
+interface NavBarProps {
+    username?:string
+}
+export const NavBarUser: React.FC<NavBarProps>=({username}) =>{
+    const [src,setSrc]=useState<string>('');
     function handleLogOut(){
         (async() => {await Storage.clear()})();
     }
+    useEffect(() => {
+        setSrc(`https://proiectcolectivmybuddy.s3.eu-central-1.amazonaws.com/testFolder/${username}.jpg`);
+    })
     return (
-        <div>
-        <Navbar bg="dark" variant="dark">
-            <Navbar.Brand href="/home">
-            <img
-                alt=""
-                src={color}
-                width="40"
-                height="40"
-                className="d-inline-block align-top"
-            />{' '}
-            </Navbar.Brand>
-            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-            <Navbar.Collapse id="responsive-navbar-nav">
-                <Nav className="mr-auto">
+        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Navbar.Brand href="/home">My Buddy</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="mr-auto">
+                <NavDropdown title={
+                   <img src={src} width="20" height="20" className="rounded-circle"/>
+                    
+                }  id="basic-nav-dropdown">
+                <NavDropdown.Item href="/user">My Profile</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item href="/login" onClick={handleLogOut}>Log Out</NavDropdown.Item>
+            </NavDropdown>
+            </Nav>
+            <Nav>
                 <Nav.Link href="/mission">Our Mission</Nav.Link>
-                </Nav>
-                <Nav>
-                {/* <Nav.Link href="/login" onClick=​​​​​{handleLogOut}>SignOut</Nav.Link>    */}
-                <Nav.Link href="/user">My Profile</Nav.Link>
-                <Nav.Link href="/login" onClick={handleLogOut}>Log Out</Nav.Link>
-                <Nav.Link href="/contact">Contact</Nav.Link>
                 <Nav.Link href="/help">Help</Nav.Link>
-                </Nav>   
-            </Navbar.Collapse>
+                <Nav.Link href="/contact">Contact</Nav.Link>
+            </Nav>
+        </Navbar.Collapse>
         </Navbar>
-    </div>
-    )
+    );
 }

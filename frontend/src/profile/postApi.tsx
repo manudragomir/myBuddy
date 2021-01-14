@@ -76,17 +76,36 @@ export const submitFile = async (file : FileList ,id: string) => {
 
 export const getUserPersonalData = async (username : string) => {
     const response=await axios({
-      method: 'get',
-      url:'http://localhost:9000/user'  ,
+      method: 'post',
+      url:'http://localhost:9000/find-user'  ,
 
       headers: {
         'Content-Type': 'application/json',
       },
       data: JSON.stringify({
         "username": username,
-      }),
+      })
     });
-    console.log(response);
+    return response.data
+}
+
+export const uploadUserPersonalData = async (username : string,email:string,phone:string,desc:string,has:boolean) => {
+  const response=await axios({
+    method: 'post',
+    url:`http://localhost:9000/user`  ,
+
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: JSON.stringify({
+      "username": username,
+      "email":email,
+      "phone":phone,
+      "desc":desc,
+      "has":has
+    })
+  });
+  return response.data;
 }
 
 export const remove: (token:string, postId:string) => Promise<any> = (token, postId) => {

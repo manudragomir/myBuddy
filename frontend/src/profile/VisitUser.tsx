@@ -13,8 +13,7 @@ import {
 } from '@ionic/react';
 import {Button, Col, Container, Image, Row, Tab, Tabs} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import NavBarUser from '../components/NavBarUser';
-import NavBarTest from '../components/NavBarTest';
+import {NavBarUser} from '../components/NavBarUser';
 import img from '../utils/images/column.png';
 import dog from '../utils/images/dog_cut1.jpg';
 import profileImg from '../utils/images/logoMyPicture.png';
@@ -22,6 +21,8 @@ import { Post } from './Post';
 import { PostProps } from './PostProps';
 import { PostContext } from './PostProvider';
 import {Plugins} from "@capacitor/core";
+import NavBar from '../components/NavBar';
+
 
 const Storage = Plugins.Storage;
 
@@ -33,14 +34,27 @@ interface VisitUserProps extends RouteComponentProps<{
 const VisitUser: React.FC<VisitUserProps> = ({history , match}) => {
     const [key, setKey] = useState('posts');
 
-    const {posts, fetching, fetchingError, fetchPosts, disableInfiniteScroll} = useContext(PostContext);
+    const {posts, fetching, fetchingError, fetchPosts, disableInfiniteScroll, getData} = useContext(PostContext);
     const [init, setInit] = useState<boolean>(true);
     const [username, setUsername] = useState<string|undefined>(undefined);
+
+    const [hasImage, setHasImage] = useState<boolean>(false);
+    const [src,setSrc]=useState<string>("");
+    const [desc, setDesc]=useState<string>("");
+    const [phone, setPhone]=useState<string>("");
+    const [email, setEmail]=useState<string>("");
+
+    const [auth, setAuth] = useState(false);
+    const [user, setUser] = useState<string>("");
 
     async function fetchUserPosts() {
         await fetchPosts?.();
         //if (init) setInit(false);
     }
+
+    useEffect(()=>{
+        setSrc(`https://proiectcolectivmybuddy.s3.eu-central-1.amazonaws.com/testFolder/${username}.jpg`);
+    },[username])
 
     useIonViewWillEnter(async () => {
         //await fetchUserPosts();
@@ -53,14 +67,31 @@ const VisitUser: React.FC<VisitUserProps> = ({history , match}) => {
     }
 
     useEffect(()=>{
-        const user = match.params.username;
+        const user = match.params.username?match.params.username: "" ;
+        const response=getData?.(user);
+        response?.then(res=>{
+            setEmail(res.email);
+            setPhone(res.phone);
+            setDesc(res.desc);
+            setHasImage(res.has);
+        });
         setUsername(user);
     },[])
 
+    useEffect(() => {
+        (async () => {
+            const storage = await Storage.get({ key: 'username' });
+            if(storage.value){
+                setAuth(true);
+                setUser(storage.value);
+            }
+        })();
+    });
+   
     return (
         <IonPage>
             <IonContent className={"news-feed-content"}>
-                <NavBarUser/>
+                {auth ? <NavBarUser username={user}/> : <NavBar/>}
                 <Container fluid style={{height: "100%"}}>
                     <Row>
                         <Col lg="2">
@@ -69,10 +100,14 @@ const VisitUser: React.FC<VisitUserProps> = ({history , match}) => {
                         <Col lg="8">
                             <Row>
                                 <Col lg="3">
-                                    <Image src={profileImg} roundedCircle/>
+                                {hasImage? <Image src={src} roundedCircle/>
+                                    :  <Image src={profileImg} roundedCircle/>}
                                 </Col>
                                 <Col lg="4" style={{padding:"70px"}}>
-                                    <p style={{fontSize: "70px", fontFamily: "Josefin Slab"}}>{match.params.username}</p>
+                                    <p style={{fontSize: "50px", fontFamily: "Josefin Slab"}}>{match.params.username}</p>
+                                    <p style={{fontSize: "20px", fontFamily: "Josefin Slab"}}>{desc}</p>
+                                    <p style={{fontSize: "20px", fontFamily: "Josefin Slab"}}>{email}</p>
+                                    <p style={{fontSize: "20px", fontFamily: "Josefin Slab"}}>{phone}</p>
                                 </Col>
                             </Row>
                         </Col>

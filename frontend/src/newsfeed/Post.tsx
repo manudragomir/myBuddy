@@ -87,6 +87,7 @@ export const Post: React.FC<PostProps> = ({id, user, body, date, latitude, longi
     const [reported, setReported] = React.useState(false);
     const [path, setPath] = React.useState<string>("");
     const [popoverState, setShowPopover] = React.useState({showPopover: false, event: undefined});
+    const [profileSrc,setProfileSrc]=React.useState<string>("");
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -104,7 +105,8 @@ export const Post: React.FC<PostProps> = ({id, user, body, date, latitude, longi
 
     useEffect(()=>{
         setPath("/visit/"+user.username);
-        console.log("/visit/"+user.username)
+        console.log("/visit/"+user.username);
+        setProfileSrc(`https://proiectcolectivmybuddy.s3.eu-central-1.amazonaws.com/testFolder/${user.username}.jpg`);
     },[])
 
     return (
@@ -188,7 +190,7 @@ export const Post: React.FC<PostProps> = ({id, user, body, date, latitude, longi
                 avatar={
                     <Badge color={"error"} badgeContent={type}>
                         <Avatar aria-label="recipe" className={classes.avatar}>
-                            <img src={x} alt={"q"}/>
+                            <img src={profileSrc} alt="R"/>
                         </Avatar>
                     </Badge>
                 }

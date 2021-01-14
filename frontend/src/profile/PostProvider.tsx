@@ -1,7 +1,7 @@
 import {useState,useEffect, useReducer, ReactPropTypes, useCallback, useContext} from 'react';
 import {Post} from './Post';
 import {PostProps} from './PostProps'
-import {add, getUserPosts,remove, submitFile,getUserPersonalData} from './postApi'
+import {add, getUserPosts,remove, submitFile,getUserPersonalData,uploadUserPersonalData} from './postApi'
 import React from 'react';
 import PropTypes from 'prop-types';
 import { AuthContext, AuthState } from '../auth';
@@ -12,6 +12,7 @@ type AddPostFn = (post : PostProps, file: FileList) => Promise<any>;
 type DeletePostFn = (postId : string) => Promise<any>;
 type fetchUserPosts = () => void;
 type GetPersonalDataFn = (username : string) => Promise<any>;
+type UploadPersonalDataFn =(username : string,email:string,phone:string,desc:string,has:boolean, file:FileList | undefined) => Promise<any>;
 
 export interface PostState{
     posts?: PostProps[],
@@ -25,7 +26,8 @@ export interface PostState{
     fetchingError: string,
     fetchPosts?: fetchUserPosts,
     disableInfiniteScroll: boolean,
-    getData?: GetPersonalDataFn
+    getData?: GetPersonalDataFn,
+    uploadData?: UploadPersonalDataFn
 }
 
 interface ActionProps{
@@ -110,10 +112,11 @@ export const PostProvider: React.FC<PostProviderProps>=({children})=>{
 
     const addPost=useCallback<AddPostFn>(savePostCallback,[token]);
     const getData=useCallback<GetPersonalDataFn>(getPersonalDataCallback,[]);
+    const uploadData=useCallback<UploadPersonalDataFn>(uploadPersonalDataCallback,[]);
     const fetchPosts = userPageCallback
     const SIZE = 4;
     const deletePost=useCallback<DeletePostFn>(deletePostCallback, [token]);
-    const value={posts,saving,savingError,addPost, fetching, fetchingError, fetchPosts,deleting,deleteError,deletePost, disableInfiniteScroll,getData}
+    const value={posts,saving,savingError,addPost, fetching, fetchingError, fetchPosts,deleting,deleteError,deletePost, disableInfiniteScroll,getData,uploadData}
 
 
     return (
@@ -174,7 +177,11 @@ export const PostProvider: React.FC<PostProviderProps>=({children})=>{
     }
 
     async function getPersonalDataCallback(username : string){
-        console.log(username);
-        await getUserPersonalData(username);
+        return await getUserPersonalData(username);
+    }
+
+    async function uploadPersonalDataCallback(username : string,email:string,phone:string,desc:string,has:boolean, file:FileList|undefined){
+        await uploadUserPersonalData(username,email,phone,desc,has);
+        file && await submitFile(file,username); 
     }
 };
