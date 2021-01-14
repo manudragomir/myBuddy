@@ -25,8 +25,25 @@ public class ReportController {
     @Autowired
     private ReportService service;
 
+    /**
+     * Returns a ResponseEntity containing the execution status of saving a post report.
+     * The post ID is checked for existence, so a valid one must be provided.
+     * The report argument must specify the reporting username and the reason for reporting formatted as a message.
+     * <p>
+     *     The given parameters are validated by the ReportService.saveReport method, then saved. In case of failure,
+     *      a ReportException is thrown, which leads to returning an instance with HttpStatus.NOT_ACCEPTABLE (406).
+     * </p>
+     * @param postId  the ID of reported post
+     * @param report  the report data
+     * @param bindingResult
+     * @return instance containing HttpStatus.OK (200) if the provided parameters are valid
+     *         otherwise an instance containing HttpStatus.NOT_ACCEPTABLE (406)
+     */
     @PostMapping(value="/post/newsfeed/report/{postId}")
-    ResponseEntity<?> saveReport(@PathVariable String postId, @RequestBody ReportDto report, BindingResult bindingResult) {
+    ResponseEntity<?> saveReport(
+            @PathVariable String postId,
+            @RequestBody ReportDto report,
+            BindingResult bindingResult) {
         System.out.println("[TRACE] saveReport...");
         if(bindingResult.hasErrors()){
             List<String> errors = bindingResult.getAllErrors().stream()
@@ -43,6 +60,11 @@ public class ReportController {
         }
     }
 
+    /**
+     * Returns a ResponseEntity containing the execution status of fetching all the reports.
+     * @return an instance which wraps the list of reports and the HttpStatus.OK code
+     *         in case of fetching errors, an instance with the HttpStatus.INTERNAL_SERVER_ERROR code
+     */
     @GetMapping(value="/post/newsfeed/report")
     ResponseEntity<?> findAll() {
         try {
