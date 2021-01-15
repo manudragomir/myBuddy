@@ -1,5 +1,6 @@
 package ro.mybuddy.server.report.controller;
 
+import io.swagger.annotations.*;
 import jdk.jshell.spi.ExecutionControl;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +40,20 @@ public class ReportController {
      * @return instance containing HttpStatus.OK (200) if the provided parameters are valid
      *         otherwise an instance containing HttpStatus.NOT_ACCEPTABLE (406)
      */
+    @ApiOperation(value = "Saves a report into the system.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Report saved successfully"),
+            @ApiResponse(code = 406, message = "Invalid username or post")
+    })
+    @ApiImplicitParams(value = {
+            @ApiImplicitParam(name = "message"),
+            @ApiImplicitParam(name = "username")
+    })
     @PostMapping(value="/post/newsfeed/report/{postId}")
     ResponseEntity<?> saveReport(
             @PathVariable String postId,
             @RequestBody ReportDto report,
             BindingResult bindingResult) {
-        System.out.println("[TRACE] saveReport...");
         if(bindingResult.hasErrors()){
             List<String> errors = bindingResult.getAllErrors().stream()
                     .map(x -> x.getDefaultMessage())
@@ -64,6 +73,11 @@ public class ReportController {
      * @return an instance which wraps the list of reports and the HttpStatus.OK code
      *         in case of fetching errors, an instance with the HttpStatus.INTERNAL_SERVER_ERROR code
      */
+    @ApiOperation(value = "Fetches all the reports from the system.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Reports fetched successfully"),
+            @ApiResponse(code = 500, message = "Internal error")
+    })
     @GetMapping(value="/post/newsfeed/report")
     ResponseEntity<?> findAll() {
         try {
@@ -74,13 +88,18 @@ public class ReportController {
         }
     }
 
+    @ApiOperation(value = "Deletes a report from the system only if it exists.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Report deleted successfully (if existent)"),
+            @ApiResponse(code = 500, message = "Internal error")
+    })
     @DeleteMapping(value = "/post/newsfeed/report/{id}")
     ResponseEntity<?> deleteReport(@PathVariable long id) {
         try {
             service.deleteReport(id);
             return new ResponseEntity<Void>(HttpStatus.OK);
         } catch (ReportException re) {
-            return new ResponseEntity<>(re.toString(), HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(re.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
