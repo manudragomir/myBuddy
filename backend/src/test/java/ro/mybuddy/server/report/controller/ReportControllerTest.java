@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.springframework.http.MediaType;
 import ro.mybuddy.server.post.model.Post;
 import ro.mybuddy.server.report.exceptions.InvalidPostException;
+import ro.mybuddy.server.report.exceptions.InvalidUserException;
 import ro.mybuddy.server.report.model.Report;
 import ro.mybuddy.server.report.model.ReportDto;
 import ro.mybuddy.server.report.service.ReportService;
@@ -86,6 +87,25 @@ class ReportControllerTest {
 
         mockMvc
                 .perform(post("/post/newsfeed/report/123")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content))
+                .andExpect(status().isNotAcceptable());
+    }
+
+    void saveReportWhenUserIsInvalid() throws Exception {
+        ReportDto reportDto = new ReportDto();
+        reportDto.setMessage("nu incape de smecherie");
+        reportDto.setUsername("boss");
+        doThrow(InvalidUserException.class).when(reportService).saveReport("kkk", reportDto);
+
+        // HACK hardcoded JSON, because ObjectMapper doesn't recognise the ReportSerializer
+        String content = "{" +
+                "\"username\":\"boss\", " +
+                "\"message\" : \"nu incape de smecherie\"" +
+                "}";
+
+        mockMvc
+                .perform(post("/post/newsfeed/report/kkk")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
                 .andExpect(status().isNotAcceptable());
