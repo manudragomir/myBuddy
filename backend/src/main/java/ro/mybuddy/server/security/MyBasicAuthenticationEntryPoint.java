@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * Custom Spring Security Class that customizes the response for a failed authentication
+ */
 public class MyBasicAuthenticationEntryPoint extends BasicAuthenticationEntryPoint {
     @Override
     public void commence(

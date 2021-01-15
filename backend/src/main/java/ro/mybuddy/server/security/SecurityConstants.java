@@ -1,5 +1,8 @@
 package ro.mybuddy.server.security;
 
+/**
+ * Utility Class that stores various security constants
+ */
 class SecurityConstants {
     // Secret key generated with:
     // SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256)

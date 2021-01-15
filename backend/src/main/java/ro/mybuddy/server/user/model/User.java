@@ -8,6 +8,9 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
 
+/**
+ * Entity representing the User in the system
+ */
 @Entity
 @Data
 @RequiredArgsConstructor
