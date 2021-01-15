@@ -4,7 +4,7 @@ import ro.mybuddy.server.user.model.User;
 import ro.mybuddy.server.user.model.UserDto;
 
 /**
- * Stateless Utility Class that manages User(Entity) <-> User(DTO) conversions
+ * Stateless Utility Class that manages conversions of User(Entity) to/from User(DTO)
  */
 public class UserDtoToUserConverter {
     /**
