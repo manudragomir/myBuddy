@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import ro.mybuddy.server.user.exceptions.*;
 import ro.mybuddy.server.user.model.ConfirmationToken;
@@ -28,6 +29,9 @@ public class UserService {
     @Autowired
     private JavaMailSender javaMailSender;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     /**
      * Tries to register a new user in the system
      * Successful execution adds a new user in the persistence layer
@@ -38,6 +42,9 @@ public class UserService {
         if (userOnRepo != null) {
             throw new SignUpException("User already signed up. Please check your email to confirm the account.");
         }
+        // encrypt the password before persisting the user
+        String encodedPass = passwordEncoder.encode(newUser.getPassword());
+        newUser.setPassword(encodedPass);
         User returnedUser = userRepository.save(newUser);
         if(returnedUser == null){
             throw new SignUpException("Error when added to database");

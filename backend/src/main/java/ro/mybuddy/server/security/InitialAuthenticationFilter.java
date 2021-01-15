@@ -9,6 +9,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -30,6 +31,9 @@ public class InitialAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private AuthenticationManager authManager;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private final Logger logger = Logger.getLogger(InitialAuthenticationFilter.class.getName());
 
@@ -53,6 +57,9 @@ public class InitialAuthenticationFilter extends OncePerRequestFilter {
             logger.info("REQUEST BODY:" + requestBody.toString());
             logger.info("username:" + username);
             logger.info("password:" + password);
+
+            // encrypt the user's password
+            String encryptedPass = passwordEncoder.encode(password);
 
             // authenticate the user credentials
             authManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
