@@ -48,7 +48,7 @@ export const Login: React.FC<RouteComponentProps> = ({ history }) => {
             <Col >
             <Card style={{border:"none", marginTop:"40px"}}>
             <Card.Body style={{height:"610px",margin:"70px"}}>
-              <Card.Text style={{fontSize:"70px",fontFamily:"Josefin Slab"}}>Log in</Card.Text>
+              <Card.Text style={{fontSize:"70px",fontFamily:"Josefin Slab", color:"black"}}>Log in</Card.Text>
               <Form >
                 <Form.Group >
                   <IonInput id="username_input" style={{height:"60px",width:"350px", fontSize:"25px"}}

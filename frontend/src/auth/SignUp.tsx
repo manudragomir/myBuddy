@@ -176,7 +176,6 @@ export const SignUp: React.FC<SignUpProviderProps> = ({children}) => {
                             <IonText color={"danger"}> Last Name is not valid! </IonText>
                             }
                         </IonItem>
-
                         <IonItem>
                             <IonLabel position={"floating"}>Date of birth</IonLabel>
                             <IonDatetime name={"dateOfBirth"} onIonChange={e => setState({
@@ -260,7 +259,11 @@ export const SignUp: React.FC<SignUpProviderProps> = ({children}) => {
                         </Card>
                     </Col>
                 </Row>
-            </IonContent>
+           </IonContent>
+           <IonLoading
+                isOpen={state.pendingSignup}
+                message={'You are becoming our buddy'}
+            />
         </IonPage>
     )
 }

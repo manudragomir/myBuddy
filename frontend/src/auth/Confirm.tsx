@@ -18,7 +18,7 @@ const validateURL = (url: string): boolean => {
     The component represents a informative message
  */
 export const Confirm : React.FC<RouteComponentProps>= ({history}) => {
-    const [mesaj, setMesaj] = useState("hei");
+    const [mesaj, setMesaj] = useState("Not confirmed :(");
     const [done, setDone] = useState(false);
     const signUpConfirmation = () => { 
         //console.log('[DEBUG] What is this? ' + history.location.search)  
