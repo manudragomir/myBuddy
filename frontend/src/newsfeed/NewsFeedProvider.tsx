@@ -93,6 +93,8 @@ const reducer: (state: NewsFeedState, action: ActionProps) => NewsFeedState =
                 return state;
         }
     };
+
+/*This component provides the filtered posts*/
 export const NewsFeedProvider: React.FC<NewsFeedProviderProps> = ({children}) => {
         const [state, dispatch] = useReducer(reducer, initialState);
         const {posts, fetching, fetchingError, disableInfiniteScroll} = state;

@@ -27,9 +27,15 @@ import {newsFeedTypes} from "./NewsFeedTypes";
 import {location} from "ionicons/icons";
 
 import {Plugins} from "@capacitor/core";
-import { NavBarUser } from '../components/NavBarUser';
+import {NavBarUser} from '../components/NavBarUser';
+
 const Storage = Plugins.Storage;
 
+/*This visual component displays a friendly interface that contains:
+*   -search by type bar
+*   -search by tag bar
+*   -infinite scroll
+* */
 const NewsFeed: React.FC<RouteComponentProps> = (history) => {
     const {posts, fetching, fetchingError, fetchNewsFeed, disableInfiniteScroll} = useContext(NewsFeedContext);
     const [currentType, setCurrentType] = useState<string | undefined>("All")
@@ -67,14 +73,14 @@ const NewsFeed: React.FC<RouteComponentProps> = (history) => {
 
     useEffect(() => {
         (async () => {
-            const storage = await Storage.get({ key: 'username' });
-            if(storage.value){
+            const storage = await Storage.get({key: 'username'});
+            if (storage.value) {
                 setAuth(true);
                 setUsername(storage.value);
             }
         })();
     });
-   
+
 
     async function searchNext($event: CustomEvent<void>) {
         console.log("NEXT")

@@ -1,7 +1,6 @@
 import {UserPostProps} from "./UserPostProps";
-import {RouteComponentProps} from "react-router";
 
-export interface PostProps{
+export interface PostProps {
     id: string,
     user: UserPostProps,
     body: string,

@@ -1,3 +1,3 @@
-export interface UserPostProps{
+export interface UserPostProps {
     username: string
 }

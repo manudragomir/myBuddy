@@ -73,14 +73,19 @@ const useStyles = makeStyles((theme) => ({
     }))
 ;
 
-
+/*Displays the visual component that provides:
+*   -cards
+*   -popovers
+*   -images
+*   -coordinates
+* */
 export const Post: React.FC<PostProps> = ({id, user, body, date, latitude, longitude, tags, type}) => {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
     const [reported, setReported] = React.useState(false);
     const [path, setPath] = React.useState<string>("");
     const [popoverState, setShowPopover] = React.useState({showPopover: false, event: undefined});
-    const [profileSrc,setProfileSrc]=React.useState<string>("");
+    const [profileSrc, setProfileSrc] = React.useState<string>("");
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -96,11 +101,11 @@ export const Post: React.FC<PostProps> = ({id, user, body, date, latitude, longi
         return tagString
     }
 
-    useEffect(()=>{
-        setPath("/visit/"+user.username);
-        console.log("/visit/"+user.username);
+    useEffect(() => {
+        setPath("/visit/" + user.username);
+        console.log("/visit/" + user.username);
         setProfileSrc(`https://proiectcolectivmybuddy.s3.eu-central-1.amazonaws.com/testFolder/${user.username}.jpg`);
-    },[])
+    }, [])
 
     return (
         <Card className={classes.root}>

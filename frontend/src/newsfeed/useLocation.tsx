@@ -8,6 +8,8 @@ interface MyLocation {
     error?: Error;
 }
 
+
+/*A hook used for detecting user's current location */
 export const useMyLocation = () => {
     const [state, setState] = useState<MyLocation>({});
     useEffect(watchMyLocation, []);

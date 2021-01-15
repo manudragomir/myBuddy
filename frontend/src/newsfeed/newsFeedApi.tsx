@@ -4,6 +4,8 @@ import axios from 'axios';
 
 const newsUrl = `http://${baseUrl}/post/newsfeed`;
 
+/*Methods in order to sends request to server and get response*/
+
 export const getNewsFeed: (page: number, size: number, type?: string, tags?: string[], lat?: number, lng?: number, searchArea?: number) => Promise<PostProps[]> = (page, size, type, tags, lat, lng, searchArea) => {
     let rangeInfo = undefined;
     if (searchArea !== undefined) {
