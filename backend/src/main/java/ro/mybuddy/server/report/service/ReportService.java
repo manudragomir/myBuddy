@@ -39,7 +39,7 @@ public class ReportService {
      *     It validates the given postId and the username field in reportDto and creates a Report instance which is
      *     saved to reportRepository
      * </p>
-     * @param postId
+     * @param postId    id of the Post to link the Report to
      * @param reportDto  the report data
      * @throws InvalidUserException  in case the given username is not found
      * @throws InvalidPostException  in case the given post is not found
