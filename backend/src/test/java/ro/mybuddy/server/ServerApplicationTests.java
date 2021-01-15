@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import ro.mybuddy.server.post.controller.PostController;
 import ro.mybuddy.server.tag.controller.TagController;
 
 /**
@@ -19,12 +20,16 @@ class ServerApplicationTests {
 	private String mailHost;
 
 	@Autowired
-	private TagController controller;
+	private TagController tagController;
+
+	@Autowired
+	private PostController postController;
 
 	@Test
 	void contextLoads() {
 		System.out.println("mailHost ::: " + mailHost);
-		assertThat(controller).isNotNull();
+		assertThat(tagController).isNotNull();
+		assertThat(postController).isNotNull();
 	}
 
 }
