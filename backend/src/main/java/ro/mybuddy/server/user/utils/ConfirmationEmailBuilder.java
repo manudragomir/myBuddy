@@ -7,6 +7,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Component;
 import ro.mybuddy.server.user.model.ConfirmationToken;
 
+/**
+ * Builder class for confirmation e-mails.
+ */
 public class ConfirmationEmailBuilder {
     private ConfirmationToken token;
 
@@ -14,6 +17,13 @@ public class ConfirmationEmailBuilder {
         this.token = token;
     }
 
+    /**
+     * Creates a new SimpleMailMessage instance using the data provided in the ConfirmationToken instance.
+     * <p>
+     *     Wraps a link to the confirmation page on the frontend.
+     * </p>
+     * @return a new SimpleMailMessage instance
+     */
     public SimpleMailMessage build() {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("no-reply@mybuddy.ro");
