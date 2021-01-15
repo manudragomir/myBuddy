@@ -45,4 +45,5 @@ class TagServiceTest {
         assertThat(all).contains(tagCat);
         assertThat(all.size()).isEqualTo(1);
     }
+
 }

@@ -55,6 +55,10 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple
 	compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 
+	// https://mvnrepository.com/artifact/com.google.code.gson/gson
+	compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
+
+
 	dependencies {
 		compile 'io.jsonwebtoken:jjwt-api:0.11.2'
 		runtime 'io.jsonwebtoken:jjwt-impl:0.11.2',
