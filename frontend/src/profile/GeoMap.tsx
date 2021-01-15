@@ -41,7 +41,7 @@ export const MyMap =
           <InfoWindow
             >
               <div>
-                <p>Move this then click on it for changing the location!</p>
+                <p color="black">Move this then click on it for changing the location!</p>
               </div>
           </InfoWindow>
       </Marker>

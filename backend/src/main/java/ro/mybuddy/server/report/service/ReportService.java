@@ -51,9 +51,9 @@ public class ReportService {
         report.setMessage(reportDto.getMessage());
         User user = userRepository.findByUsernameOrEmail(reportDto.getUsername(), reportDto.getUsername());
 
-        if (user == null) {
-            throw new InvalidUserException("The given user does not exist");
-        }
+//        if (user == null) {
+//            throw new InvalidUserException("The given user does not exist");
+//        }
         report.setUser(user);
 
         if (report.getPost() == null) {

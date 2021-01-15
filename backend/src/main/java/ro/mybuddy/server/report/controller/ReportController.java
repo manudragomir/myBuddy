@@ -1,7 +1,6 @@
 package ro.mybuddy.server.report.controller;
 
 import io.swagger.annotations.*;
-import jdk.jshell.spi.ExecutionControl;
 import org.hibernate.cfg.NotYetImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

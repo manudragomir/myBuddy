@@ -1,4 +1,4 @@
-import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonImg, IonLabel } from "@ionic/react";
+import { IonBackButton, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonImg, IonLabel } from "@ionic/react";
 import axios from "axios";
 import React, {useState, useEffect} from "react";
 import { StepComponentProps } from "react-step-builder";
@@ -84,11 +84,13 @@ const FinalStep = (props: StepComponentProps) => {
             <h1>{breedName}</h1>
             <IonImg src={breedImgSrc} hidden={!imageAvailable} style={{width: "40vw"}}/>
             <IonImg src="https://http.cat/404" hidden={imageAvailable} style={{width: "40vw"}}/>
-            <IonLabel hidden={imageAvailable}>No photo available for this breed :(</IonLabel>
           </div>
+          <IonButton href="/user">Main page</IonButton>
         </div>
-
+        
+        
       </div>
+
     );
 };
 

@@ -158,7 +158,7 @@ export const Post: React.FC<PostProps> = ({id, user, body, date, latitude, longi
                         handler: (reason) => {
                             console.log(reason)
                             console.log('Confirm Ok');
-                            sendReport(Number(id), reason);
+                            sendReport(id, reason);
                         }
                     }
                 ]}

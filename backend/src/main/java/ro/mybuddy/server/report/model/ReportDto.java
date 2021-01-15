@@ -14,6 +14,5 @@ public class ReportDto {
     @NonNull
     private String message;
 
-    @NonNull
     private String username;
 }

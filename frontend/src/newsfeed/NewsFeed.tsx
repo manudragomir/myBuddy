@@ -86,13 +86,9 @@ const NewsFeed: React.FC<RouteComponentProps> = (history) => {
         <IonPage>
             <IonContent className={"news-feed-content"} fullscreen>
                 {console.log(posts)}
-                <IonItemDivider className={"menu-row"} sticky>
+                {auth ? <NavBarUser username={username} /> : <NavBar/>}
+                <IonItemDivider className={"menu-row"} sticky style={{zIndex: 40}}>
                     <IonGrid>
-                        <IonRow>
-                            <IonCol size={"12"} size-sm>
-                                {auth ? <NavBarUser username={username}/> : <NavBar/>}
-                            </IonCol>
-                        </IonRow>
                         <div className={"wrapper-div"}>
                             <div className={"search-area-div"}>
                                 <IonItem className={"search-item"}>
@@ -123,7 +119,7 @@ const NewsFeed: React.FC<RouteComponentProps> = (history) => {
                         </div>
                     </IonGrid>
                 </IonItemDivider>
-                <div className="title ion-padding">
+                <div className="title ion-padding" >
                     <h3>Types</h3>
                 </div>
 

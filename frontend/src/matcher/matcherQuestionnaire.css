@@ -22,7 +22,14 @@ html {
     border-radius: 0.53vw;
   }
 
-  .question-box-start h1, h2, p {
+  .question-box-start h1, h2 {
+    margin: 0 0 30px;
+    padding: 0;
+    color: #fff;
+    text-align: center;
+  }
+
+  .question-box-start p {
     margin: 0 0 30px;
     padding: 0;
     color: #fff;

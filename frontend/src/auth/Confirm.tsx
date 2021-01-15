@@ -7,6 +7,7 @@ import { IonButton, IonContent, IonLabel, IonPage } from '@ionic/react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { Button } from 'react-bootstrap';
 
 const authUrl = `http://${baseUrl}/user/confirm-account`;
 
@@ -58,7 +59,7 @@ export const Confirm : React.FC<RouteComponentProps>= ({history}) => {
           </Row>
           <Row>
             <Col style={{display:'flex'}}>
-                {done && <IonButton style={{color:"warning"}} onClick={() => {history.push("/")}}>Back to login</IonButton>}
+                {done && <Button variant="outline-dark" onClick={() => {history.push("/")}}>Back to login</Button>}
             </Col>
           </Row>
         </Container>

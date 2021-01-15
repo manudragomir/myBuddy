@@ -79,21 +79,6 @@ public class ReportServiceTest {
         }
     }
 
-    @Test
-    public void shouldThrowInvalidUserException() {
-        Post p = new Post();
-        p.setId("kkk");
-        when(postRepository.findPostById("kkk")).thenReturn(null);
-        when(userRepository.findByUsernameOrEmail("boss", "boss")).thenReturn(null);
-        ReportDto reportDto = new ReportDto();
-        reportDto.setUsername("boss");
-        reportDto.setMessage("MOCKITO E SMECHER RAU DE TOT FRT");
-        try {
-            reportService.saveReport("kkk", reportDto);
-        } catch (InvalidUserException e) {
-            assertThat(e).isInstanceOf(InvalidUserException.class);
-        }
-    }
 
     @Test
     public void shouldBeSavedSuccessfully() {

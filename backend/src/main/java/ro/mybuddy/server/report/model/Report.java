@@ -41,8 +41,7 @@ public class Report {
 
     @ApiModelProperty(notes = "user who reported the post")
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = User.class)
-    @JoinColumn(name = "user_id", nullable = false)
-    @NotNull
+    @JoinColumn(name = "user_id")
     private User user;
 
 }

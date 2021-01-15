@@ -7,6 +7,7 @@ import NavBar from '../components/NavBar';
 import {signup} from "./authApi";
 import Moment from 'moment';
 import PropTypes from "prop-types";
+import { Redirect } from 'react-router-dom';
 
 interface SignUpState {
     firstName: string,
@@ -41,7 +42,7 @@ const initialState: SignUpState = {
     validConfirmedPassword: true,
     redirect: false,
     messageError: '',
-    pendingSignup: false,
+    pendingSignup: false
 };
 
 interface SignUpProviderProps {
@@ -62,8 +63,17 @@ interface SignUpProviderProps {
 export const SignUp: React.FC<SignUpProviderProps> = ({children}) => {
 
     const [state, setState] = useState<SignUpState>(initialState);
+    const [doRedirect, setDoRedirect] = useState<boolean>(false);
 
     useEffect(handleSubmitEffect, [state.pendingSignup]);
+    useEffect(() => {
+        if(state.redirect){
+            setTimeout(
+                function() {
+                    setDoRedirect(true);
+                }, 5000);
+        }
+    }, [state.redirect]);
 
     function handleSubmitEffect() {
 
@@ -243,11 +253,16 @@ export const SignUp: React.FC<SignUpProviderProps> = ({children}) => {
 
                                             
                         {state.redirect &&
-                        <Nav>
-                            <Nav.Link href="/login"
-                                      style={{color: "#565210", fontSize: "20px", fontFamily: "Josefin Slab"}}>Successfully
-                                signed up! A confirmation link was sent to the given email address. Go back to login.</Nav.Link>
-                        </Nav>
+                            <Nav>
+                                <Nav.Link href="/login"
+                                        style={{color: "#565210", fontSize: "20px", fontFamily: "Josefin Slab"}}>
+                                            Check your email for confirmation.
+                                </Nav.Link>
+                            </Nav>
+                        }
+
+                        {doRedirect && 
+                            <Redirect to={{ pathname: '/login' }}/>
                         }
 
                     </Col>

@@ -64,6 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/tag").hasRole("ADMIN")
                 .antMatchers("/post/newsfeed").permitAll()
                 .antMatchers("/match/**").permitAll()
+                .antMatchers("/post/newsfeed/**").permitAll()
                 .anyRequest().authenticated();
     }
 

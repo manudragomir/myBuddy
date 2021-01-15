@@ -26,15 +26,15 @@ export const getNewsFeed: (page: number, size: number, type?: string, tags?: str
 }
 
 
-export const sendReport: (idPost: number, message: string) => Promise<any> = (idPost: number, message: string) => {
+export const sendReport: (idPost: string, message: string) => Promise<any> = (idPost: string, message: string) => {
     return withLogs(
         axios({
                 method: `post`,
-                url: newsUrl + "/report",
+                url: newsUrl + `/report/${idPost}`,
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                data: JSON.stringify({idPost: idPost, message: message}),
+                data: JSON.stringify({postId: idPost, message: message}),
             }
         ), `Send Report`
     );
