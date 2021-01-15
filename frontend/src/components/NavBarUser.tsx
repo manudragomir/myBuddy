@@ -5,8 +5,11 @@ import { Button, Form, FormControl, NavDropdown } from 'react-bootstrap'
 import color from '../utils/images/logo_full.png';
 import {Plugins} from '@capacitor/core';
 import { Redirect, Route, RouteComponentProps } from 'react-router';
+import profileImg from '../utils/images/logoMyPicture.png';
+
 const {Storage} = Plugins;
 //import color from '../images/logo_full.png';
+
 interface NavBarProps {
     username?:string
 }
@@ -16,8 +19,8 @@ export const NavBarUser: React.FC<NavBarProps>=({username}) =>{
         (async() => {await Storage.clear()})();
     }
     useEffect(() => {
-        setSrc(`https://proiectcolectivmybuddy.s3.eu-central-1.amazonaws.com/testFolder/${username}.jpg`);
-    })
+            setSrc(`https://proiectcolectivmybuddy.s3.eu-central-1.amazonaws.com/testFolder/${username}.jpg`);
+    });
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Navbar.Brand href="/home">My Buddy</Navbar.Brand>
@@ -25,10 +28,12 @@ export const NavBarUser: React.FC<NavBarProps>=({username}) =>{
         <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
                 <NavDropdown title={
-                   <img src={src} width="20" height="20" className="rounded-circle"/>
+                   <img src={src} alt="User" width="20" height="20" className="rounded-circle"/>
                     
                 }  id="basic-nav-dropdown">
                 <NavDropdown.Item href="/user">My Profile</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item href="/match">AI Match your Dog Breed</NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item href="/login" onClick={handleLogOut}>Log Out</NavDropdown.Item>
             </NavDropdown>

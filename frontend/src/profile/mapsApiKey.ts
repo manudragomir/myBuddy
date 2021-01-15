@@ -1,2 +1,2 @@
 // the key for the Google Maps API
-export const mapsApiKey = 'AIzaSyBtD2eMhmD8HDlcNbrsoWS2hi-6iy130CU';
+export const mapsApiKey = 'AIzaSyCdgpiGZ1bn-FpACv8YO9XwJ0D435yQIkw';

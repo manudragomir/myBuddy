@@ -20,8 +20,6 @@ import "../newsfeed/newsFeed.css"
 import {sendReport} from "./newsFeedApi";
 import {eye} from "ionicons/icons";
 import {PostMap} from "../map/PostMap";
-import x from '../utils/images/user.jpg'
-import y from '../utils/images/parrot.jpg'
 import {Badge} from '@material-ui/core';
 
 
@@ -205,9 +203,7 @@ export const Post: React.FC<PostProps> = ({id, user, body, date, latitude, longi
             </CardHeader>
             <CardMedia
                 className={classes.media}
-                // image={`https://proiectcolectivmybuddy.s3.eu-central-1.amazonaws.com/testFolder/${id}.jpg`}
-                image={y}
-                //image={dog}
+                image={`https://proiectcolectivmybuddy.s3.eu-central-1.amazonaws.com/testFolder/${id}.jpg`}
                 title="titlu imagine"
             />
             <CardContent>
