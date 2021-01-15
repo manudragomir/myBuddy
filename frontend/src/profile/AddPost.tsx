@@ -270,7 +270,7 @@ export const AddPost: React.FC<RouteComponentProps> = ({history}) => {
                                             </IconButton>
                                     </Grid>
                                     <Grid item>
-                                      <TextField id="input-with-icon-grid" label="find me here" fullWidth value={"You're here "+latitude+" "+longitude}/>
+                                      <TextField id="input-with-icon-grid" label="find me here" fullWidth value={"You're here "+latitude.toFixed(2)+" "+longitude.toFixed(2)}/>
                                     </Grid>
                                     </Grid>
                                 </div>

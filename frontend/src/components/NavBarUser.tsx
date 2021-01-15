@@ -33,6 +33,8 @@ export const NavBarUser: React.FC<NavBarProps>=({username}) =>{
                 }  id="basic-nav-dropdown">
                 <NavDropdown.Item href="/user">My Profile</NavDropdown.Item>
                 <NavDropdown.Divider />
+                <NavDropdown.Item href="/match">AI Match your Dog Breed</NavDropdown.Item>
+                <NavDropdown.Divider />
                 <NavDropdown.Item href="/login" onClick={handleLogOut}>Log Out</NavDropdown.Item>
             </NavDropdown>
             </Nav>
