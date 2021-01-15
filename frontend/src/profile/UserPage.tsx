@@ -83,7 +83,7 @@ const UserPage: React.FC<RouteComponentProps> = ({history}) => {
                 <NavBarUser username={username} />
                 <Container fluid style={{height: "100%"}}>
                     <Row style={{height: "10px"}}>
-                        <Image src={dog} fluid/>
+                        <Image src={dog} fluid style={{opacity: "60%"}}/>
                         <Col lg="2"></Col>
                         <Col lg="8">
                             <Tabs
@@ -124,9 +124,9 @@ const UserPage: React.FC<RouteComponentProps> = ({history}) => {
                                 </Col>
                                 <Col lg="4">
                                     <h1>{username}</h1>
-                                    <h3>{desc}</h3>
-                                    <h3>{email}</h3>
-                                    <h3>{phone}</h3>
+                                    <h6 style={{color: "black"}}>{desc}</h6>
+                                    <h6 style={{color: "black"}}>{email}</h6>
+                                    <h6 style={{color: "black"}}>{phone}</h6>
                                     <Button onClick={() => {
                                         return history.push(`/user/edit/${username}`)
                                     }} variant="secondary">Edit Profile</Button>
