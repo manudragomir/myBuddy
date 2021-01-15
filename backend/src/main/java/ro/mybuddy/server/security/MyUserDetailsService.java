@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 import ro.mybuddy.server.user.model.User;
 import ro.mybuddy.server.user.repository.UserRepository;
 
+/**
+ * Custom Spring Security Class responsible for retrieving user information to Spring Security's AuthenticationProvider
+ * Retrieves system Users and maps them to UserDetails on request
+ */
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
