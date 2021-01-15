@@ -9,6 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * Model used to store the index of the last saved post
+ */
 @Entity
 @Data
 @RequiredArgsConstructor

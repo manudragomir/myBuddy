@@ -14,6 +14,9 @@ const validateURL = (url: string): boolean => {
     return url.indexOf('?token=') >= 0;
 };
 
+/*
+    The component represents a informative message
+ */
 export const Confirm : React.FC<RouteComponentProps>= ({history}) => {
     const [mesaj, setMesaj] = useState("hei");
     const [done, setDone] = useState(false);

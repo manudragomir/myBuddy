@@ -6,6 +6,9 @@ import ro.mybuddy.server.tag.model.Tag;
 
 import java.util.List;
 
+/**
+ * Model used to specify the criteria for filtering posts
+ */
 @Data
 public class FilterPrototype {
     public List<Tag> listTags;

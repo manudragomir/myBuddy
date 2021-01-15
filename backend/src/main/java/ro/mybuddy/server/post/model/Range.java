@@ -7,6 +7,9 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Model used to represent a radius for filtering posts by location
+ */
 @Data
 @AllArgsConstructor
 public class Range {

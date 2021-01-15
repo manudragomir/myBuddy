@@ -25,6 +25,9 @@ import ro.mybuddy.server.user.utils.GetAuthenticatedUserId;
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
+/**
+ * Service - used to perform post specific operations ( communication point between Repository and Controller )
+ */
 @Component
 public class PostService {
     @Autowired
@@ -34,6 +37,11 @@ public class PostService {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Finds all posts which match the criteria specified in filterPrototype
+     * @param filterPrototype The criteria for filtering the posts
+     * @return A list containing all posts that match
+     */
     public List<Post> findAll(FilterPrototype filterPrototype){
         Long id = null;
         if(filterPrototype.username!=null){
@@ -63,6 +71,11 @@ public class PostService {
         return list;
     }
 
+    /**
+     * Save a post
+     * @param post The post to be saved
+     * @return The post which is saved
+     */
     public Post savePost(Post post){
         User currentUser = userRepository.findByUsernameOrEmail(GetAuthenticatedUserId.get(),"");
         if(currentUser == null){
@@ -86,6 +99,10 @@ public class PostService {
         return post;
     }
 
+    /**
+     * Get the index of the last saved post
+     * @return Int The index of the last saved post
+     */
     private Index getIndex(){
         List<Index> l = indexRepository.findAll();
         if(l.size()==0)
@@ -97,6 +114,10 @@ public class PostService {
         return i;
     }
 
+    /**
+     * Deletes a post
+     * @param post The post to be deleted
+     */
     public void deletePost(Post post){
         try{
             postRepository.delete(post);
@@ -108,6 +129,11 @@ public class PostService {
             throw new DeletePostException("Error deleting post");
     }
 
+    /**
+     * Updates a post
+     * @param post The post to be updated, containing the new attributes
+     * @return The new post updated
+     */
     public Post updatePost(Post post){
         User currentUser = userRepository.findByUsernameOrEmail(GetAuthenticatedUserId.get(),"");
         if(currentUser == null){
@@ -128,6 +154,11 @@ public class PostService {
         return post;
     }
 
+    /**
+     * Find a post by id
+     * @param id The id of the searched post
+     * @return The post which has the specified id
+     */
     public Post findById(String id){
         Optional<Post> post = postRepository.findById(id);
         if(post.isEmpty())
@@ -135,6 +166,11 @@ public class PostService {
         return post.get();
     }
 
+    /**
+     * Change the type of the post (LOST - FOUND, ADOPTION - ADOPTED)
+     * @param id The id of the post
+     * @return The new post updated
+     */
     public Post changeTypePost(String id){
         Post post = postRepository.findById(id).get();
         post.setType(post.getType().update());

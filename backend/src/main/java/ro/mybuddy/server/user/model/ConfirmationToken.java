@@ -9,6 +9,9 @@ import ro.mybuddy.server.user.utils.Random;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * Class that encapsulates a randomly generated token(UUID) when a new user is registered in the system
+ */
 @Entity
 @Data
 @NoArgsConstructor

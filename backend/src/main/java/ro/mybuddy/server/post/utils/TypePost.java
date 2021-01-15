@@ -2,6 +2,9 @@ package ro.mybuddy.server.post.utils;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+/**
+ * Enum used to describe the type of a post
+ */
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum TypePost {
     Adoption {@Override public TypePost update(){ return Adopted;}} ,

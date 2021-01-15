@@ -22,6 +22,9 @@ import java.util.Date;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * Custom Spring Security Class that only intercepts and handles login requests with username and password
+ */
 @Component
 public class InitialAuthenticationFilter extends OncePerRequestFilter {
 
@@ -30,6 +33,15 @@ public class InitialAuthenticationFilter extends OncePerRequestFilter {
 
     private final Logger logger = Logger.getLogger(InitialAuthenticationFilter.class.getName());
 
+    /**
+     * Intercepts HTTP requests to the login endpoint ("/user/login") and handles authentication logic
+     * Gets the login username and password from the request and tries to identify the correct User(through Spring Security's Authentication Manager)
+     * If a system user is successfully identified, then generates and signs a JWT token that is returned in the HTTP response
+     * All subsequent requests will use the generated token for authentication
+     * @param request Object that encapsulates the intercepted HTTP request
+     * @param response Object that encapsulates the retrieved HTTP response
+     * @param filterChain Spring Security filter chain; used to pass down the request from one filter to the next
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         logger.info("IN INITIAL AUTH FILTER");
@@ -68,6 +80,9 @@ public class InitialAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
+    /**
+     * Ignore all requests to endpoints other than the login endpoint ("/user/login")
+     */
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         return !request.getServletPath().equals("/user/login");

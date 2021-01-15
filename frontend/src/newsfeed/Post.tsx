@@ -10,23 +10,18 @@ import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import {red} from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ReportIcon from '@material-ui/icons/Report';
 import PersonIcon from '@material-ui/icons/Person';
 import {PostProps} from "./PostProps";
-import {IonAlert, IonPopover, IonFabButton, IonIcon} from '@ionic/react';
+import {IonAlert, IonBadge, IonFabButton, IonIcon, IonPopover} from '@ionic/react';
 import "../newsfeed/newsFeed.css"
 import {sendReport} from "./newsFeedApi";
-import dog from "../utils/images/dog_cut1.jpg"
-import {RouteComponentProps} from "react-router";
-import {UserPostProps} from "./UserPostProps";
-import {Button} from "react-bootstrap";
 import {eye} from "ionicons/icons";
 import {PostMap} from "../map/PostMap";
-import x from '../utils/images/114.jpg'
+import x from '../utils/images/user.jpg'
+import y from '../utils/images/parrot.jpg'
 import {Badge} from '@material-ui/core';
 
 
@@ -210,22 +205,21 @@ export const Post: React.FC<PostProps> = ({id, user, body, date, latitude, longi
             </CardHeader>
             <CardMedia
                 className={classes.media}
-                image={`https://proiectcolectivmybuddy.s3.eu-central-1.amazonaws.com/testFolder/${id}.jpg`}
+                // image={`https://proiectcolectivmybuddy.s3.eu-central-1.amazonaws.com/testFolder/${id}.jpg`}
+                image={y}
                 //image={dog}
                 title="titlu imagine"
             />
             <CardContent>
                 <Typography variant="body2" color="textSecondary" component="p">
-                    TAGS: {getTags()}
-                    <br/>
-                    TYPE: {type.toString()}
+                    {getTags().includes("#shelter") && <IonBadge color="danger">#shelter</IonBadge>}
+                    <br/>{getTags().replace("#shelter", "")}
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
                 <IconButton aria-label="add to favorites">
                     <FavoriteIcon/>
                 </IconButton>
-
 
                 <IconButton aria-label="message" onClick={() => handleReportClick()}>
                     <ReportIcon/>

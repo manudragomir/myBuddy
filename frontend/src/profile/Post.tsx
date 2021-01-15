@@ -77,7 +77,10 @@ const StyledBadge = styled(Badge)`
     background: #ffffcc;
 `
 
-
+/*
+    The component contains the detailed information of a post that will appear in the UserPage and VisitUser components
+    It shows the properties of a post entity, along with specialized buttons for CRUD operations ( edit & delete)
+ */
 export const Post: React.FC<PostProps> = ({id, date, user, body, type, tags, latitude, longitude}) => {
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
@@ -106,6 +109,9 @@ export const Post: React.FC<PostProps> = ({id, date, user, body, type, tags, lat
 
     const {deletePost} = useContext(PostContext);
 
+    // a specialized useEffect that gives the possibility of changing the type of the post tot the user
+    // the values that the user can change to are the opposite ones from the ones
+    // contained in the post
     useEffect(()=>{
         if(lost){
             setMandatoryTag('Lost')

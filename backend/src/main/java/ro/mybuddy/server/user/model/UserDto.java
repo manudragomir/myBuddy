@@ -13,6 +13,9 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 
+/**
+ * Data Transfer Object(DTO) for receiving a user's information from the frontend
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

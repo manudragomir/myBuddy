@@ -8,11 +8,15 @@ interface MyLocation {
   error?: Error;
 }
 
+/*
+  Specialized hook that gives the current location of the user
+ */
 export const useMyLocation = () => {
   const [state, setState] = useState<MyLocation>({});
   useEffect(watchMyLocation, []);
   return state;
 
+  // the function changes the current location depending on the events from the user interface
   function watchMyLocation() {
     let cancelled = false;
     Geolocation.getCurrentPosition()

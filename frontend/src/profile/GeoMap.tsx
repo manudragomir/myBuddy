@@ -12,7 +12,10 @@ interface MyMapProps {
   onMarkerClick: (e: any) => void,
 }
 
-
+/*
+    The component presents a GoogleMaps map that contains the current location of the user
+    The location on the map can be changed, in order to select a different location for the added post
+ */
 export const MyMap =
   compose<MyMapProps, any>(
     withProps({

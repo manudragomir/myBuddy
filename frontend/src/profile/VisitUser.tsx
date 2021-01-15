@@ -18,7 +18,6 @@ import img from '../utils/images/column.png';
 import dog from '../utils/images/dog_cut1.jpg';
 import profileImg from '../utils/images/logoMyPicture.png';
 import { Post } from './Post';
-import { PostProps } from './PostProps';
 import { PostContext } from './PostProvider';
 import {Plugins} from "@capacitor/core";
 import NavBar from '../components/NavBar';
@@ -30,7 +29,10 @@ interface VisitUserProps extends RouteComponentProps<{
     username?: string;
 }> {}
 
-
+/*
+    The VisitUser component is similar to the UserPage, but this is presenting the information of other users than the one who is logged in
+    The posts are the belonging to the user to whose profile is visited
+ */
 const VisitUser: React.FC<VisitUserProps> = ({history , match}) => {
     const [key, setKey] = useState('posts');
 
@@ -59,10 +61,27 @@ const VisitUser: React.FC<VisitUserProps> = ({history , match}) => {
     useIonViewWillEnter(async () => {
         //await fetchUserPosts();
     });
+    // async function fetchUserPosts() {
+    //     await fetchPosts?.();
+    //     if (init) setInit(false);
+    // }
+
+    // useIonViewWillEnter(async () => {
+    //     //await fetchUserPosts();
+    // });
+
+    useEffect(() => {
+            (async ()=> {
+                if(init) {
+                    await fetchPosts?.();
+                    // setInit(false);
+                }
+            })();
+    },[])
 
     async function searchNext($event: CustomEvent<void>) {
         console.log("NEXT")
-        await fetchUserPosts();
+        await fetchPosts?.();
         await ($event.target as HTMLIonInfiniteScrollElement).complete();
     }
 
@@ -130,7 +149,7 @@ const VisitUser: React.FC<VisitUserProps> = ({history , match}) => {
                                             <IonRow>
                                                 {
                                                     posts?.filter((x)=>
-                                                        x.user?.username == username
+                                                        x.user?.username === username
                                                     ).map(({id, user, body, date, latitude, longitude, tags, type}, index) =>
                                                         (<IonCol size="6" key={index}>
                                                             <Post key={id} id={id} user={user} body={body} date={date} latitude={latitude} longitude={longitude}
@@ -140,12 +159,6 @@ const VisitUser: React.FC<VisitUserProps> = ({history , match}) => {
                                                 }
                                             </IonRow>
                                         </IonGrid>
-
-                                    {!fetching && posts?.length === 0 &&
-                                    <div className={"tag-error-div"}>
-                                        <IonText>loading...</IonText>
-                                    </div>
-                                    }
                                     <IonInfiniteScroll threshold="100px" disabled={disableInfiniteScroll}
                                                        onIonInfinite={(e: CustomEvent<void>) => searchNext(e)}>
                                         <IonInfiniteScrollContent

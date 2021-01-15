@@ -12,6 +12,10 @@ export interface PrivateRouteProps {
   exact?: boolean;
 }
 
+/*
+    The component is implementing a private route component
+    If the user is not authenticated , it will be impossible to access the private route pages
+ */
 export const PrivateRoute: React.FC<PrivateRouteProps> = ({ component: Component, ...rest }) => {
   const { isAuthenticated } = useContext<AuthState>(AuthContext);
   log('render, isAuthenticated', isAuthenticated);

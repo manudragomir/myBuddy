@@ -33,11 +33,13 @@ import NewsFeed from './newsfeed/NewsFeed';
 import Mission from "./Mission/Mission";
 import Help from "./Mission/Help";
 import Contact from "./Mission/Contact";
+import Matcher from './matcher/Matcher';
 
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <IonRouterOutlet>
+        <Route path="/match" component={Matcher} exact={true}/>
         <AuthProvider>
           <Route path="/login" component={Login} exact={true}/>
           <Route path="/mission" component={Mission} exact={true}/>
@@ -55,7 +57,7 @@ const App: React.FC = () => (
             <Route path="/home" component={NewsFeed}/>
           </NewsFeedProvider>
           <PostProvider>
-            <Route path="/visit" component={VisitUser}/>
+            {/*<Route path="/visit" component={VisitUser}/>*/}
             <Route path="/visit/:username" component={VisitUser}/>
           </PostProvider>
           <Route path="/confirm" component={Confirm}/>
