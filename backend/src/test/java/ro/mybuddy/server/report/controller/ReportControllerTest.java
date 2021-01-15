@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.springframework.http.MediaType;
 import ro.mybuddy.server.post.model.Post;
+import ro.mybuddy.server.report.exceptions.InvalidPostException;
 import ro.mybuddy.server.report.model.Report;
 import ro.mybuddy.server.report.model.ReportDto;
 import ro.mybuddy.server.report.service.ReportService;
@@ -72,7 +73,22 @@ class ReportControllerTest {
     }
 
     @Test
-    void saveReportWhenPostIsInvalid() {
+    void saveReportWhenPostIsInvalid() throws Exception {
+        ReportDto reportDto = new ReportDto();
+        reportDto.setMessage("harassment");
+        reportDto.setUsername("haja.fgabriel");
+        doThrow(InvalidPostException.class).when(reportService).saveReport("123", reportDto);
+
+        String content = "{" +
+                "\"username\":\"haja.fgabriel\", " +
+                "\"message\" : \"harassment\"" +
+                "}";
+
+        mockMvc
+                .perform(post("/post/newsfeed/report/123")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content))
+                .andExpect(status().isNotAcceptable());
     }
 
     @Test
