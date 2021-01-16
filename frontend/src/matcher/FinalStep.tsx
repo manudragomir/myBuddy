@@ -48,7 +48,18 @@ const FinalStep = (props: StepComponentProps) => {
                         setImageAvailable(true);
                                       console.log(res); setBreedName(res.name);
                                       setHidden(true);
-                                      fetchPhoto(res.name.toLocaleLowerCase())})
+                                      const retBreedName = res.name.toLocaleLowerCase();
+                                      const arrBreedName = retBreedName.split(' ');
+                                      if(arrBreedName.length == 1){
+                                        fetchPhoto(retBreedName);
+                                      }
+                                      else if(arrBreedName.length == 2){
+                                        fetchPhoto(arrBreedName[1] + '/' + arrBreedName[0]);
+                                      }
+                                      else{
+                                        fetchPhoto(retBreedName); 
+                                      }
+                                      })
                       .catch((err) => {setImageAvailable(false);});
     }
   }
@@ -84,6 +95,7 @@ const FinalStep = (props: StepComponentProps) => {
             <h1>{breedName}</h1>
             <IonImg src={breedImgSrc} hidden={!imageAvailable} style={{width: "40vw"}}/>
             <IonImg src="https://http.cat/404" hidden={imageAvailable} style={{width: "40vw"}}/>
+            <IonLabel hidden={imageAvailable}>Not image found for this breed</IonLabel>
           </div>
           <IonButton href="/user">Main page</IonButton>
         </div>
