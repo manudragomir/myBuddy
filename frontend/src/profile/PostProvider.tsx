@@ -67,10 +67,11 @@ const reducer: (state: PostState, action: ActionProps)=> PostState =
                 const posts=[...(state.posts || [])]
                 const post=payload.post;
 
-                let isInList = false;
-                posts.forEach((p) => {if(p.id == post.id) isInList = true; });
-
-                if(!isInList) posts.push(post);
+                // let isInList = false;
+                // posts.forEach((p) => {if(p.id == post.id) isInList = true; });
+                //
+                // if(!isInList)
+                    posts.unshift(post);
                 return {...state,posts,saving:false};
             case SAVE_POST_FAILED:
                 return {...state,savingError:payload.error,saving:false}

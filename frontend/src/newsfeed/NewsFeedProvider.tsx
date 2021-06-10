@@ -73,7 +73,7 @@ const reducer: (state: NewsFeedState, action: ActionProps) => NewsFeedState =
             case WS_SAVE_POST_TO_FEED:
                 log(`[WS-REDUCER] SAVE POST TO FEED ${payload.post}`)
                 let onSavePosts = [...(state.posts || [])]
-                onSavePosts?.push(payload.post)
+                onSavePosts?.unshift(payload.post)
                 return {...state, posts: onSavePosts};
             case WS_UPDATE_POST_FROM_FEED:
                 log(`[WS-REDUCER] SAVE POST TO FEED ${payload.post}`)
@@ -157,24 +157,31 @@ export const NewsFeedProvider: React.FC<NewsFeedProviderProps> = ({children}) =>
         }
 
         function initializeWebSocket() {
+            const WS_TIMEOUT_WAIT_FOR_S3_UPLOAD = 3000;
             const ws = SockJS('http://localhost:8080/ws');
             const stompClient = Stomp.over(ws);
             stompClient.connect({}, function (frame) {
                 console.log('Connected: ' + frame);
                 stompClient.subscribe('/topic/newPost', function (message) {
-                    console.log(`[WS] NEW POST RECEIVED >>>>>>>>>> ${message["body"]}`);
-                    const post: PostProps = JSON.parse(message["body"]);
-                    dispatch({type: WS_SAVE_POST_TO_FEED, payload: {post: post}})
+                    setTimeout(() => {
+                        console.log(`[WS] NEW POST RECEIVED >>>>>>>>>> ${message["body"]}`);
+                        const post: PostProps = JSON.parse(message["body"]);
+                        dispatch({type: WS_SAVE_POST_TO_FEED, payload: {post: post}})
+                    }, WS_TIMEOUT_WAIT_FOR_S3_UPLOAD);
                 });
                 stompClient.subscribe('/topic/updatePost', function (message) {
-                    console.log(`[WS] UPDATE POST RECEIVED >>>>>>> ${message["body"]}`);
-                    const post: PostProps = JSON.parse(message["body"])
-                    dispatch({type: WS_UPDATE_POST_FROM_FEED, payload: {post: post}})
+                    setTimeout(() => {
+                        console.log(`[WS] UPDATE POST RECEIVED >>>>>>> ${message["body"]}`);
+                        const post: PostProps = JSON.parse(message["body"])
+                        dispatch({type: WS_UPDATE_POST_FROM_FEED, payload: {post: post}})
+                    }, WS_TIMEOUT_WAIT_FOR_S3_UPLOAD);
                 });
                 stompClient.subscribe('/topic/deletePost', function (message) {
-                    console.log(`[WS] DELETE POST RECEIVED >>>>>>> ${message["body"]}`);
-                    const post = message["body"]
-                    dispatch({type: WS_DELETE_POST_FROM_FEED, payload: {post: post}})
+                    setTimeout(() => {
+                        console.log(`[WS] DELETE POST RECEIVED >>>>>>> ${message["body"]}`);
+                        const post = message["body"]
+                        dispatch({type: WS_DELETE_POST_FROM_FEED, payload: {post: post}})
+                    }, WS_TIMEOUT_WAIT_FOR_S3_UPLOAD);
                 });
             })
         }

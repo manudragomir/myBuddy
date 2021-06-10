@@ -116,6 +116,7 @@ const tags = [
     '#funny',
     '#chameleon',
     '#horse',
+    '#shelter'
   ];
  
   function getStyles(tag: string, tagName: string[], theme: Theme) {
